@@ -1,0 +1,26 @@
+.container {
+  height: 800px;
+  margin: 30px auto;
+  width: 800px;
+}
+
+.cell {
+  background-size: contain;
+  /*border: 1px solid white;*/
+  box-sizing: border-box;
+  float: left;
+  height: 16px;
+  width: 16px;
+}
+
+.board {
+	background-color: #E3D4AB;
+}
+
+.piece {
+  background-color: #95BE69;
+}
+
+/*.food {
+	background-color: red;
+}*/
