@@ -1,35 +1,12 @@
 function Piece(){
   //this.direction ='right';
   this.body = [
-    // {row:5, column:25, rotationPoint: false},
-    // {row:4, column:25, rotationPoint: false},
-    // {row:3, column:25, rotationPoint: true},
-    // {row:2, column:25, rotationPoint: false},
-    // {row:1, column:25, rotationPoint: false}
-    // {row:5, column:25, rotationPoint: false},
-    // {row:4, column:25, rotationPoint: false},
-    // {row:3, column:25, rotationPoint: true},
-    // {row:2, column:25, rotationPoint: false},
-    // {row:1, column:25, rotationPoint: false},
-    // {row:1, column:24, rotationPoint: false},
-    // {row:1, column:23, rotationPoint: false},
-    // {row:1, column:23, rotationPoint: false},
-    // {row:5, column:1, rotationPoint: false},
-    // {row:4, column:1, rotationPoint: false},
-    // {row:3, column:1, rotationPoint: true},
-    // {row:2, column:1, rotationPoint: false},
-    // {row:1, column:1, rotationPoint: false},
-    // {row:1, column:2, rotationPoint: false},
-    // {row:1, column:2, rotationPoint: false},
-    // {row:1, column:2, rotationPoint: false},
-    {row:5, column:0, rotationPoint: false},
-    {row:4, column:0, rotationPoint: false},
-    {row:3, column:0, rotationPoint: true},
+
+    {row:3, column:0, rotationPoint: false},
     {row:2, column:0, rotationPoint: false},
-    {row:1, column:0, rotationPoint: false},
+    {row:1, column:0, rotationPoint: true},
     {row:1, column:1, rotationPoint: false},
-    {row:1, column:1, rotationPoint: false},
-    {row:1, column:1, rotationPoint: false}
+
   ];
 
   this.rotationPoint = 2;
@@ -131,7 +108,11 @@ Piece.prototype.goRight = function (maxColumns) {
     }
   }
 };
+
 //TO-DO move the piece down faster
+Piece.prototype.goDownFaster = function (maxRows) {
+
+};
 
 //Define collisions with ground
 Piece.prototype.collisionTestmoveDown = function (maxRows,row) {
@@ -207,7 +188,7 @@ Piece.prototype.rotatePieceLeft = function (maxRows, maxColumns) {
     {
       this.body = tempArray;
     }
-    console.log("tempArray",tempArray);
+    //console.log("tempArray",tempArray);
   }
 };
 
@@ -250,7 +231,7 @@ Piece.prototype.rotatePieceRight = function (maxRows, maxColumns) {
     {
       this.body = tempArray;
     }
-    console.log("tempArray",tempArray);
+    //console.log("tempArray",tempArray);
   }
 
 };
