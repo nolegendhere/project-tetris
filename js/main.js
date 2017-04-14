@@ -26,23 +26,34 @@ Game.prototype.update = function () {
 Game.prototype.assignControlKeys = function () {
 
   $('body').on('keydown',function(e){
-
+    console.log(e.keyCode);
     switch (e.keyCode) {
-      case 37:
+      case 190:
+        //TurnLeft
         this.pieceGenerator.actualPiece().defineRotationPoint();
-        this.pieceGenerator.actualPiece().rotatePieceLeft();
+        this.pieceGenerator.actualPiece().rotatePieceLeft(this.columns);
+        break;
+      case 37:
+        //Left
+        this.pieceGenerator.actualPiece().goLeft(this.columns);
         break;
       case 38:
-        this.snake.goUp();
+        //Up
+        break;
+      case 189:
+        //TurnRight
+        this.pieceGenerator.actualPiece().defineRotationPoint();
+        this.pieceGenerator.actualPiece().rotatePieceRight(this.columns);
         break;
       case 39:
-      this.pieceGenerator.actualPiece().defineRotationPoint();
-      this.pieceGenerator.actualPiece().rotatePieceRight();
+        //Right
+        this.pieceGenerator.actualPiece().goRight(this.columns);
         break;
       case 40:
-        this.snake.goDown();
+        //Down
         break;
       case 80:
+        //P
         if(this.intervalID)
         {
           this.stopGame();

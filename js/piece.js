@@ -14,14 +14,22 @@ function Piece(){
     // {row:1, column:24, rotationPoint: false},
     // {row:1, column:23, rotationPoint: false},
     // {row:1, column:23, rotationPoint: false},
-    {row:5, column:1, rotationPoint: false},
-    {row:4, column:1, rotationPoint: false},
-    {row:3, column:1, rotationPoint: true},
-    {row:2, column:1, rotationPoint: false},
+    // {row:5, column:1, rotationPoint: false},
+    // {row:4, column:1, rotationPoint: false},
+    // {row:3, column:1, rotationPoint: true},
+    // {row:2, column:1, rotationPoint: false},
+    // {row:1, column:1, rotationPoint: false},
+    // {row:1, column:2, rotationPoint: false},
+    // {row:1, column:2, rotationPoint: false},
+    // {row:1, column:2, rotationPoint: false},
+    {row:5, column:0, rotationPoint: false},
+    {row:4, column:0, rotationPoint: false},
+    {row:3, column:0, rotationPoint: true},
+    {row:2, column:0, rotationPoint: false},
+    {row:1, column:0, rotationPoint: false},
     {row:1, column:1, rotationPoint: false},
-    {row:1, column:2, rotationPoint: false},
-    {row:1, column:2, rotationPoint: false},
-    {row:1, column:2, rotationPoint: false},
+    {row:1, column:1, rotationPoint: false},
+    {row:1, column:1, rotationPoint: false}
   ];
 
   this.rotationPoint = 2;
@@ -31,6 +39,7 @@ function Piece(){
   this.contact = false;
 }
 
+//Draw the piece with divs
 Piece.prototype.drawPiece = function () {
   this.body.forEach(function(position){
     var selector ='[data-row='+position.row+'][data-column='+ position.column +']';
@@ -38,33 +47,109 @@ Piece.prototype.drawPiece = function () {
   });
 };
 
+//Clear the piece of the divs
 Piece.prototype.clearPiece = function () {
   $('.piece').removeClass('piece');
 };
 
 //TO-DO: contact with maxRos done, but have to do contact with other pieces
 Piece.prototype.moveDown = function (maxRows,maxColumns) {
-  if(!this.collisionTestmoveDown(maxRows,maxColumns))
+  if(!this.contact)
   {
-    var arrayTemp=[];
+    var tempRow;
+    var tempArray=[];
+
     this.body.forEach(function(position){
-        position.row++;
+      if(!this.contact)
+      {
+        tempRow = position.row;
+        tempRow++;
+
+        tempArray.push({row: tempRow , column: position.column, rotationPoint: position.rotationPoint });
+
+        this.collisionTestmoveDown(maxRows,tempRow);
+      }
     }.bind(this));
+
+    if(!this.contact)
+    {
+      this.body = tempArray;
+    }
   }
 };
 
-//TO-DO: define collisions with ground
-Piece.prototype.collisionTestmoveDown = function (maxRows,maxColumns) {
+//TO-DO: move the piece to the left
+Piece.prototype.goLeft = function (maxColumns) {
+  var tempColumn;
+  var tempArray=[];
+  var lateralCollision = false;
   this.body.forEach(function(position){
-    if(position.row+1>maxRows-1)
+    if(!lateralCollision)
     {
-      this.contact = true;
+      tempColumn = position.column;
+      tempColumn--;
+
+      tempArray.push({row: position.row , column: tempColumn, rotationPoint: position.rotationPoint });
+
+      lateralCollision = this.collisionTestLaterals(maxColumns,tempColumn);
     }
   }.bind(this));
-  return this.contact;
+
+  if(!lateralCollision)
+  {
+    this.body = tempArray;
+    //console.log("this.body",this.body);
+  }
+};
+//TO-DO move the piece to the right
+Piece.prototype.goRight = function (maxColumns) {
+
+  var tempColumn;
+  var tempArray=[];
+  var lateralCollision = false;
+  this.body.forEach(function(position){
+    if(!lateralCollision)
+    {
+      tempColumn = position.column;
+      tempColumn++;
+
+      tempArray.push({row: position.row , column: tempColumn, rotationPoint: position.rotationPoint });
+
+      lateralCollision = this.collisionTestLaterals(maxColumns,tempColumn);
+    }
+  }.bind(this));
+
+  if(!lateralCollision)
+  {
+    this.body = tempArray;
+    //console.log("this.body",this.body);
+  }
+};
+//TO-DO move the piece down faster
+
+//Define collisions with ground
+Piece.prototype.collisionTestmoveDown = function (maxRows,row) {
+
+  if(row>maxRows-1)
+  {
+    this.contact = true;
+  }
 };
 
-//TO-DO: define rotationPoint;
+//Define collisions with laterals
+Piece.prototype.collisionTestLaterals = function (maxColumns,column) {
+  var lateralContact = false;
+
+  if(column>maxColumns-1 || column < 0)
+  {
+    lateralContact = true;
+  }
+
+  return lateralContact;
+};
+
+
+//Define rotationPoint;
 Piece.prototype.defineRotationPoint = function () {
 
   this.body.forEach(function(position, index){
@@ -76,8 +161,8 @@ Piece.prototype.defineRotationPoint = function () {
 
 };
 
-//TO-DO: rotate left the piece, if it can be rotatet looking at maxColumns
-Piece.prototype.rotatePieceLeft = function () {
+//Rotate left the piece, if it can be rotatet looking at maxColumns
+Piece.prototype.rotatePieceLeft = function (maxColumns) {
 
   var tempArray = [];
   var tempRow;
@@ -85,52 +170,73 @@ Piece.prototype.rotatePieceLeft = function () {
   var tempColumn;
   var tempColumn2;
 
+  var lateralCollision = false;
+
   this.body.forEach(function(position){
+    if(!lateralCollision)
+    {
+      tempRow = position.row - this.body[this.rotationPoint].row;
 
-    tempRow = position.row - this.body[this.rotationPoint].row;
+      tempColumn = position.column  - this.body[this.rotationPoint].column;
 
-    tempColumn = position.column  - this.body[this.rotationPoint].column;
+      tempRow2 = this.rotationMatrixLeft[0][0] * tempRow + this.rotationMatrixLeft[0][1] * tempColumn;
 
-    tempRow2 = this.rotationMatrixLeft[0][0] * tempRow + this.rotationMatrixLeft[0][1] * tempColumn;
+      tempColumn2 = this.rotationMatrixLeft[1][0] * tempRow + this.rotationMatrixLeft[1][1] * tempColumn;
 
-    tempColumn2 = this.rotationMatrixLeft[1][0] * tempRow + this.rotationMatrixLeft[1][1] * tempColumn;
+      tempRow = tempRow2 + this.body[this.rotationPoint].row;
 
-    tempRow = tempRow2 + this.body[this.rotationPoint].row;
+      tempColumn = tempColumn2 + this.body[this.rotationPoint].column;
 
-    tempColumn = tempColumn2 + this.body[this.rotationPoint].column;
+      tempArray.push({row: tempRow , column: tempColumn, rotationPoint: position.rotationPoint });
 
-    tempArray.push({row: tempRow , column: tempColumn});
+      lateralCollision=this.collisionTestLaterals(maxColumns,tempColumn);
+    }
 
   }.bind(this));
 
-  this.body = tempArray;
+  if(!lateralCollision)
+  {
+    this.body = tempArray;
+  }
+  console.log("tempArray",tempArray);
 
 };
-//TO-DO: rotate right the piece, if it can be rotatet looking at maxColumns
-Piece.prototype.rotatePieceRight = function () {
+
+//Rotate right the piece, if it can be rotatet looking at maxColumns
+Piece.prototype.rotatePieceRight = function (maxColumns) {
   var tempArray = [];
   var tempRow;
   var tempRow2;
   var tempColumn;
   var tempColumn2;
 
+  var lateralCollision = false;
+
   this.body.forEach(function(position){
+    if(!lateralCollision)
+    {
+      tempRow = position.row - this.body[this.rotationPoint].row;
 
-    tempRow = position.row - this.body[this.rotationPoint].row;
+      tempColumn = position.column  - this.body[this.rotationPoint].column;
 
-    tempColumn = position.column  - this.body[this.rotationPoint].column;
+      tempRow2 = this.rotationMatrixRight[0][0] * tempRow + this.rotationMatrixRight[0][1] * tempColumn;
 
-    tempRow2 = this.rotationMatrixRight[0][0] * tempRow + this.rotationMatrixRight[0][1] * tempColumn;
+      tempColumn2 = this.rotationMatrixRight[1][0] * tempRow + this.rotationMatrixRight[1][1] * tempColumn;
 
-    tempColumn2 = this.rotationMatrixRight[1][0] * tempRow + this.rotationMatrixRight[1][1] * tempColumn;
+      tempRow = tempRow2 + this.body[this.rotationPoint].row;
 
-    tempRow = tempRow2 + this.body[this.rotationPoint].row;
+      tempColumn = tempColumn2 + this.body[this.rotationPoint].column;
 
-    tempColumn = tempColumn2 + this.body[this.rotationPoint].column;
+      tempArray.push({row: tempRow , column: tempColumn, rotationPoint: position.rotationPoint });
 
-    tempArray.push({row: tempRow , column: tempColumn});
+      lateralCollision=this.collisionTestLaterals(maxColumns,tempColumn);
+    }
 
   }.bind(this));
 
-  this.body = tempArray;
+  if(!lateralCollision)
+  {
+    this.body = tempArray;
+  }
+  console.log("tempArray",tempArray);
 };

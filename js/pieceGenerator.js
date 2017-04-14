@@ -6,7 +6,7 @@ function PieceGenerator(){
 
 }
 
-
+//Creates one pieces at a time
 PieceGenerator.prototype.generatePiece = function () {
 
   var pieceGenerated = new Piece();
@@ -15,16 +15,19 @@ PieceGenerator.prototype.generatePiece = function () {
 
 };
 
+//Returns the actual piece being controlled
 PieceGenerator.prototype.actualPiece = function(){
   return this.actualPieceMoved;
 };
 
+//Draw all the pieces with the divs calling their function to do it
 PieceGenerator.prototype.drawPieces = function (){
   this.generatedPieces.forEach(function(piece){
     piece.drawPiece();
   });
 };
 
+//Clear all the pieces of the divs calling their function to do it
 PieceGenerator.prototype.clearPieces = function (){
   this.generatedPieces.forEach(function(piece){
     piece.clearPiece();
