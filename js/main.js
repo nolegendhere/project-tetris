@@ -29,13 +29,15 @@ Game.prototype.assignControlKeys = function () {
 
     switch (e.keyCode) {
       case 37:
-        this.snake.goLeft();
+        this.pieceGenerator.actualPiece().defineRotationPoint();
+        this.pieceGenerator.actualPiece().rotatePieceLeft();
         break;
       case 38:
         this.snake.goUp();
         break;
       case 39:
-        this.snake.goRight();
+      this.pieceGenerator.actualPiece().defineRotationPoint();
+      this.pieceGenerator.actualPiece().rotatePieceRight();
         break;
       case 40:
         this.snake.goDown();

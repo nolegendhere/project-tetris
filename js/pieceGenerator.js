@@ -32,3 +32,4 @@ PieceGenerator.prototype.clearPieces = function (){
 };
 
 //TO-DO: see if the pieces are makin a line with their blocks; in that case, delete the row and move down all the pieces
+//Make every row has a counter of cells filled, When it is filled, make it disappear.
