@@ -31,7 +31,7 @@ Game.prototype.assignControlKeys = function () {
       case 190:
         //TurnLeft
         this.pieceGenerator.actualPiece().defineRotationPoint();
-        this.pieceGenerator.actualPiece().rotatePieceLeft(this.columns);
+        this.pieceGenerator.actualPiece().rotatePieceLeft(this.rows, this.columns);
         break;
       case 37:
         //Left
@@ -43,7 +43,7 @@ Game.prototype.assignControlKeys = function () {
       case 189:
         //TurnRight
         this.pieceGenerator.actualPiece().defineRotationPoint();
-        this.pieceGenerator.actualPiece().rotatePieceRight(this.columns);
+        this.pieceGenerator.actualPiece().rotatePieceRight(this.rows, this.columns);
         break;
       case 39:
         //Right
