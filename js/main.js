@@ -46,7 +46,7 @@ function Game(options) {
 }
 
 Game.prototype.update = function () {
-  console.log("entra update");
+  //console.log("entra update");
   if(this.pieceGenerator.actualPiece().contact)
   {
     this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions});
@@ -58,7 +58,7 @@ Game.prototype.update = function () {
 
   if(this.movementCount==this.movementCountLength)
   {
-    console.log("moveDown from update");
+    //console.log("moveDown from update");
     this.pieceGenerator.actualPiece().moveDown(this.rows,this.columns);
     this.movementCount=0;
   }
@@ -308,7 +308,7 @@ $(document).ready(function(){
       columns: 50,
       keys: arrows,
       width: 640,
-      height: 480,
+      height: 640,
       offsetRow: 20,
       offsetColumn: 20,
       initialRegionRow: 25,

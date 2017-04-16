@@ -2,27 +2,26 @@ function PieceGenerator(){
 
   this.actualPieceMoved = undefined;
   this.generatedPieces = [];
+  this.numberOfPieces = 0;
 
 }
 
 //Creates one pieces at a time
 PieceGenerator.prototype.generatePiece = function (options) {
   //console.log("generatePiece");
-  var pieceGenerated = new Piece(options);
+  var pieceGenerated = new Piece(options,this.numberOfPieces);
   this.actualPieceMoved = pieceGenerated;
   this.generatedPieces.push(pieceGenerated);
+
   console.log("generate");
 
   for (var i = 0; i < pieceGenerated.body.length; i++)
   {
-      // $('.container').append($('<div>').addClass('cell piece index'+i.toString()+"'").css({position: 'absolute', top: pieceGenerated.body[i].position.row.toString()+'px', left: pieceGenerated.body[i].position.column.toString()+'px'}));
-      // pieceGenerated.body[i].selector =   $('.index'+i.toString()+"'");
-      console.log("i",i);
-      $('.container').append($('<div>').addClass('cell piece').attr('index', i.toString()).css({position: 'absolute', top: pieceGenerated.body[i].position.row.toString()+'px', left: pieceGenerated.body[i].position.column.toString()+'px'}));
-      var selector ='[index='+i.toString()+']';
-      pieceGenerated.body[i].selector =   $(selector);
-
+      $('.container').append($('<div>').addClass('cell piece').attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({position: 'absolute', top: pieceGenerated.body[i].position.row.toString()+'px', left: pieceGenerated.body[i].position.column.toString()+'px'}));
+      var selector ='[index='+i.toString()+'][piece='+ this.numberOfPieces +']';
+      pieceGenerated.body[i].selector = $(selector);
   }
+  this.numberOfPieces++;
 
 };
 
@@ -33,7 +32,7 @@ PieceGenerator.prototype.actualPiece = function(){
 
 //Draw all the pieces with the divs calling their function to do it
 PieceGenerator.prototype.drawPieces = function (){
-  //console.log("this.generatedPieces.length",this.generatedPieces.length);
+
   this.generatedPieces.forEach(function(piece){
     piece.drawPiece();
   });
