@@ -1,15 +1,15 @@
-function PieceGenerator(){
+function PieceGenerator(regions){
 
   this.actualPieceMoved = undefined;
   this.generatedPieces = [];
-  this.generatePiece();
+  this.regions = regions;
 
 }
 
 //Creates one pieces at a time
 PieceGenerator.prototype.generatePiece = function () {
-
-  var pieceGenerated = new Piece();
+  //console.log("generatePiece");
+  var pieceGenerated = new Piece(this.regions);
   this.actualPieceMoved = pieceGenerated;
   this.generatedPieces.push(pieceGenerated);
 
@@ -22,6 +22,7 @@ PieceGenerator.prototype.actualPiece = function(){
 
 //Draw all the pieces with the divs calling their function to do it
 PieceGenerator.prototype.drawPieces = function (){
+  //console.log("this.generatedPieces.length",this.generatedPieces.length);
   this.generatedPieces.forEach(function(piece){
     piece.drawPiece();
   });
@@ -29,6 +30,7 @@ PieceGenerator.prototype.drawPieces = function (){
 
 //Clear all the pieces of the divs calling their function to do it
 PieceGenerator.prototype.clearPieces = function (){
+  //console.log("this.generatedPieces.length",this.generatedPieces.length);
   this.generatedPieces.forEach(function(piece){
     piece.clearPiece();
   });

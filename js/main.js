@@ -1,99 +1,231 @@
-function Game(options){
-    this.rows = options.rows;
-    this.columns = options.columns;
-    this.pieceGenerator = options.pieceGenerator;
-    this.paused = false;
-    this.updatesPerSec = options.updatesPerSec;
-    this.skipTicks = 1000/this.updatesPerSec;
-    this.gameRunning = true;
-    this.nextUpdate = new Date();
-    this.currentTime = new Date();
+function Game(options) {
 
-    for(var rowIndex = 0; rowIndex < this.rows; rowIndex++) {
+  this.fpsDisplay = options.fpsDisplay;
+  this.limit = options.limit;
+  this.lastFrameTimeMs = options.lastFrameTimeMs;
+  this.maxFPS = options.maxFPS;
+  this.delta = options.delta;
+  this.timestep = options.timestep;
+  this.fps = options.fps;
+  this.framesThisSecond = options.framesThisSecond;
+  this.lastFpsUpdate = options.lastFpsUpdate;
+  this.running = options.running;
+  this.started = options.started;
+  this.frameID = options.frameID;
 
-      for(var columnIndex = 0; columnIndex < this.columns; columnIndex++) {
+  // this.box = options.box;
+  // this.boxPos = options.boxPos;
+  // this.boxLastPos = options.boxLastPos;
+  // this.boxVelocity = options.boxVelocity;
 
-        $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex));
-      }
-    }
+  this.rows = options.rows;
+  this.columns = options.columns;
+  this.regions = [];
+  this.keys = options.keys;
+
+  this.movementCount = 0;
+  this.movementCountLength = 10;
+  this.rotateCount = 0;
+  this.rotateCountLength = 20;
+  this.directionLeft = false;
+  this.directionRight = false;
+  this.rotateLeft = false;
+  this.rotateRight = false;
+
 }
 
-Game.prototype.startGame = function (arrows) {
+Game.prototype.update = function () {
+  this.movementCount++;
+  this.rotateCount++;
+  this.assignControlKeys();
 
-  // while(true) {
-  //
-  //     // Update current time
-  //     var currentTime = this.currentTime.getTime();
-  //
-  //     // While we are behind in updates, do updates! Keep doing them till we catch up.
-  //     while(this.nextUpdate < currentTime) {
-  //         this.update(arrows);
-  //         this.nextUpdate += this.skipTicks;
-  //     }
-  //
-  //     // Calculate how far in between updates we are:
-  //     // Near 0.0 values: update just occurred.
-  //     // Near 1.0 values: update about to happen.
-  //     // Read this equation till it makes sense what's happening here:
-  //     var interpolation = (currentTime + this.skipTicks - this.nextUpdate) / this.skipTicks;
-  //     this.renderGame(interpolation);
-  // }
-
-};
-
-Game.prototype.renderGame = function(interpolation)
-{
-  if(!this.paused)
-  {
-    this.pieceGenerator.clearPieces();
-    this.pieceGenerator.drawPieces();
-  }
-
-};
-
-Game.prototype.update = function (arrows) {
-  // update game logic & physics here
-  this.assignControlKeys(arrows);
-
-  if(!this.paused)
+  if(this.movementCount==this.movementCountLength)
   {
     this.pieceGenerator.actualPiece().moveDown(this.rows,this.columns);
+    this.movementCount=0;
+  }
+  if(this.rotateCount==this.rotateCountLength)
+  {
+    this.rotateCount=0;
   }
 
+
+    // this.boxLastPos = this.boxPos;
+    // this.boxPos += this.boxVelocity * this.delta;
+    // // Switch directions if we go too far
+    // if (this.boxPos >= this.limit || this.boxPos <= 0) this.boxVelocity = -this.boxVelocity;
 };
 
 
-//TO-DO: add rotateLeft, rotateDown; change goDown in order to go down faster
-Game.prototype.assignControlKeys = function (arrows) {
+Game.prototype.draw = function(interp) {
+    // this.box.style.left = (this.boxLastPos + (this.boxPos - this.boxLastPos) * interp) + 'px';
+    this.fpsDisplay.textContent = Math.round(this.fps) + ' FPS';
+    this.pieceGenerator.clearPieces();
+    this.pieceGenerator.drawPieces();
+};
+
+
+Game.prototype.panic = function() {
+    this.delta = 0;
+};
+
+Game.prototype.begin = function(timestamp, delta) {
+};
+
+Game.prototype.end = function(fps) {
+    if (fps < 25) {
+        // this.box.style.backgroundColor = 'black';
+    }
+    else if (fps > 30) {
+        // this.box.style.backgroundColor = 'red';
+    }
+};
+
+Game.prototype.stop = function() {
+    this.running = false;
+    this.started = false;
+    cancelAnimationFrame(frameID);
+};
+
+Game.prototype.startGame = function() {
+    if (!this.started) {
+        this.started = true;
+        this.generateRegions();
+        //console.log("createPiece");
+        this.pieceGenerator.generatePiece();
+        this.frameID = requestAnimationFrame(function(timestamp) {
+            this.draw(1);
+            this.running = true;
+            this.lastFrameTimeMs = timestamp;
+            this.lastFpsUpdate = timestamp;
+            this.framesThisSecond = 0;
+            this.frameID = requestAnimationFrame(this.mainLoop.bind(this));
+            //console.log("entra2");
+        }.bind(this));
+    }
+};
+
+Game.prototype.mainLoop=function(timestamp) {
+    // Throttle the frame rate.
+    //console.log("mainloop");
+    if (timestamp < this.lastFrameTimeMs + (1000 / this.maxFPS)) {
+        this.frameID = requestAnimationFrame(this.mainLoop.bind(this));
+        return;
+    }
+
+    this.delta += timestamp - this.lastFrameTimeMs;
+    this.lastFrameTimeMs = timestamp;
+
+    //this.begin(timestamp, this.delta);
+
+    if (timestamp > this.lastFpsUpdate + 1000) {
+        this.fps = 0.25 * this.framesThisSecond + 0.75 * this.fps;
+
+        this.lastFpsUpdate = timestamp;
+        this.framesThisSecond = 0;
+    }
+    this.framesThisSecond++;
+
+    var numUpdateSteps = 0;
+    while (this.delta >= this.timestep) {
+        this.update(this.timestep);
+        this.delta -= this.timestep;
+        if (++this.numUpdateSteps >= 240) {
+            this.panic();
+            break;
+        }
+    }
+
+    //console.log("this",this);
+    this.draw(this.delta / this.timestep);
+
+    this.end(this.fps);
+
+    this.frameID = requestAnimationFrame(this.mainLoop.bind(this));
+};
+
+
+Game.prototype.generateRegions = function () {
+  this.cellWidth = this.width / this.columns;
+  this.cellHeight = this.height / this.rows;
+  var region;
+  for (var rowIndex = 0; rowIndex < this.rows; rowIndex++)
+  {
+    var tempArray=[];
+    //console.log("rowIndex",rowIndex);
+    for (var columnIndex = 0; columnIndex < this.columns; columnIndex++)
+    {
+      //console.log("columnIndex",columnIndex);
+      tempArray[columnIndex] = true;
+
+      $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex));
+
+    }
+    this.regions.push(tempArray);
+  }
+
+  this.pieceGenerator = new PieceGenerator(this.regions);
+};
+
+Game.prototype.assignControlKeys = function () {
   if(!this.paused)
   {
-    if(arrows.turnLeft)
+    if(this.keys.turnLeft)
     {
       //TurnLeft
+      this.rotateLeft = true;
+    }
+
+    if(this.rotateLeft && this.rotateCount === this.rotateCountLength)
+    {
+      //TurnRight
+      this.rotateLeft = false;
+
       this.pieceGenerator.actualPiece().defineRotationPoint();
       this.pieceGenerator.actualPiece().rotatePieceLeft(this.rows, this.columns);
     }
 
-    if(arrows.turnRight)
+    if(this.keys.turnRight)
     {
       //TurnRight
+      this.rotateRight = true;
+    }
+
+    if(this.rotateRight && this.rotateCount === this.rotateCountLength)
+    {
+      //TurnRight
+      this.rotateRight = false;
       this.pieceGenerator.actualPiece().defineRotationPoint();
       this.pieceGenerator.actualPiece().rotatePieceRight(this.rows, this.columns);
     }
 
-    if(arrows.left)
+    if(this.keys.left)
     {
       //Left
+      this.directionLeft = true;
+    }
+
+    if(this.directionLeft && this.movementCount === this.movementCountLength)
+    {
+      //Left
+      this.directionLeft = false;
       this.pieceGenerator.actualPiece().goLeft(this.columns);
     }
 
-    if(arrows.right)
+    if(this.keys.right)
     {
       //Right
+      this.directionRight = true;
+    }
+
+    if(this.directionRight && this.movementCount === this.movementCountLength)
+    {
+      //Right
+      this.directionRight = false;
       this.pieceGenerator.actualPiece().goRight(this.columns);
     }
-    console.log("entra1");
-    if(arrows.pause)
+    //console.log("entra1");
+    if(this.keys.pause)
     {
       console.log("ENTRA");
       this.paused = true;
@@ -101,7 +233,7 @@ Game.prototype.assignControlKeys = function (arrows) {
   }
   else {
     console.log("entra2");
-    if(arrows.pause)
+    if(this.keys.pause)
     {
         this.paused = false;
     }
@@ -109,19 +241,18 @@ Game.prototype.assignControlKeys = function (arrows) {
 
 };
 
-
 $(document).ready(function(){
-  console.log("hi1");
+
   var arrowCodes  = {190: "turnLeft", 189: "turnRight", 37: "left", 38: "up", 39: "right", 40: "down", 80: "pause"};
 
   function trackKeys(codes) {
     var pressed = Object.create(null);
     function handler(event) {
-      console.log(event);
+      //console.log(event);
       if (codes.hasOwnProperty(event.keyCode)) {
         var down = event.type == "keydown";
         pressed[codes[event.keyCode]] = down;
-        console.log("pressed",pressed);
+        //console.log("pressed",pressed);
         event.preventDefault();
       }
     }
@@ -133,13 +264,28 @@ $(document).ready(function(){
   var arrows = trackKeys(arrowCodes);// Initial values
 
   var game = new Game({
-    rows: 50,
-    columns: 50,
-    pieceGenerator: new PieceGenerator(),
-    updatesPerSec: 25
+      // box :document.getElementById('box'),
+      // boxPos : 10,
+      // boxLastPos : 10,
+      // boxVelocity : 0.08,
+      fpsDisplay : document.getElementById('fpsDisplay'),
+      limit : 300,
+      lastFrameTimeMs : 0,
+      maxFPS : 60,
+      delta : 0,
+      timestep : 1000 / 60,
+      fps : 60,
+      framesThisSecond : 0,
+      lastFpsUpdate : 0,
+      running : false,
+      started : false,
+      frameID : 0,
+      rows: 50,
+      columns: 50,
+      keys: arrows
   });
 
-   console.log("hi3");
-  game.startGame(arrows);
 
+  game.startGame();
+  console.log(game.regions);
 });
