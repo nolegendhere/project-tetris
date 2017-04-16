@@ -13,10 +13,10 @@ function Game(options) {
   this.started = options.started;
   this.frameID = options.frameID;
 
-  // this.box = options.box;
-  // this.boxPos = options.boxPos;
-  // this.boxLastPos = options.boxLastPos;
-  // this.boxVelocity = options.boxVelocity;
+  this.box = options.box;
+  this.boxPos = options.boxPos;
+  this.boxLastPos = options.boxLastPos;
+  this.boxVelocity = options.boxVelocity;
 
   this.rows = options.rows;
   this.columns = options.columns;
@@ -32,9 +32,26 @@ function Game(options) {
   this.rotateLeft = false;
   this.rotateRight = false;
 
+  this.width = options.width;
+  this.height = options.height;
+  this.offset = {
+    row: options.offsetRow,
+    column: options.offsetColumn
+  };
+  this.initialRegion = {
+    row: options.initialRegionRow,
+    column: options.initialRegionColumn
+  };
+
 }
 
 Game.prototype.update = function () {
+
+  if(this.pieceGenerator.actualPiece().contact)
+  {
+    this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions});
+  }
+
   this.movementCount++;
   this.rotateCount++;
   this.assignControlKeys();
@@ -49,18 +66,17 @@ Game.prototype.update = function () {
     this.rotateCount=0;
   }
 
-
-    // this.boxLastPos = this.boxPos;
-    // this.boxPos += this.boxVelocity * this.delta;
-    // // Switch directions if we go too far
-    // if (this.boxPos >= this.limit || this.boxPos <= 0) this.boxVelocity = -this.boxVelocity;
+    this.boxLastPos = this.boxPos;
+    this.boxPos += this.boxVelocity * this.delta;
+    // Switch directions if we go too far
+    if (this.boxPos >= this.limit || this.boxPos <= 0) this.boxVelocity = -this.boxVelocity;
 };
 
 
 Game.prototype.draw = function(interp) {
-    // this.box.style.left = (this.boxLastPos + (this.boxPos - this.boxLastPos) * interp) + 'px';
+    this.box.style.left = (this.boxLastPos + (this.boxPos - this.boxLastPos) * interp) + 'px';
     this.fpsDisplay.textContent = Math.round(this.fps) + ' FPS';
-    this.pieceGenerator.clearPieces();
+    // this.pieceGenerator.clearPieces();
     this.pieceGenerator.drawPieces();
 };
 
@@ -91,8 +107,8 @@ Game.prototype.startGame = function() {
     if (!this.started) {
         this.started = true;
         this.generateRegions();
-        //console.log("createPiece");
-        this.pieceGenerator.generatePiece();
+        //console.log("this.regions",this.regions);
+        this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions});
         this.frameID = requestAnimationFrame(function(timestamp) {
             this.draw(1);
             this.running = true;
@@ -148,6 +164,8 @@ Game.prototype.mainLoop=function(timestamp) {
 Game.prototype.generateRegions = function () {
   this.cellWidth = this.width / this.columns;
   this.cellHeight = this.height / this.rows;
+  this.levelLeft = this.offset.column;
+  this.levelTop = this.offset.row + this.height;
   var region;
   for (var rowIndex = 0; rowIndex < this.rows; rowIndex++)
   {
@@ -156,9 +174,13 @@ Game.prototype.generateRegions = function () {
     for (var columnIndex = 0; columnIndex < this.columns; columnIndex++)
     {
       //console.log("columnIndex",columnIndex);
-      tempArray[columnIndex] = true;
 
-      $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex));
+      region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop - rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop - (rowIndex+1) * this.cellHeight, state: true});
+
+      tempArray[columnIndex] = region;
+      // tempArray[columnIndex] = true;
+
+      // $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex));
 
     }
     this.regions.push(tempArray);
@@ -264,17 +286,17 @@ $(document).ready(function(){
   var arrows = trackKeys(arrowCodes);// Initial values
 
   var game = new Game({
-      // box :document.getElementById('box'),
-      // boxPos : 10,
-      // boxLastPos : 10,
-      // boxVelocity : 0.08,
+      box :document.getElementById('box'),
+      boxPos : 10,
+      boxLastPos : 10,
+      boxVelocity : 0.08,
       fpsDisplay : document.getElementById('fpsDisplay'),
       limit : 300,
       lastFrameTimeMs : 0,
       maxFPS : 60,
       delta : 0,
       timestep : 1000 / 60,
-      fps : 60,
+      fps : 30,
       framesThisSecond : 0,
       lastFpsUpdate : 0,
       running : false,
@@ -282,7 +304,13 @@ $(document).ready(function(){
       frameID : 0,
       rows: 50,
       columns: 50,
-      keys: arrows
+      keys: arrows,
+      width: 640,
+      height: 480,
+      offsetRow: 20,
+      offsetColumn: 20,
+      initialRegionRow: 25,
+      initialRegionColumn: 25,
   });
 
 

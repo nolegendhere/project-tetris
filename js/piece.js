@@ -1,13 +1,24 @@
-function Piece(){
+function Piece(options){
   //this.direction ='right';
+
+
+  this.initialRegion = {
+      row: options.initialRegionRow,
+      column: options.initialRegionColumn
+  };
+
+  this.regions = options.regions;
+  console.log(this.regions);
+
   this.body = [
 
-    {row:3, column:0, rotationPoint: false},
-    {row:2, column:0, rotationPoint: false},
-    {row:1, column:0, rotationPoint: true},
-    {row:1, column:1, rotationPoint: false},
+    {row:3, column:0, rotationPoint: false, selector: "", position: {row: this.regions[3][0].center.row, column: this.regions[3][0].center.column}},
+    {row:2, column:0, rotationPoint: false, selector: "", position: {row: this.regions[2][0].center.row, column: this.regions[2][0].center.column}},
+    {row:1, column:0, rotationPoint: true, selector: "", position: {row: this.regions[1][0].center.row, column: this.regions[1][0].center.column}},
+    {row:1, column:1, rotationPoint: false, selector: "", position: {row: this.regions[1][1].center.row, column: this.regions[1][1].center.column}},
 
   ];
+
 
   this.rotationPoint = 2;
   this.rotationMatrixLeft = [[0,-1],[1,0]];
@@ -18,16 +29,18 @@ function Piece(){
 
 //Draw the piece with divs
 Piece.prototype.drawPiece = function () {
-  this.body.forEach(function(position){
-    var selector ='[data-row='+position.row+'][data-column='+ position.column +']';
-    $(selector).addClass('piece');
+  console.log("entra1");
+  console.log("this.body",this.body);
+  this.body.forEach(function(element){
+    $(element.selector).css({top: element.position.row.toString()+'px', left: element.position.column.toString()+'px'});
   });
+
 };
 
 //Clear the piece of the divs
-Piece.prototype.clearPiece = function () {
-  $('.piece').removeClass('piece');
-};
+// Piece.prototype.clearPiece = function () {
+//   $('.piece').removeClass('piece');
+// };
 
 //TO-DO: move automatically piece down; ; without collisions between pieces
 Piece.prototype.moveDown = function (maxRows,maxColumns) {
@@ -36,13 +49,13 @@ Piece.prototype.moveDown = function (maxRows,maxColumns) {
     var tempRow;
     var tempArray=[];
 
-    this.body.forEach(function(position){
+    this.body.forEach(function(element){
       if(!this.contact)
       {
-        tempRow = position.row;
+        tempRow = element.row;
         tempRow++;
 
-        tempArray.push({row: tempRow , column: position.column, rotationPoint: position.rotationPoint });
+        tempArray.push({row: tempRow , column: element.column , rotationPoint: element.rotationPoint, selector: element.selector, position: {row: this.regions[tempRow][element.column].row , column: this.regions[tempRow][element.column].column }});
 
         this.collisionTestmoveDown(maxRows,tempRow);
       }
@@ -62,13 +75,13 @@ Piece.prototype.goLeft = function (maxColumns) {
     var tempColumn;
     var tempArray=[];
     var lateralCollision = false;
-    this.body.forEach(function(position){
+    this.body.forEach(function(element){
       if(!lateralCollision)
       {
-        tempColumn = position.column;
+        tempColumn = element.column;
         tempColumn--;
 
-        tempArray.push({row: position.row , column: tempColumn, rotationPoint: position.rotationPoint });
+        tempArray.push({row: element.row , column: tempColumn, rotationPoint: element.rotationPoint, selector: element.selector, position: {row: this.regions[element.row][tempColumn].row , column: this.position.regions[element.row][tempColumn].column }});
 
         lateralCollision = this.collisionTestLaterals(maxColumns,tempColumn);
       }
@@ -92,10 +105,10 @@ Piece.prototype.goRight = function (maxColumns) {
     this.body.forEach(function(position){
       if(!lateralCollision)
       {
-        tempColumn = position.column;
+        tempColumn = element.column;
         tempColumn++;
 
-        tempArray.push({row: position.row , column: tempColumn, rotationPoint: position.rotationPoint });
+        tempArray.push({row: element.row , column: tempColumn, rotationPoint: element.rotationPoint, selector: element.selector, position: {row: this.regions[element.row][tempColumn].row , column: this.regions[element.row][tempColumn].column }});
 
         lateralCollision = this.collisionTestLaterals(maxColumns,tempColumn);
       }
@@ -139,8 +152,8 @@ Piece.prototype.collisionTestLaterals = function (maxColumns,column) {
 //Define rotationPoint;
 Piece.prototype.defineRotationPoint = function () {
 
-  this.body.forEach(function(position, index){
-    if(position.rotationPoint)
+  this.body.forEach(function(element, index){
+    if(element.rotationPoint)
     {
       this.rotationPoint = index;
     }
@@ -161,12 +174,12 @@ Piece.prototype.rotatePieceLeft = function (maxRows, maxColumns) {
 
     var lateralCollision = false;
 
-    this.body.forEach(function(position){
+    this.body.forEach(function(element){
       if(!lateralCollision && !this.contact)
       {
-        tempRow = position.row - this.body[this.rotationPoint].row;
+        tempRow = element.row - this.body[this.rotationPoint].row;
 
-        tempColumn = position.column  - this.body[this.rotationPoint].column;
+        tempColumn = element.column - this.body[this.rotationPoint].column;
 
         tempRow2 = this.rotationMatrixLeft[0][0] * tempRow + this.rotationMatrixLeft[0][1] * tempColumn;
 
@@ -176,7 +189,7 @@ Piece.prototype.rotatePieceLeft = function (maxRows, maxColumns) {
 
         tempColumn = tempColumn2 + this.body[this.rotationPoint].column;
 
-        tempArray.push({row: tempRow , column: tempColumn, rotationPoint: position.rotationPoint });
+        tempArray.push({row:tempRow , column: tempColumn, rotationPoint: element.rotationPoint, selector: element.selector, position: {row: this.regions[tempRow][tempColumn].row , column: this.regions[tempRow][tempColumn].column }});
 
         this.collisionTestmoveDown(maxRows,tempRow);
         lateralCollision=this.collisionTestLaterals(maxColumns,tempColumn);
@@ -204,12 +217,12 @@ Piece.prototype.rotatePieceRight = function (maxRows, maxColumns) {
 
     var lateralCollision = false;
 
-    this.body.forEach(function(position){
+    this.body.forEach(function(element){
       if(!lateralCollision && !this.contact)
       {
-        tempRow = position.row - this.body[this.rotationPoint].row;
+        tempRow = element.row - this.body[this.rotationPoint].row;
 
-        tempColumn = position.column  - this.body[this.rotationPoint].column;
+        tempColumn = element.column  - this.body[this.rotationPoint].column;
 
         tempRow2 = this.rotationMatrixRight[0][0] * tempRow + this.rotationMatrixRight[0][1] * tempColumn;
 
@@ -219,7 +232,7 @@ Piece.prototype.rotatePieceRight = function (maxRows, maxColumns) {
 
         tempColumn = tempColumn2 + this.body[this.rotationPoint].column;
 
-        tempArray.push({row: tempRow , column: tempColumn, rotationPoint: position.rotationPoint });
+        tempArray.push({row: tempRow , column: tempColumn, rotationPoint: element.rotationPoint, selector: element.selector, position: {row: this.regions[tempRow][tempColumn].row , column: this.regions[tempRow][tempColumn].column }});
 
         this.collisionTestmoveDown(maxRows, tempRow);
         lateralCollision=this.collisionTestLaterals(maxColumns,tempColumn);

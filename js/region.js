@@ -4,6 +4,7 @@ function Region(options){
     this.right = options.right;
     this.top = options.top;
     this.bottom = options.bottom;
+    this.state = options.state;
 
     this.width = Math.abs(this.left - this.right);
     this.height = Math.abs(this.top - this.bottom);
@@ -15,6 +16,6 @@ function Region(options){
     console.log("this",this);
   }
 
-  Region.prototype.drawRegion = function () {
-
-  };
+  // Region.prototype.drawRegion = function () {
+  //
+  // };
