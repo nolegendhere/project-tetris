@@ -132,9 +132,7 @@ Game2.prototype.generateRegions = function () {
     for (var columnIndex = 0; columnIndex < this.columns; columnIndex++)
     {
       console.log("columnIndex",columnIndex);
-      region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop - rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth, bottom: this.levelTop - (rowIndex+1) * this.cellHeight});
-
-      tempArray.push(region);
+      tempArray[columnIndex] = 0;
 
       $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex));
 
@@ -192,5 +190,5 @@ $(document).ready(function(){
 
 
   game2.startGame();
-  //console.log(game2.regions);
+  console.log(game2.regions);
 });

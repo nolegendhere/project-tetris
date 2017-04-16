@@ -11,6 +11,8 @@ function Region(options){
       row: (this.left + this.right) / 2,
       column: (this.top + this.bottom) / 2
     };
+
+    console.log("this",this);
   }
 
   Region.prototype.drawRegion = function () {
