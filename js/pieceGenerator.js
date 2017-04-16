@@ -13,10 +13,15 @@ PieceGenerator.prototype.generatePiece = function (options) {
   this.generatedPieces.push(pieceGenerated);
   console.log("generate");
 
-  for (var i = 0; i < pieceGenerated.length; i++)
+  for (var i = 0; i < pieceGenerated.body.length; i++)
   {
-      $('.container').append($('<div>').addClass('cell piece index'+i.toString()+"'").css({position: 'absolute', top: pieceGenerated.body[i].position.row.toString()+'px', left: pieceGenerated.body[i].position.column.toString()+'px'}));
-      pieceGenerated.body[i].selector =   $('.index'+i.toString()+"'");
+      // $('.container').append($('<div>').addClass('cell piece index'+i.toString()+"'").css({position: 'absolute', top: pieceGenerated.body[i].position.row.toString()+'px', left: pieceGenerated.body[i].position.column.toString()+'px'}));
+      // pieceGenerated.body[i].selector =   $('.index'+i.toString()+"'");
+      console.log("i",i);
+      $('.container').append($('<div>').addClass('cell piece').attr('index', i.toString()).css({position: 'absolute', top: pieceGenerated.body[i].position.row.toString()+'px', left: pieceGenerated.body[i].position.column.toString()+'px'}));
+      var selector ='[index='+i.toString()+']';
+      pieceGenerated.body[i].selector =   $(selector);
+
   }
 
 };

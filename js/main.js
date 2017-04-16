@@ -46,7 +46,7 @@ function Game(options) {
 }
 
 Game.prototype.update = function () {
-
+  console.log("entra update");
   if(this.pieceGenerator.actualPiece().contact)
   {
     this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions});
@@ -58,6 +58,7 @@ Game.prototype.update = function () {
 
   if(this.movementCount==this.movementCountLength)
   {
+    console.log("moveDown from update");
     this.pieceGenerator.actualPiece().moveDown(this.rows,this.columns);
     this.movementCount=0;
   }
@@ -66,15 +67,15 @@ Game.prototype.update = function () {
     this.rotateCount=0;
   }
 
-    this.boxLastPos = this.boxPos;
-    this.boxPos += this.boxVelocity * this.delta;
-    // Switch directions if we go too far
-    if (this.boxPos >= this.limit || this.boxPos <= 0) this.boxVelocity = -this.boxVelocity;
+    // this.boxLastPos = this.boxPos;
+    // this.boxPos += this.boxVelocity * this.delta;
+    // // Switch directions if we go too far
+    // if (this.boxPos >= this.limit || this.boxPos <= 0) this.boxVelocity = -this.boxVelocity;
 };
 
 
 Game.prototype.draw = function(interp) {
-    this.box.style.left = (this.boxLastPos + (this.boxPos - this.boxLastPos) * interp) + 'px';
+    // this.box.style.left = (this.boxLastPos + (this.boxPos - this.boxLastPos) * interp) + 'px';
     this.fpsDisplay.textContent = Math.round(this.fps) + ' FPS';
     // this.pieceGenerator.clearPieces();
     this.pieceGenerator.drawPieces();
@@ -107,8 +108,9 @@ Game.prototype.startGame = function() {
     if (!this.started) {
         this.started = true;
         this.generateRegions();
+        // $('.container').append($('<div>').addClass('cell'));
         //console.log("this.regions",this.regions);
-        this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions});
+        this.pieceGenerator.generatePiece({initialRegionRow:this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions});
         this.frameID = requestAnimationFrame(function(timestamp) {
             this.draw(1);
             this.running = true;
@@ -165,7 +167,7 @@ Game.prototype.generateRegions = function () {
   this.cellWidth = this.width / this.columns;
   this.cellHeight = this.height / this.rows;
   this.levelLeft = this.offset.column;
-  this.levelTop = this.offset.row + this.height;
+  this.levelTop = this.offset.row;
   var region;
   for (var rowIndex = 0; rowIndex < this.rows; rowIndex++)
   {
@@ -175,7 +177,7 @@ Game.prototype.generateRegions = function () {
     {
       //console.log("columnIndex",columnIndex);
 
-      region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop - rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop - (rowIndex+1) * this.cellHeight, state: true});
+      region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop + rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop + (rowIndex+1) * this.cellHeight, state: true});
 
       tempArray[columnIndex] = region;
       // tempArray[columnIndex] = true;
@@ -315,5 +317,5 @@ $(document).ready(function(){
 
 
   game.startGame();
-  console.log(game.regions);
+  console.log("game.regions from document jquery",game.regions);
 });
