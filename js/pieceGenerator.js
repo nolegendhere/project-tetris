@@ -33,7 +33,6 @@ PieceGenerator.prototype.actualPiece = function(){
 
 //Draw all the pieces with the divs calling their function to do it
 PieceGenerator.prototype.drawPieces = function (){
-
   this.generatedPieces.forEach(function(piece){
     piece.drawPiece();
   });

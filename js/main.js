@@ -24,9 +24,8 @@ function Game(options) {
   this.limitColumnLeft = options.limitColumnLeft;
   this.limitColumnRight = options.limitColumnRight; //not used yet
   this.regions = [];
+  this.rowsToComplete = [];
   this.keys = options.keys;
-
-
 
   this.directionLeft = false;
   this.directionRight = false;
@@ -62,17 +61,16 @@ Game.prototype.update = function () {
   if(this.pieceGenerator.actualPiece().contact)
   {
     this.pieceGenerator.actualPiece().updateRegions();
-    this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions});
+    this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight, rowsToComplete: this.rowsToComplete });
   }
 
   this.movementCount++;
   this.rotateCount++;
   this.assignControlKeys();
-  console.log("this.rotateCount",this.rotateCount);
   if(this.movementCount==this.movementCountLength)
   {
     //console.log("moveDown from update");
-    this.pieceGenerator.actualPiece().moveDown(this.limitRowBottom);
+    this.pieceGenerator.actualPiece().moveDown();
     this.movementCount=0;
   }
 
@@ -119,7 +117,7 @@ Game.prototype.startGame = function() {
         this.generateRegions();
         // $('.container').append($('<div>').addClass('cell'));
         //console.log("this.regions",this.regions);
-        this.pieceGenerator.generatePiece({initialRegionRow:this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions});
+        this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight, rowsToComplete: this.rowsToComplete });
         this.frameID = requestAnimationFrame(function(timestamp) {
             this.draw(1);
             this.running = true;
@@ -180,20 +178,23 @@ Game.prototype.generateRegions = function () {
   this.levelLeft = this.offset.column;
   this.levelTop = this.offset.row;
   var region;
-  for (var rowIndex = 0; rowIndex < this.rows; rowIndex++)
+  for (var rowIndex = 0; rowIndex < this.limitRowBottom; rowIndex++)
   {
     var tempArray=[];
+    // this.rowsToComplete.push({amount: 0 })
     //console.log("rowIndex",rowIndex);
-    for (var columnIndex = 0; columnIndex < this.columns; columnIndex++)
+      this.rowsToComplete.push(0);
+
+    for (var columnIndex = 0; columnIndex < this.limitColumnRight; columnIndex++)
     {
       //console.log("columnIndex",columnIndex);
 
-      region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop + rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop + (rowIndex+1) * this.cellHeight, state: true});
+      region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop + rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop + (rowIndex+1) * this.cellHeight, state: true, color: 'black'});
 
       tempArray[columnIndex] = region;
       // tempArray[columnIndex] = true;
 
-      // $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex));
+      $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex).css({backgroundColor: 'black' , position: 'absolute', top: region.center.row.toString()+'px', left: region.center.column.toString()+'px'}));
 
     }
     this.regions.push(tempArray);
@@ -213,7 +214,7 @@ Game.prototype.assignControlKeys = function () {
       this.inputResponseRotateLeft = 0;
 
       this.pieceGenerator.actualPiece().defineRotationPoint();
-      this.pieceGenerator.actualPiece().rotatePieceLeft(this.limitRowBottom, this.limitColumnRight);
+      this.pieceGenerator.actualPiece().rotatePieceLeft();
     }
     else if(this.keys.turnLeft && this.inputResponseRotateLeft===0)
     {
@@ -235,7 +236,7 @@ Game.prototype.assignControlKeys = function () {
       this.inputResponseRotateRight = 0;
 
       this.pieceGenerator.actualPiece().defineRotationPoint();
-      this.pieceGenerator.actualPiece().rotatePieceRight(this.limitRowBottom, this.limitColumnRight);
+      this.pieceGenerator.actualPiece().rotatePieceRight();
     }
     else if(this.keys.turnRight && this.inputResponseRotateRight===0)
     {
@@ -253,7 +254,7 @@ Game.prototype.assignControlKeys = function () {
       //Left
       this.directionLeft = false;
       this.inputResponseLeft = 0;
-      this.pieceGenerator.actualPiece().goLeft(this.limitColumnRight);
+      this.pieceGenerator.actualPiece().goLeft();
     }
     else if(this.keys.left && this.inputResponseLeft===0)
     {
@@ -272,7 +273,7 @@ Game.prototype.assignControlKeys = function () {
       //Right
       this.directionRight = false;
       this.inputResponseRight = 0;
-      this.pieceGenerator.actualPiece().goRight(this.limitColumnRight);
+      this.pieceGenerator.actualPiece().goRight();
     }
     else if(this.keys.right && this.inputResponseRight===0)
     {

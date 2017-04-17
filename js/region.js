@@ -5,6 +5,7 @@ function Region(options){
     this.top = options.top;
     this.bottom = options.bottom;
     this.state = options.state;
+    this.regionColor = options.regionColor;
 
     this.width = Math.abs(this.left - this.right);
     this.height = Math.abs(this.top - this.bottom);
