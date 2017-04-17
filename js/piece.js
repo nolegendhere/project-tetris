@@ -15,6 +15,9 @@ function Piece(options, numberOfPieces,generatedPieces ){
   this.numberOfPieces = numberOfPieces;
   this.generatedPieces = generatedPieces;
 
+  this.rowsToDisplace = 0;
+  this.rowsToErase = 0;
+
   this.listOfColors = [
     'yellow','red','blue','grey','purple','orange','green'
   ];
@@ -57,7 +60,7 @@ function Piece(options, numberOfPieces,generatedPieces ){
     [
       {row:this.initialRegion.row-1, column:this.initialRegion.column+1, rotationPoint: false, selector: "", erase: false, erased:false, displacement: 0, position: {row: this.regions[this.initialRegion.row-1][this.initialRegion.column+1].center.row, column: this.regions[this.initialRegion.row-1][this.initialRegion.column+1].center.column}},
 
-      {row:this.initialRegion.row, column:this.initialRegion.column+1, rotationPoint: false, selector: "", erase: false, erased:false, displacemente: 0, position: {row: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.column}},
+      {row:this.initialRegion.row, column:this.initialRegion.column+1, rotationPoint: false, selector: "", erase: false, erased:false, displacement: 0, position: {row: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.column}},
 
       {row:this.initialRegion.row, column:this.initialRegion.column-1, rotationPoint: false, selector: "", erase: false, erased:false, displacement: 0, position: {row: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.column}},
 
@@ -358,6 +361,12 @@ Piece.prototype.drawPiece = function () {
 
 Piece.prototype.updateRegions = function (){
   //console.log("this.regions",this.regions);
+
+  for(var i=this.rowsToComplete.length-1; i>=0;i--)
+  {
+    this.rowsToComplete[i]=0;
+  }
+
   this.body.forEach(function(element){
     //console.log("this.regions[element.row][element.column]",this.regions[element.row][element.column]);
     this.regions[element.row][element.column].state = false;
@@ -365,10 +374,21 @@ Piece.prototype.updateRegions = function (){
 
     //$(element.selector).remove();
 
-    this.rowsToComplete[element.row]++;
+    //this.rowsToComplete[element.row]++;
 
   }.bind(this));
   console.log("this.regions from updateRegions",this.regions);
+
+  for(var j=0; j<this.generatedPieces.length;j++)
+  {
+    for(var k=0; k<this.generatedPieces[j].body.length;k++)
+    {
+      if(!this.generatedPieces[j].body[k].erased)
+      {
+        this.rowsToComplete[this.generatedPieces[j].body[k].row]++;
+      }
+    }
+  }
 
   //console.log()
   for(var i=this.rowsToComplete.length-1; i>=0;i--)
@@ -376,12 +396,15 @@ Piece.prototype.updateRegions = function (){
     if(this.rowsToComplete[i]===this.limitColumnRight)
     {
       console.log("HIIIIIIIIIII");
-      for(var j=0; i<this.generatedPieces.length;i++)
+      console.log("this.generatedPieces.length",this.generatedPieces.length);
+      for(var j=0; j<this.generatedPieces.length;j++)
       {
         for(var k=0; k<this.generatedPieces[j].body.length;k++)
         {
+          console.log("this.generatedPieces[j].body[k].erased",this.generatedPieces[j].body[k].erased);
           if(!this.generatedPieces[j].body[k].erased)
           {
+
             if(this.generatedPieces[j].body[k].row === i)
             {
               this.generatedPieces[j].body[k].erase = true;
@@ -390,51 +413,69 @@ Piece.prototype.updateRegions = function (){
             else if(this.generatedPieces[j].body[k].row<i)
             {
               this.generatedPieces[j].body[k].displacement++;
-              console.log("displacement");
+              console.log("displacement", this.generatedPieces[j].body[k].displacement);
             }
           }
         }
       }
-
-      // this.generatedPieces.forEach(function(piece){
-      //   piece.body.forEach(function(block){
-      //     block.row++;
-      //     $(block.selector).css({top: block.position.row.toString()+'px', left: block.position.column.toString()+'px'});
-      //   }.bind(this));
-      // }.bind(this));
     }
   }
 
-  for(var j=0; i<this.generatedPieces.length;i++)
+  for(var j=0; j<this.generatedPieces.length;j++)
+  {
+    console.log("piece " + j +" this.generatedPieces[j].body.length"+this.generatedPieces[j].body.length);
+    for(var k=0; k<this.generatedPieces[j].body.length;k++)
+    {
+      if(!this.generatedPieces[j].body[k].erased)
+      {
+        console.log("About to insepct this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+        console.log("About to insepct this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+        if(this.generatedPieces[j].body[k].erase === true)
+        {
+          console.log("erase j",j);
+          this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
+          this.generatedPieces[j].body[k].erased = true;
+          console.log("this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+          console.log("this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+          $(this.generatedPieces[j].body[k].selector).remove();
+        }
+        else if(this.generatedPieces[j].body[k].displacement>0)
+        {
+          console.log("displace j",j);
+          this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
+          console.log("before this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+          console.log("before this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+          this.generatedPieces[j].body[k].row+=this.generatedPieces[j].body[k].displacement;
+          console.log("after this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+          console.log("after this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+          this.generatedPieces[j].body[k].position.row = this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].center.row;
+          this.generatedPieces[j].body[k].displacement = 0;
+          var selector = this.generatedPieces[j].body[k].selector;
+          $(selector).css({top: this.generatedPieces[j].body[k].position.row.toString()+'px', left: this.generatedPieces[j].body[k].position.column.toString()+'px'});
+        }
+      }
+    }
+  }
+
+  for(var j=0; j<this.generatedPieces.length;j++)
   {
     for(var k=0; k<this.generatedPieces[j].body.length;k++)
     {
       if(!this.generatedPieces[j].body[k].erased)
       {
-        if(this.generatedPieces[j].body[k].erase === true)
-        {
-          this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column] = true;
-          $(this.generatedPieces[j].body[k].selector).remove();
-        }
-        else if(this.generatedPieces[j].body[k].displacement>0)
-        {
-          this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column] = true;
-          this.generatedPieces[j].body[k].row+=this.generatedPieces[j].body[k].displacement;
-          this.generatedPieces[j].body[k].displacement = 0;
-          var selector = this.generatedPieces[j].body[k].selector;
-          $(selector).css({top: this.generatedPieces[j].body[k].position.row.toString()+'px', left: this.generatedPieces[j].body[k].position.column.toString()+'px'});
-
-          this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column] = false;
-        }
+        this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = false;
       }
     }
   }
+
+  console.log("this.regions from updateRegions after",this.regions);
 
 };
 
 Piece.prototype.chooseBody = function (){
   this.numberOfBlocks = 7;
   this.body = this.listOfBodies[Math.floor(Math.random()*this.numberOfBlocks)];
+  // this.body = this.listOfBodies[5];
 };
 
 Piece.prototype.chooseColor = function(){
