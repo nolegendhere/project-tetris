@@ -13,13 +13,16 @@ function Game(options) {
   this.started = options.started;
   this.frameID = options.frameID;
 
-  this.box = options.box;
-  this.boxPos = options.boxPos;
-  this.boxLastPos = options.boxLastPos;
-  this.boxVelocity = options.boxVelocity;
+  // this.box = options.box;
+  // this.boxPos = options.boxPos;
+  // this.boxLastPos = options.boxLastPos;
+  // this.boxVelocity = options.boxVelocity;
 
   this.rows = options.rows;
   this.columns = options.columns;
+  this.limitRowBottom = options.limitRowBottom;
+  this.limitColumnLeft = options.limitColumnLeft;
+  this.limitColumnRight = options.limitColumnRight; //not used yet
   this.regions = [];
   this.keys = options.keys;
 
@@ -60,7 +63,7 @@ Game.prototype.update = function () {
   if(this.movementCount==this.movementCountLength)
   {
     //console.log("moveDown from update");
-    this.pieceGenerator.actualPiece().moveDown(this.rows,this.columns);
+    this.pieceGenerator.actualPiece().moveDown(this.limitRowBottom);
     this.movementCount=0;
 
     if(this.rotateCount==this.rotateCountLength)
@@ -210,7 +213,7 @@ Game.prototype.assignControlKeys = function () {
       this.rotateLeft = false;
 
       this.pieceGenerator.actualPiece().defineRotationPoint();
-      this.pieceGenerator.actualPiece().rotatePieceLeft(this.rows, this.columns);
+      this.pieceGenerator.actualPiece().rotatePieceLeft(this.limitRowBottom, this.limitColumnRight);
     }
 
     if(this.keys.turnRight)
@@ -224,7 +227,7 @@ Game.prototype.assignControlKeys = function () {
       //TurnRight
       this.rotateRight = false;
       this.pieceGenerator.actualPiece().defineRotationPoint();
-      this.pieceGenerator.actualPiece().rotatePieceRight(this.rows, this.columns);
+      this.pieceGenerator.actualPiece().rotatePieceRight(this.limitRowBottom, this.limitColumnRight);
     }
 
     if(this.keys.left)
@@ -237,7 +240,7 @@ Game.prototype.assignControlKeys = function () {
     {
       //Left
       this.directionLeft = false;
-      this.pieceGenerator.actualPiece().goLeft(this.columns);
+      this.pieceGenerator.actualPiece().goLeft(this.limitColumnRight);
     }
 
     if(this.keys.right)
@@ -250,7 +253,7 @@ Game.prototype.assignControlKeys = function () {
     {
       //Right
       this.directionRight = false;
-      this.pieceGenerator.actualPiece().goRight(this.columns);
+      this.pieceGenerator.actualPiece().goRight(this.limitColumnRight);
     }
     //console.log("entra1");
     if(this.keys.pause)
@@ -310,13 +313,16 @@ $(document).ready(function(){
       frameID : 0,
       rows: 50,
       columns: 50,
+      limitRowBottom: 20,
+      limitColumnLeft: 0,
+      limitColumnRight: 10,
       keys: arrows,
       width: 650,
       height: 650,
       offsetRow: 20,
       offsetColumn: 20,
-      initialRegionRow: 0,
-      initialRegionColumn: 25,
+      initialRegionRow: 1,
+      initialRegionColumn: 5,
   });
 
 

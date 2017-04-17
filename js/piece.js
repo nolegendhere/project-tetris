@@ -8,22 +8,85 @@ function Piece(options){
   };
 
   this.regions = options.regions;
-  //console.log("this.regions from piece",this.regions);
 
-  this.body = [
+  this.listOfBodies = [
 
-    {row:this.initialRegion.row+2, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row+2][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row+2][this.initialRegion.column-1].center.column}},
+    [
+      {row:this.initialRegion.row-1, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row-1][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row-1][this.initialRegion.column-1].center.column}},
 
-    {row:this.initialRegion.row+1, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row+1][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row+1][this.initialRegion.column-1].center.column}},
+      {row:this.initialRegion.row-1, column:this.initialRegion.column, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row-1][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row-1][this.initialRegion.column].center.column}},
 
-    {row:this.initialRegion.row, column:this.initialRegion.column-1, rotationPoint: true, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.column}},
+      {row:this.initialRegion.row, column:this.initialRegion.column+1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.column}},
+
+      {row:this.initialRegion.row, column:this.initialRegion.column, rotationPoint: true, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column].center.column}},
+
+    ],
+
+    [
+      {row:this.initialRegion.row-1, column:this.initialRegion.column+1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row-1][this.initialRegion.column+1].center.row, column: this.regions[this.initialRegion.row-1][this.initialRegion.column+1].center.column}},
+
+      {row:this.initialRegion.row-1, column:this.initialRegion.column, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row-1][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row-1][this.initialRegion.column].center.column}},
+
+      {row:this.initialRegion.row, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.column}},
+
+      {row:this.initialRegion.row, column:this.initialRegion.column, rotationPoint: true, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column].center.column}},
+
+    ],
+
+    [
+      {row:this.initialRegion.row-1, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row-1][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row-1][this.initialRegion.column-1].center.column}},
+
+      {row:this.initialRegion.row, column:this.initialRegion.column+1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.column}},
+
+      {row:this.initialRegion.row, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.column}},
+
+      {row:this.initialRegion.row, column:this.initialRegion.column, rotationPoint: true, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column].center.column}},
+
+    ],
+
+    [
+      {row:this.initialRegion.row-1, column:this.initialRegion.column+1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row-1][this.initialRegion.column+1].center.row, column: this.regions[this.initialRegion.row-1][this.initialRegion.column+1].center.column}},
+
+      {row:this.initialRegion.row, column:this.initialRegion.column+1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.column}},
+
+      {row:this.initialRegion.row, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.column}},
+
+      {row:this.initialRegion.row, column:this.initialRegion.column, rotationPoint: true, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column].center.column}},
+
+    ],
+
+    [{row:this.initialRegion.row-1, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row-1][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row-1][this.initialRegion.column-1].center.column}},
+
+    {row:this.initialRegion.row-1, column:this.initialRegion.column, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row-1][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row-1][this.initialRegion.column].center.column}},
+
+    {row:this.initialRegion.row, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.column}},
 
     {row:this.initialRegion.row, column:this.initialRegion.column, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column].center.column}},
+  ],
 
-  ];
+  [
+    {row:this.initialRegion.row, column:this.initialRegion.column+1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.column}},
+
+    {row:this.initialRegion.row, column:this.initialRegion.column-2, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column-2].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column-2].center.column}},
+
+    {row:this.initialRegion.row, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.column}},
+
+    {row:this.initialRegion.row, column:this.initialRegion.column, rotationPoint: true, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column].center.column}},
+  ],
+
+  [
+    {row:this.initialRegion.row-1, column:this.initialRegion.column, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row-1][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row-1][this.initialRegion.column].center.column}},
+
+    {row:this.initialRegion.row, column:this.initialRegion.column+1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column+1].center.column}},
+
+    {row:this.initialRegion.row, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.column}},
+
+    {row:this.initialRegion.row, column:this.initialRegion.column, rotationPoint: true, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column].center.column}},
+  ]
+];
 
 
-  this.rotationPoint = 2;
+  this.rotationPoint = -1;
   this.rotationMatrixLeft = [[0,-1],[1,0]];
   this.rotationMatrixRight = [[0,1],[-1,0]];
 
@@ -49,7 +112,7 @@ Piece.prototype.drawPiece = function () {
 // };
 
 //TO-DO: move automatically piece down; ; without collisions between pieces
-Piece.prototype.moveDown = function (maxRows,maxColumns) {
+Piece.prototype.moveDown = function (maxRows) {
   if(!this.contact)
   {
     var tempRow;
@@ -191,7 +254,7 @@ Piece.prototype.defineRotationPoint = function () {
 //Rotate left the piece, if it can be rotatet looking at maxColumns
 Piece.prototype.rotatePieceLeft = function (maxRows, maxColumns) {
 
-  if(!this.contact)
+  if(!this.contact && this.rotationPoint!==-1)
   {
     var tempArray = [];
     var tempRow;
@@ -237,7 +300,7 @@ Piece.prototype.rotatePieceLeft = function (maxRows, maxColumns) {
 
 //Rotate right the piece, if it can be rotatet looking at maxColumns
 Piece.prototype.rotatePieceRight = function (maxRows, maxColumns) {
-  if(!this.contact)
+  if(!this.contact && this.rotationPoint!==-1)
   {
     var tempArray = [];
     var tempRow;
@@ -282,12 +345,15 @@ Piece.prototype.rotatePieceRight = function (maxRows, maxColumns) {
 
 };
 
-
 Piece.prototype.updateRegions = function (){
   console.log("this.regions",this.regions);
   this.body.forEach(function(element){
     console.log("this.regions[element.row][element.column]",this.regions[element.row][element.column]);
     this.regions[element.row][element.column].state = false;
   }.bind(this));
+};
 
+Piece.prototype.chooseBody = function (){
+  this.numberOfBlocks = 7;
+  this.body = this.listOfBodies[Math.floor(Math.random()*this.numberOfBlocks)];
 };

@@ -10,9 +10,7 @@ function PieceGenerator(){
 PieceGenerator.prototype.generatePiece = function (options) {
   //console.log("generatePiece");
   var pieceGenerated = new Piece(options,this.numberOfPieces);
-  this.actualPieceMoved = pieceGenerated;
-  this.generatedPieces.push(pieceGenerated);
-
+  pieceGenerated.chooseBody();
   console.log("generate");
 
   for (var i = 0; i < pieceGenerated.body.length; i++)
@@ -21,6 +19,9 @@ PieceGenerator.prototype.generatePiece = function (options) {
       var selector ='[index='+i.toString()+'][piece='+ this.numberOfPieces +']';
       pieceGenerated.body[i].selector = $(selector);
   }
+
+  this.actualPieceMoved = pieceGenerated;
+  this.generatedPieces.push(pieceGenerated);
   this.numberOfPieces++;
 
 };
