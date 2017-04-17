@@ -56,12 +56,15 @@ function Game(options) {
 
 }
 
+
 Game.prototype.update = function () {
   //console.log("entra update");
   if(this.pieceGenerator.actualPiece().contact)
   {
     this.pieceGenerator.actualPiece().updateRegions();
+    this.pieceGenerator.actualPiece().drawPiece();
     this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight, rowsToComplete: this.rowsToComplete });
+    //console.log("this.regions from update",this.regions);
   }
 
   this.movementCount++;
@@ -85,7 +88,8 @@ Game.prototype.draw = function(interp) {
     // this.box.style.left = (this.boxLastPos + (this.boxPos - this.boxLastPos) * interp) + 'px';
     this.fpsDisplay.textContent = Math.round(this.fps) + ' FPS';
     // this.pieceGenerator.clearPieces();
-    this.pieceGenerator.drawPieces();
+
+    this.pieceGenerator.drawPiece();
 };
 
 
@@ -183,18 +187,19 @@ Game.prototype.generateRegions = function () {
     var tempArray=[];
     // this.rowsToComplete.push({amount: 0 })
     //console.log("rowIndex",rowIndex);
-      this.rowsToComplete.push(0);
+    this.rowsToComplete.push(0);
 
     for (var columnIndex = 0; columnIndex < this.limitColumnRight; columnIndex++)
     {
       //console.log("columnIndex",columnIndex);
+      var selector ='[data-row='+rowIndex.toString()+'][data-column='+ columnIndex.toString() +']';
 
-      region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop + rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop + (rowIndex+1) * this.cellHeight, state: true, color: 'black'});
+      region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop + rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop + (rowIndex+1) * this.cellHeight, state: true, regionColor: 'black', selectorRegion: selector});
 
       tempArray[columnIndex] = region;
       // tempArray[columnIndex] = true;
-
-      $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex).css({backgroundColor: 'black' , position: 'absolute', top: region.center.row.toString()+'px', left: region.center.column.toString()+'px'}));
+      //console.log(region.color);
+      $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex).css({backgroundColor: region.regionColor, position: 'absolute', top: region.center.row.toString()+'px', left: region.center.column.toString()+'px'}));
 
     }
     this.regions.push(tempArray);
@@ -209,7 +214,7 @@ Game.prototype.assignControlKeys = function () {
     if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && !this.keys.turnLeft)
     {
       //TurnRight
-      console.log("rotateLeft");
+      //console.log("rotateLeft");
       this.rotateLeft = false;
       this.inputResponseRotateLeft = 0;
 
@@ -231,7 +236,7 @@ Game.prototype.assignControlKeys = function () {
     if(this.rotateRight && this.inputResponseRotateRight>=this.inputResponseRotateRight && !this.keys.turnRight)
     {
       //TurnRight
-      console.log("rotateRight");
+      //console.log("rotateRight");
       this.rotateRight = false;
       this.inputResponseRotateRight = 0;
 
@@ -299,7 +304,6 @@ Game.prototype.assignControlKeys = function () {
         this.paused = false;
     }
   }
-
 };
 
 $(document).ready(function(){
@@ -350,7 +354,7 @@ $(document).ready(function(){
       width: 650,
       height: 650,
       offsetRow: 20,
-      offsetColumn: 20,
+      offsetColumn: 100,
       initialRegionRow: 1,
       initialRegionColumn: 5,
   });

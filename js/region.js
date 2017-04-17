@@ -6,6 +6,7 @@ function Region(options){
     this.bottom = options.bottom;
     this.state = options.state;
     this.regionColor = options.regionColor;
+    this.selectorRegion = options.selectorRegion;
 
     this.width = Math.abs(this.left - this.right);
     this.height = Math.abs(this.top - this.bottom);
@@ -17,6 +18,6 @@ function Region(options){
     //console.log("this",this);
   }
 
-  // Region.prototype.drawRegion = function () {
-  //
-  // };
+  Region.prototype.drawRegion = function () {
+    $(this.selectorRegion).css({backgroundColor: this.regionColor});
+  };
