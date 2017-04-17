@@ -49,9 +49,10 @@ Game.prototype.update = function () {
   //console.log("entra update");
   if(this.pieceGenerator.actualPiece().contact)
   {
+    this.pieceGenerator.actualPiece().updateRegions();
     this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions});
   }
-
+  //this.pieceGenerator.actualPiece().updateBody();
   this.movementCount++;
   this.rotateCount++;
   this.assignControlKeys();
@@ -61,11 +62,14 @@ Game.prototype.update = function () {
     //console.log("moveDown from update");
     this.pieceGenerator.actualPiece().moveDown(this.rows,this.columns);
     this.movementCount=0;
+
+    if(this.rotateCount==this.rotateCountLength)
+    {
+      this.rotateCount=0;
+    }
   }
-  if(this.rotateCount==this.rotateCountLength)
-  {
-    this.rotateCount=0;
-  }
+  //this.pieceGenerator.actualPiece().updateBody();
+
 
     // this.boxLastPos = this.boxPos;
     // this.boxPos += this.boxVelocity * this.delta;
@@ -165,7 +169,9 @@ Game.prototype.mainLoop=function(timestamp) {
 
 Game.prototype.generateRegions = function () {
   this.cellWidth = this.width / this.columns;
+  console.log("this.cellWidth",this.cellWidth);
   this.cellHeight = this.height / this.rows;
+  console.log("this.cellHeight",this.cellHeight);
   this.levelLeft = this.offset.column;
   this.levelTop = this.offset.row;
   var region;
@@ -295,10 +301,10 @@ $(document).ready(function(){
       fpsDisplay : document.getElementById('fpsDisplay'),
       limit : 300,
       lastFrameTimeMs : 0,
-      maxFPS : 60,
+      maxFPS : 100,
       delta : 0,
-      timestep : 1000 / 60,
-      fps : 30,
+      timestep : 1000 / 100,
+      fps : 60,
       framesThisSecond : 0,
       lastFpsUpdate : 0,
       running : false,
@@ -307,8 +313,8 @@ $(document).ready(function(){
       rows: 50,
       columns: 50,
       keys: arrows,
-      width: 640,
-      height: 640,
+      width: 650,
+      height: 650,
       offsetRow: 20,
       offsetColumn: 20,
       initialRegionRow: 25,
