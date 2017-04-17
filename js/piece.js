@@ -12,14 +12,15 @@ function Piece(options){
 
   this.body = [
 
-    {row:3, column:0, rotationPoint: false, selector: "", position: {row: this.regions[3][0].center.row, column: this.regions[3][0].center.column}},
-    {row:2, column:0, rotationPoint: false, selector: "", position: {row: this.regions[2][0].center.row, column: this.regions[2][0].center.column}},
-    {row:1, column:0, rotationPoint: true, selector: "", position: {row: this.regions[1][0].center.row, column: this.regions[1][0].center.column}},
-    {row:1, column:1, rotationPoint: false, selector: "", position: {row: this.regions[1][1].center.row, column: this.regions[1][1].center.column}},
+    {row:this.initialRegion.row+2, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row+2][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row+2][this.initialRegion.column-1].center.column}},
+
+    {row:this.initialRegion.row+1, column:this.initialRegion.column-1, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row+1][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row+1][this.initialRegion.column-1].center.column}},
+
+    {row:this.initialRegion.row, column:this.initialRegion.column-1, rotationPoint: true, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column-1].center.column}},
+
+    {row:this.initialRegion.row, column:this.initialRegion.column, rotationPoint: false, selector: "", position: {row: this.regions[this.initialRegion.row][this.initialRegion.column].center.row, column: this.regions[this.initialRegion.row][this.initialRegion.column].center.column}},
 
   ];
-
-  this.futureBody = [];
 
 
   this.rotationPoint = 2;
@@ -281,26 +282,6 @@ Piece.prototype.rotatePieceRight = function (maxRows, maxColumns) {
 
 };
 
-Piece.prototype.updateBody = function (){
-  var tempArray = [];
-
-  if(!this.update)
-  {
-    tempArray = this.body;
-    this.body = [];
-    this.futureBody = tempArray;
-    this.update = true;
-  }
-  else
-  {
-    tempArray = this.futureBody;
-    this.futureBody = [];
-    this.body = tempArray;
-    this.update = false;
-    console.log("this.body",this.body);
-  }
-
-};
 
 Piece.prototype.updateRegions = function (){
   console.log("this.regions",this.regions);

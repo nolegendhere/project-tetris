@@ -52,7 +52,7 @@ Game.prototype.update = function () {
     this.pieceGenerator.actualPiece().updateRegions();
     this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions});
   }
-  //this.pieceGenerator.actualPiece().updateBody();
+
   this.movementCount++;
   this.rotateCount++;
   this.assignControlKeys();
@@ -68,8 +68,6 @@ Game.prototype.update = function () {
       this.rotateCount=0;
     }
   }
-  //this.pieceGenerator.actualPiece().updateBody();
-
 
     // this.boxLastPos = this.boxPos;
     // this.boxPos += this.boxVelocity * this.delta;
@@ -317,7 +315,7 @@ $(document).ready(function(){
       height: 650,
       offsetRow: 20,
       offsetColumn: 20,
-      initialRegionRow: 25,
+      initialRegionRow: 0,
       initialRegionColumn: 25,
   });
 
