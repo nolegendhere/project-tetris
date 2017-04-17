@@ -26,14 +26,23 @@ function Game(options) {
   this.regions = [];
   this.keys = options.keys;
 
-  this.movementCount = 0;
-  this.movementCountLength = 10;
-  this.rotateCount = 0;
-  this.rotateCountLength = 20;
+
+
   this.directionLeft = false;
   this.directionRight = false;
   this.rotateLeft = false;
   this.rotateRight = false;
+
+  this.movementCount = 0;
+  this.movementCountLength = 10;
+  this.inputResponseLeft = 0;
+  this.inputResponseLeftLength = 10;
+  this.inputResponseRight = 0;
+  this.inputResponseRightLength = 10;
+  this.inputResponseRotateLeft = 0;
+  this.inputResponseRotateLeftLength = 10;
+  this.inputResponseRotateRight = 0;
+  this.inputResponseRotateRightLength = 10;
 
   this.width = options.width;
   this.height = options.height;
@@ -59,17 +68,12 @@ Game.prototype.update = function () {
   this.movementCount++;
   this.rotateCount++;
   this.assignControlKeys();
-
+  console.log("this.rotateCount",this.rotateCount);
   if(this.movementCount==this.movementCountLength)
   {
     //console.log("moveDown from update");
     this.pieceGenerator.actualPiece().moveDown(this.limitRowBottom);
     this.movementCount=0;
-
-    if(this.rotateCount==this.rotateCountLength)
-    {
-      this.rotateCount=0;
-    }
   }
 
     // this.boxLastPos = this.boxPos;
@@ -201,59 +205,84 @@ Game.prototype.generateRegions = function () {
 Game.prototype.assignControlKeys = function () {
   if(!this.paused)
   {
-    if(this.keys.turnLeft)
-    {
-      //TurnLeft
-      this.rotateLeft = true;
-    }
-
-    if(this.rotateLeft && this.rotateCount === this.rotateCountLength)
+    if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && !this.keys.turnLeft)
     {
       //TurnRight
+      console.log("rotateLeft");
       this.rotateLeft = false;
+      this.inputResponseRotateLeft = 0;
 
       this.pieceGenerator.actualPiece().defineRotationPoint();
       this.pieceGenerator.actualPiece().rotatePieceLeft(this.limitRowBottom, this.limitColumnRight);
     }
-
-    if(this.keys.turnRight)
+    else if(this.keys.turnLeft && this.inputResponseRotateLeft===0)
     {
-      //TurnRight
-      this.rotateRight = true;
+      //TurnLeft
+      this.rotateLeft = true;
+      this.inputResponseRotateLeft++;
+    }
+    else if(this.inputResponseRotateLeft>0)
+    {
+      this.inputResponseRotateLeft++;
     }
 
-    if(this.rotateRight && this.rotateCount === this.rotateCountLength)
+
+    if(this.rotateRight && this.inputResponseRotateRight>=this.inputResponseRotateRight && !this.keys.turnRight)
     {
       //TurnRight
+      console.log("rotateRight");
       this.rotateRight = false;
+      this.inputResponseRotateRight = 0;
+
       this.pieceGenerator.actualPiece().defineRotationPoint();
       this.pieceGenerator.actualPiece().rotatePieceRight(this.limitRowBottom, this.limitColumnRight);
     }
-
-    if(this.keys.left)
+    else if(this.keys.turnRight && this.inputResponseRotateRight===0)
     {
-      //Left
-      this.directionLeft = true;
+      //TurnRight
+      this.rotateRight = true;
+      this.inputResponseRotateRight++;
+    }
+    else if(this.inputResponseRotateRight>0)
+    {
+      this.inputResponseRotationRight++;
     }
 
-    if(this.directionLeft && this.movementCount === this.movementCountLength)
+    if(this.directionLeft && this.inputResponseLeft>=this.inputResponseLeftLength)
     {
       //Left
       this.directionLeft = false;
+      this.inputResponseLeft = 0;
       this.pieceGenerator.actualPiece().goLeft(this.limitColumnRight);
     }
-
-    if(this.keys.right)
+    else if(this.keys.left && this.inputResponseLeft===0)
     {
-      //Right
-      this.directionRight = true;
+      //Left
+      this.directionLeft = true;
+      this.inputResponseLeft++;
+
+    }
+    else if(this.inputResponseLeft>0)
+    {
+      this.inputResponseLeft++;
     }
 
-    if(this.directionRight && this.movementCount === this.movementCountLength)
+    if(this.directionRight  && this.inputResponseRight>=this.inputResponseRightLength)
     {
       //Right
       this.directionRight = false;
+      this.inputResponseRight = 0;
       this.pieceGenerator.actualPiece().goRight(this.limitColumnRight);
+    }
+    else if(this.keys.right && this.inputResponseRight===0)
+    {
+      //Right
+      this.directionRight = true;
+      this.inputResponseRight++;
+    }
+    else if(this.inputResponseRight>0)
+    {
+      this.inputResponseRight++;
     }
     //console.log("entra1");
     if(this.keys.pause)
@@ -313,7 +342,7 @@ $(document).ready(function(){
       frameID : 0,
       rows: 50,
       columns: 50,
-      limitRowBottom: 20,
+      limitRowBottom: 40,
       limitColumnLeft: 0,
       limitColumnRight: 10,
       keys: arrows,
