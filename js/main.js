@@ -54,6 +54,9 @@ function Game(options) {
     column: options.initialRegionColumn
   };
 
+  this.playerNumber = options.playerNumber;
+  this.playerScore = 0;
+
 }
 
 
@@ -61,14 +64,13 @@ Game.prototype.update = function () {
   //console.log("entra update");
   if(this.pieceGenerator.actualPiece().contact)
   {
-    this.pieceGenerator.actualPiece().updateRegions();
+    this.playerScore+=this.pieceGenerator.actualPiece().updateRegions();
     this.pieceGenerator.actualPiece().drawPiece();
     this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight, rowsToComplete: this.rowsToComplete });
     //console.log("this.regions from update",this.regions);
   }
 
   this.movementCount++;
-  this.rotateCount++;
   this.assignControlKeys();
   if(this.movementCount==this.movementCountLength)
   {
@@ -182,6 +184,9 @@ Game.prototype.generateRegions = function () {
   this.levelLeft = this.offset.column;
   this.levelTop = this.offset.row;
   var region;
+
+  var boardSelector ='[player='+this.playerNumber.toString()+']'; $('.container').append($('<div>').addClass('player-board').attr('player',this.playerNumber.toString()));
+
   for (var rowIndex = 0; rowIndex < this.limitRowBottom; rowIndex++)
   {
     var tempArray=[];
@@ -192,20 +197,25 @@ Game.prototype.generateRegions = function () {
     for (var columnIndex = 0; columnIndex < this.limitColumnRight; columnIndex++)
     {
       //console.log("columnIndex",columnIndex);
-      var selector ='[data-row='+rowIndex.toString()+'][data-column='+ columnIndex.toString() +']';
+      var selector ='[player-number-region='+this.playerNumber.toString()+'][data-row='+rowIndex.toString()+'][data-column='+ columnIndex.toString() +']';
 
       region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop + rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop + (rowIndex+1) * this.cellHeight, state: true, regionColor: 'black', selectorRegion: selector});
 
       tempArray[columnIndex] = region;
       // tempArray[columnIndex] = true;
       //console.log(region.color);
-      $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex).css({backgroundColor: region.regionColor, position: 'absolute', top: region.center.row.toString()+'px', left: region.center.column.toString()+'px'}));
+      // $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex).css({backgroundColor: region.regionColor, position: 'absolute', top: region.center.row.toString()+'px', left: region.center.column.toString()+'px'}));
+      $(boardSelector).append($('<div>').addClass('cell board').attr('player-number-region',this.playerNumber.toString()).attr('data-row', rowIndex).attr('data-column', columnIndex).css({backgroundColor: region.regionColor, position: 'absolute', top: region.center.row.toString()+'px', left: region.center.column.toString()+'px'}));
 
     }
     this.regions.push(tempArray);
   }
 
-  this.pieceGenerator = new PieceGenerator(this.regions);
+  $(boardSelector).append($('<div>').addClass('piece-generator').attr('player-number-piece-generator',this.playerNumber.toString()));
+
+  var pieceGeneratorSelector = '[player-number-piece-generator='+this.playerNumber.toString()+']';
+
+  this.pieceGenerator = new PieceGenerator(this.playerNumber,pieceGeneratorSelector);
 };
 
 Game.prototype.assignControlKeys = function () {
@@ -306,6 +316,14 @@ Game.prototype.assignControlKeys = function () {
   }
 };
 
+Game.prototype.generateInPlayMenu = function (){
+
+};
+
+Game.prototype.returnResult = function () {
+
+};
+
 $(document).ready(function(){
 
   var arrowCodes  = {190: "turnLeft", 189: "turnRight", 37: "left", 38: "up", 39: "right", 40: "down", 80: "pause"};
@@ -328,7 +346,7 @@ $(document).ready(function(){
   console.log("hi2");
   var arrows = trackKeys(arrowCodes);// Initial values
 
-  var game = new Game({
+  var game1 = new Game({
       box :document.getElementById('box'),
       boxPos : 10,
       boxLastPos : 10,
@@ -353,13 +371,46 @@ $(document).ready(function(){
       keys: arrows,
       width: 650,
       height: 650,
-      offsetRow: 20,
-      offsetColumn: 100,
+      offsetRow: 0,
+      offsetColumn: 50,
       initialRegionRow: 1,
       initialRegionColumn: 5,
+      playerNumber: 0,
   });
 
+  var game2 = new Game({
+      box :document.getElementById('box'),
+      boxPos : 10,
+      boxLastPos : 10,
+      boxVelocity : 0.08,
+      fpsDisplay : document.getElementById('fpsDisplay'),
+      limit : 300,
+      lastFrameTimeMs : 0,
+      maxFPS : 100,
+      delta : 0,
+      timestep : 1000 / 100,
+      fps : 60,
+      framesThisSecond : 0,
+      lastFpsUpdate : 0,
+      running : false,
+      started : false,
+      frameID : 0,
+      rows: 50,
+      columns: 50,
+      limitRowBottom: 40,
+      limitColumnLeft: 0,
+      limitColumnRight: 10,
+      keys: arrows,
+      width: 650,
+      height: 650,
+      offsetRow: 0,
+      offsetColumn: 50,
+      initialRegionRow: 1,
+      initialRegionColumn: 5,
+      playerNumber: 1,
+  });
 
-  game.startGame();
-  console.log("game.regions from document jquery",game.regions);
+  game1.startGame();
+  game2.startGame();
+  // console.log("game.regions from document jquery",game2.regions);
 });

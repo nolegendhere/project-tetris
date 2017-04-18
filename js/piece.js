@@ -361,6 +361,7 @@ Piece.prototype.drawPiece = function () {
 
 Piece.prototype.updateRegions = function (){
   //console.log("this.regions",this.regions);
+  var completedRows = 0;
 
   for(var i=this.rowsToComplete.length-1; i>=0;i--)
   {
@@ -395,6 +396,7 @@ Piece.prototype.updateRegions = function (){
   {
     if(this.rowsToComplete[i]===this.limitColumnRight)
     {
+      completedRows++;
       console.log("HIIIIIIIIIII");
       console.log("this.generatedPieces.length",this.generatedPieces.length);
       for(var j=0; j<this.generatedPieces.length;j++)
@@ -469,7 +471,7 @@ Piece.prototype.updateRegions = function (){
   }
 
   console.log("this.regions from updateRegions after",this.regions);
-
+  return completedRows;
 };
 
 Piece.prototype.chooseBody = function (){

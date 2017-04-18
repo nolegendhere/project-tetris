@@ -1,8 +1,10 @@
-function PieceGenerator(){
+function PieceGenerator(playerNumber,pieceGeneratorSelector){
 
   this.actualPieceMoved = undefined;
   this.generatedPieces = [];
   this.numberOfPieces = 0;
+  this.playerNumber = playerNumber;
+  this.boardSelector = pieceGeneratorSelector;
 
 }
 
@@ -16,8 +18,10 @@ PieceGenerator.prototype.generatePiece = function (options) {
 
   for (var i = 0; i < pieceGenerated.body.length; i++)
   {
-      $('.container').append($('<div>').addClass('cell piece').attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({backgroundColor: pieceGenerated.bodyColor, position: 'absolute', top: pieceGenerated.body[i].position.row.toString()+'px', left: pieceGenerated.body[i].position.column.toString()+'px'}));
-      var selector ='[index='+i.toString()+'][piece='+ this.numberOfPieces +']';
+      // $('.container').append($('<div>').addClass('cell piece').attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({backgroundColor: pieceGenerated.bodyColor, position: 'absolute', top: pieceGenerated.body[i].position.row.toString()+'px', left: pieceGenerated.body[i].position.column.toString()+'px'}));
+      $(this.boardSelector).append($('<div>').addClass('cell piece').attr('player-number-piece',this.playerNumber.toString()).attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({backgroundColor: pieceGenerated.bodyColor, position: 'absolute', top: pieceGenerated.body[i].position.row.toString()+'px', left: pieceGenerated.body[i].position.column.toString()+'px'}));
+
+      var selector ='[player-number-piece='+this.playerNumber.toString()+'][index='+i.toString()+'][piece='+ this.numberOfPieces +']';
       pieceGenerated.body[i].selector = $(selector);
   }
 

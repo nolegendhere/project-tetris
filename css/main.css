@@ -4,11 +4,31 @@
   width: 800px;
 }
 
+.player-board {
+  background-size: contain;
+  /*border: 1px solid white;*/
+  box-sizing: border-box;
+  /*float: left;*/
+  position: relative;
+  float:left;
+  height: 650px;
+  width: 200px;
+}
+
+.piece-generator {
+  background-size: contain;
+  /*border: 1px solid white;*/
+  box-sizing: border-box;
+  /*float: left;*/
+  height: 650px;
+  width: 200px;
+}
+
 .cell {
   background-size: contain;
   /*border: 1px solid white;*/
   box-sizing: border-box;
-  float: left;
+  /*float: left;*/
   height: 13px;
   width: 13px;
 }
