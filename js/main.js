@@ -12,6 +12,8 @@ Menu.prototype.generateMenu = function (){
   $('.menu-layout-start').append($('<div>').addClass('start-game'));
   $('.start-game').append($('<button>').addClass('btn').attr('id','start-button').append($('<h3>')));
   $('#start-button h3').html('START GAME');
+  $('.start-game').append($('<button>').addClass('btn').attr('id','resume-button').append($('<h3>')));
+  $('#resume-button h3').html('RESUME GAME');
 
   $('.container').append($('<div>').addClass('ingame-layout').attr('id','ingame-layout'));
 
@@ -27,23 +29,41 @@ Menu.prototype.generateMenu = function (){
   this.menuLayoutStartSelector = $('#menu-layout-start');
   this.playerLayoutSelector = $('#ingame-layout');
   this.menuLayoutRestartSelector = $('#menu-layout-restart');
+
   this.startListener = $('#start-button');
+  this.resumeListener = $('#resume-button');
   this.restartListener = $('#restart-button');
   this.goBackMenuStart = $('#go-back-menu-start-button');
 
   this.addListenerToStart();
   this.addListenerToRestart();
-  this.addListenerToRGoBackmenuStart();
+  this.addListenerToGoBackmenuStart();
+  this.addListenerToResume();
 
   $(this.menuLayoutRestartSelector).hide();
   $(this.playerLayoutSelector).hide();
+  $(this.resumeListener).hide();
+
+};
+
+Menu.prototype.addListenerToResume = function()
+{
+  $(this.resumeListener).on('click', function(){
+    $(this.menuLayoutStartSelector).hide();
+    //$(this.resumeListener).hide();
+    $(this.menuLayoutRestartSelector).show();
+    $(this.playerLayoutSelector).show();
+    this.playerOne.gamePaused = false;
+  }.bind(this));
 };
 
 
-Menu.prototype.addListenerToRGoBackmenuStart = function()
+Menu.prototype.addListenerToGoBackmenuStart = function()
 {
   $(this.goBackMenuStart).on('click', function(){
+    this.playerOne.gamePaused = true;
     $(this.menuLayoutStartSelector).show();
+    $(this.resumeListener).show();
     $(this.menuLayoutRestartSelector).hide();
     $(this.playerLayoutSelector).hide();
   }.bind(this));
@@ -94,57 +114,111 @@ Menu.prototype.addListenerToRestart = function()
     }.bind(this), 3000);
 
   }.bind(this));
-
-
-
 };
 
 Menu.prototype.addListenerToStart = function()
 {
+  this.firstTimeOnePlayer = false;
+  this.firstTimeTwoPlayers = false;
+
   $(this.startListener).on('click', function(){
 
-    $(this.menuLayoutStartSelector).hide();
+    if(!this.firstTimeOnePlayer)
+    {
+      this.firstTimeOnePlayer = true;
 
-    this.playerOne = new Game({
-        box :document.getElementById('box'),
-        boxPos : 10,
-        boxLastPos : 10,
-        boxVelocity : 0.08,
-        fpsDisplay : document.getElementById('fpsDisplay'),
-        limit : 300,
-        lastFrameTimeMs : 0,
-        maxFPS : 100,
-        delta : 0,
-        timestep : 1000 / 100,
-        fps : 60,
-        framesThisSecond : 0,
-        lastFpsUpdate : 0,
-        running : false,
-        started : false,
-        frameID : 0,
-        rows: 50,
-        columns: 50,
-        limitRowBottom: 30,
-        limitColumnLeft: 0,
-        limitColumnRight: 10,
-        keys: arrows1,
-        width: 650,
-        height: 650,
-        offsetRow: 0,
-        offsetColumn: 50,
-        initialRegionRow: 1,
-        initialRegionColumn: 5,
-        playerNumber: 0,
-    });
+      $(this.menuLayoutStartSelector).hide();
 
-    setTimeout(function(){
+      this.playerOne = new Game({
+          box :document.getElementById('box'),
+          boxPos : 10,
+          boxLastPos : 10,
+          boxVelocity : 0.08,
+          fpsDisplay : document.getElementById('fpsDisplay'),
+          limit : 300,
+          lastFrameTimeMs : 0,
+          maxFPS : 100,
+          delta : 0,
+          timestep : 1000 / 100,
+          fps : 60,
+          framesThisSecond : 0,
+          lastFpsUpdate : 0,
+          running : false,
+          started : false,
+          frameID : 0,
+          rows: 50,
+          columns: 50,
+          limitRowBottom: 30,
+          limitColumnLeft: 0,
+          limitColumnRight: 10,
+          keys: arrows1,
+          width: 650,
+          height: 650,
+          offsetRow: 0,
+          offsetColumn: 50,
+          initialRegionRow: 1,
+          initialRegionColumn: 5,
+          playerNumber: 0,
+      });
+
+      setTimeout(function(){
+        $(this.menuLayoutRestartSelector).show();
+        $(this.playerLayoutSelector).show();
+        this.playerOne.startGame();
+      }.bind(this), 3000);
+    }
+    else if(this.firstTimeOnePlayer)
+    {
+      this.playerOne.restartGame();
+
+      delete this.playerOne.pieceGenerator;
+      delete this.playerOne;
+
+      $(this.menuLayoutStartSelector).hide();
+      $(this.resumeListener).hide();
       $(this.menuLayoutRestartSelector).show();
       $(this.playerLayoutSelector).show();
-      this.playerOne.startGame();
-    }.bind(this), 3000);
 
+      this.playerOne = new Game({
+          box :document.getElementById('box'),
+          boxPos : 10,
+          boxLastPos : 10,
+          boxVelocity : 0.08,
+          fpsDisplay : document.getElementById('fpsDisplay'),
+          limit : 300,
+          lastFrameTimeMs : 0,
+          maxFPS : 100,
+          delta : 0,
+          timestep : 1000 / 100,
+          fps : 60,
+          framesThisSecond : 0,
+          lastFpsUpdate : 0,
+          running : false,
+          started : false,
+          frameID : 0,
+          rows: 50,
+          columns: 50,
+          limitRowBottom: 30,
+          limitColumnLeft: 0,
+          limitColumnRight: 10,
+          keys: arrows1,
+          width: 650,
+          height: 650,
+          offsetRow: 0,
+          offsetColumn: 50,
+          initialRegionRow: 1,
+          initialRegionColumn: 5,
+          playerNumber: 0,
+      });
+
+      setTimeout(function(){
+        this.playerOne.startGame();
+      }.bind(this), 3000);
+    }
 
   }.bind(this));
+
+
 };
 
 
