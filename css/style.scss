@@ -1,104 +1,177 @@
 .container{
   font-size: 16px;
-}
 
-.menu-layout{
-  height: 480px;
-  width: 800px;
-  box-sizing: border-box;
-  background-color: blue;
-  background-size: contain;
-  margin:0 auto;
-  margin-top: 50px;
 
-  .start-game{
-    height: 50px;
-    width: 100px;
+  .menu-layout-start{
+    height: 480px;
+    width: 800px;
     box-sizing: border-box;
-    background-color: red;
+    background-color: blue;
     background-size: contain;
-    margin: 0 auto;
+    margin:0 auto;
+    margin-top: 50px;
 
-    .btn{
-      height: 100%;
-      width: 100%;
+    .start-game{
+      height: 50px;
+      width: 100px;
       box-sizing: border-box;
-      background-color: green;
-      padding: 0;
+      background-color: red;
+      background-size: contain;
       margin: 0 auto;
 
-      h3{
-        margin: 0;
-        text-align: left;
+      .btn{
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: green;
+        padding: 0;
+        margin: 0 auto;
+
+        h3{
+          margin: 0;
+          text-align: left;
+        }
       }
     }
   }
-}
 
-.player-layout{
-
-  .player-board {
-    background-size: contain;
-    /*border: 1px solid white;*/
+  .ingame-layout{
     box-sizing: border-box;
-    /*float: left;*/
-    position: relative;
-    float:left;
+    background-color: blue;
+    background-size: contain;
+    margin:0 auto;
+    margin-top: 50px;
     height: 400px;
-    width: 200px;
+    width: 800px;
+    float:left;
 
-    .cell {
-      background-size: contain;
-      /*border: 1px solid white;*/
+    .player-layout{
       box-sizing: border-box;
-      /*float: left;*/
-      height: 13px;
-      width: 13px;
-    }
+      height: inherit;
+      width: 400px;
 
-    .piece-generator {
-      background-size: contain;
-      /*border: 1px solid white;*/
-      box-sizing: border-box;
-      /*float: left;*/
-      height: 400px;
-      width: 200px;
-
-      .cell {
+      .player-board {
         background-size: contain;
         /*border: 1px solid white;*/
         box-sizing: border-box;
         /*float: left;*/
-        height: 13px;
-        width: 13px;
+        position: relative;
+        float:left;
+        height: inherit;
+        width: 50%;
+
+        .cell {
+          background-size: contain;
+          /*border: 1px solid white;*/
+          box-sizing: border-box;
+          /*float: left;*/
+          height: 13px;
+          width: 13px;
+        }
+
+        .piece-generator {
+          background-size: contain;
+          /*border: 1px solid white;*/
+          box-sizing: border-box;
+          /*float: left;*/
+          height: inherit;
+          width: 50%;
+
+          .cell {
+            background-size: contain;
+            /*border: 1px solid white;*/
+            box-sizing: border-box;
+            /*float: left;*/
+            height: 13px;
+            width: 13px;
+          }
+        }
+      }
+
+      .player-inplaymenu {
+        background-size: contain;
+        /*border: 1px solid white;*/
+        box-sizing: border-box;
+        background-color: red;
+        /*float: left;*/
+        /*position: relative;*/
+        // float:left;
+        display: inline-block;
+        height: inherit;
+        width: 50%;
+
+        .score{
+          background-size: contain;
+          /*border: 1px solid white;*/
+          box-sizing: border-box;
+          background-color: red;
+          height: 100px;
+          width: 100%;
+          padding: 0;
+
+          p{
+            margin: 0;
+            text-align: left;
+          }
+        }
       }
     }
   }
 
-  .player-inplaymenu {
-    background-size: contain;
-    /*border: 1px solid white;*/
+  .menu-layout-restart{
+    height: 80px;
+    width: 800px;
     box-sizing: border-box;
-    background-color: red;
-    /*float: left;*/
-    /*position: relative;*/
-    float:left;
-    height: 400px;
-    width: 200px;
+    background-color: green;
+    background-size: contain;
+    margin:0 auto;
+    clear: both;
 
-    .score{
-      background-size: contain;
-      /*border: 1px solid white;*/
+    .restart-game{
+      height: 50px;
+      width: 100px;
       box-sizing: border-box;
       background-color: red;
-      height: 100px;
-      width: 100px;
-      padding: 0;
+      background-size: contain;
+      margin: 0 auto;
 
-      p{
-        margin: 0;
-        text-align: left;
+      .btn{
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: green;
+        padding: 0;
+        margin: 0 auto;
+
+        h3{
+          margin: 0;
+          text-align: left;
+        }
+      }
+    }
+
+    .go-back-menu-start  {
+      height: 50px;
+      width: 100px;
+      box-sizing: border-box;
+      background-color: red;
+      background-size: contain;
+      margin: 0 auto;
+
+      .btn{
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: green;
+        padding: 0;
+        margin: 0 auto;
+
+        h3{
+          margin: 0;
+          text-align: left;
+        }
       }
     }
   }
+
 }

@@ -5,24 +5,63 @@ function Menu(){
 
 Menu.prototype.startApp = function () {
   this.generateMenu();
-  this.addListenerToStart();
 };
 
 Menu.prototype.generateMenu = function (){
-  $('.container').append($('<div>').addClass('menu-layout').attr('id','menu-layout'));
-  $('.menu-layout').append($('<div>').addClass('start-game'));
+  $('.container').append($('<div>').addClass('menu-layout-start').attr('id','menu-layout-start'));
+  $('.menu-layout-start').append($('<div>').addClass('start-game'));
   $('.start-game').append($('<button>').addClass('btn').attr('id','start-button').append($('<h3>')));
   $('#start-button h3').html('START GAME');
 
-  this.menuLayoutSelector = $('#menu-layout');
+  $('.container').append($('<div>').addClass('ingame-layout').attr('id','ingame-layout'));
+
+
+  $('.container').append($('<div>').addClass('menu-layout-restart').attr('id','menu-layout-restart'));
+  $('.menu-layout-restart').append($('<div>').addClass('restart-game'));
+  $('.restart-game').append($('<button>').addClass('btn').attr('id','restart-button').append($('<h3>')));
+  $('#restart-button h3').html('RESTART GAME');
+  $('.menu-layout-restart').append($('<div>').addClass('go-back-menu-start'));
+  $('.go-back-menu-start').append($('<button>').addClass('btn').attr('id','go-back-menu-start-button').append($('<h3>')));
+  $('#go-back-menu-start-button h3').html('MAIN PAGE');
+
+  this.menuLayoutStartSelector = $('#menu-layout-start');
+  this.playerLayoutSelector = $('#ingame-layout');
+  this.menuLayoutRestartSelector = $('#menu-layout-restart');
   this.startListener = $('#start-button');
+  this.restartListener = $('#restart-button');
+  this.goBackMenuStart = $('#go-back-menu-start-button');
+
+  this.addListenerToStart();
+  this.addListenerToRestart();
+  this.addListenerToRGoBackmenuStart();
+
+  $(this.menuLayoutRestartSelector).hide();
+  $(this.playerLayoutSelector).hide();
+};
+
+
+Menu.prototype.addListenerToRGoBackmenuStart = function()
+{
+  $(this.goBackMenuStart).on('click', function(){
+    $(this.menuLayoutStartSelector).show();//('menu-layout');
+    $(this.menuLayoutRestartSelector).hide();
+    $(this.playerLayoutSelector).hide();
+  }.bind(this));
+};
+
+Menu.prototype.addListenerToRestart = function()
+{
+  $(this.restartListener).on('click', function(){
+
+    this.playerOne.restartGame();
+  }.bind(this));
 };
 
 Menu.prototype.addListenerToStart = function()
 {
   $(this.startListener).on('click', function(){
 
-    $(this.menuLayoutSelector).hide();//('menu-layout');
+    $(this.menuLayoutStartSelector).hide();//('menu-layout');
 
     this.playerOne = new Game({
         box :document.getElementById('box'),
@@ -43,7 +82,7 @@ Menu.prototype.addListenerToStart = function()
         frameID : 0,
         rows: 50,
         columns: 50,
-        limitRowBottom: 40,
+        limitRowBottom: 30,
         limitColumnLeft: 0,
         limitColumnRight: 10,
         keys: arrows1,
@@ -57,6 +96,8 @@ Menu.prototype.addListenerToStart = function()
     });
 
     setTimeout(function(){
+      $(this.menuLayoutRestartSelector).show();
+      $(this.playerLayoutSelector).show();
       this.playerOne.startGame();
     }.bind(this), 3000);
 

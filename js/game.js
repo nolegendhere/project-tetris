@@ -182,7 +182,7 @@ Game.prototype.generateLayout = function () {
 
   this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
 
-  $('.container').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+  $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
 
 };
 
@@ -344,4 +344,8 @@ Game.prototype.displayResult = function () {
   //console.log("entra",$(this.playerScoreSelector));
   $(this.playerScoreSelector+' p').html(this.playerScore.toString());
   //console.log("this",this);
+};
+
+Game.prototype.restartGame = function () {
+  console.log("restart");
 };
