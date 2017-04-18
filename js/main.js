@@ -43,7 +43,7 @@ Menu.prototype.generateMenu = function (){
 Menu.prototype.addListenerToRGoBackmenuStart = function()
 {
   $(this.goBackMenuStart).on('click', function(){
-    $(this.menuLayoutStartSelector).show();//('menu-layout');
+    $(this.menuLayoutStartSelector).show();
     $(this.menuLayoutRestartSelector).hide();
     $(this.playerLayoutSelector).hide();
   }.bind(this));
@@ -103,7 +103,7 @@ Menu.prototype.addListenerToStart = function()
 {
   $(this.startListener).on('click', function(){
 
-    $(this.menuLayoutStartSelector).hide();//('menu-layout');
+    $(this.menuLayoutStartSelector).hide();
 
     this.playerOne = new Game({
         box :document.getElementById('box'),

@@ -1,6 +1,4 @@
 function Piece(options, numberOfPieces,generatedPieces ){
-  //this.direction ='right';
-
 
   this.initialRegion = {
       row: options.initialRegionRow,
@@ -106,7 +104,7 @@ function Piece(options, numberOfPieces,generatedPieces ){
 }
 
 
-//TO-DO: move automatically piece down; ; without collisions between pieces
+//move automatically piece down;
 Piece.prototype.moveDown = function () {
   if(!this.contact)
   {
@@ -116,7 +114,6 @@ Piece.prototype.moveDown = function () {
     this.body.forEach(function(element){
       if(!this.contact)
       {
-        //console.log("entra en moveDown contact");
         tempRow = element.row;
         tempRow++;
 
@@ -128,17 +125,15 @@ Piece.prototype.moveDown = function () {
         }
       }
     }.bind(this));
-    //console.log("tempArray",tempArray);
+
     if(!this.contact)
     {
-      //this.body = tempArray;
-      //this.futureBody = tempArray;
       this.body = tempArray;
     }
   }
 };
 
-//TO-DO: move the piece to the left; without collisions between pieces
+//move the piece to the left
 Piece.prototype.goLeft = function () {
   if(!this.contact)
   {
@@ -162,14 +157,12 @@ Piece.prototype.goLeft = function () {
 
     if(!lateralCollision)
     {
-      //this.futureBody = tempArray;
       this.body = tempArray;
-      //console.log("this.body",this.body);
     }
   }
-
 };
-//TO-DO move the piece to the right; without collisions between pieces
+
+//move the piece to the right;
 Piece.prototype.goRight = function () {
   if(!this.contact)
   {
@@ -192,9 +185,7 @@ Piece.prototype.goRight = function () {
 
     if(!lateralCollision)
     {
-      //this.futureBody = tempArray;
       this.body = tempArray;
-      //console.log("this.body",this.body);
     }
   }
 };
@@ -286,10 +277,8 @@ Piece.prototype.rotatePieceLeft = function () {
 
     if(!lateralCollision)
     {
-      //this.futureBody = tempArray;
       this.body = tempArray;
     }
-    //console.log("tempArray",tempArray);
   }
 };
 
@@ -332,144 +321,25 @@ Piece.prototype.rotatePieceRight = function () {
 
     if(!lateralCollision)
     {
-      //this.futureBody = tempArray;
       this.body = tempArray;
     }
-    //console.log("tempArray",tempArray);
   }
-
 };
 
 //Draw the piece with divs
 Piece.prototype.drawPiece = function () {
-  //console.log("entra1");
-  //console.log("this.body",this.body);
   this.body.forEach(function(element){
-    //console.log("element.position.row",element.position.row);
-    //console.log("element.position.column",element.position.column);
       $(element.selector).css({top: element.position.row.toString()+'px', left: element.position.column.toString()+'px'});
   });
 
 };
 
-//Clear the piece of the divs
-// Piece.prototype.clearPiece = function () {
-//   $('.piece').removeClass('piece');
-// };
 
 Piece.prototype.updateRegions = function (){
-  //console.log("this.regions",this.regions);
-  // var completedRows = 0;
-  //
-  // for(var i=this.rowsToComplete.length-1; i>=0;i--)
-  // {
-  //   this.rowsToComplete[i]=0;
-  // }
-
   this.body.forEach(function(element){
-    //console.log("this.regions[element.row][element.column]",this.regions[element.row][element.column]);
     this.regions[element.row][element.column].state = false;
-    // this.regions[element.row][element.column].regionColor = this.bodyColor;
-
-    //$(element.selector).remove();
-
-    //this.rowsToComplete[element.row]++;
-
   }.bind(this));
-  // console.log("this.regions from updateRegions",this.regions);
 
-  // for(var j=0; j<this.generatedPieces.length;j++)
-  // {
-  //   for(var k=0; k<this.generatedPieces[j].body.length;k++)
-  //   {
-  //     if(!this.generatedPieces[j].body[k].erased)
-  //     {
-  //       this.rowsToComplete[this.generatedPieces[j].body[k].row]++;
-  //     }
-  //   }
-  // }
-  //
-  // //console.log()
-  // for(var i=this.rowsToComplete.length-1; i>=0;i--)
-  // {
-  //   if(this.rowsToComplete[i]===this.limitColumnRight)
-  //   {
-  //     completedRows++;
-  //     // console.log("HIIIIIIIIIII");
-  //     // console.log("this.generatedPieces.length",this.generatedPieces.length);
-  //     for(var j=0; j<this.generatedPieces.length;j++)
-  //     {
-  //       for(var k=0; k<this.generatedPieces[j].body.length;k++)
-  //       {
-  //         // console.log("this.generatedPieces[j].body[k].erased",this.generatedPieces[j].body[k].erased);
-  //         if(!this.generatedPieces[j].body[k].erased)
-  //         {
-  //
-  //           if(this.generatedPieces[j].body[k].row === i)
-  //           {
-  //             this.generatedPieces[j].body[k].erase = true;
-  //             //console.log("erase");
-  //           }
-  //           else if(this.generatedPieces[j].body[k].row<i)
-  //           {
-  //             this.generatedPieces[j].body[k].displacement++;
-  //             // console.log("displacement", this.generatedPieces[j].body[k].displacement);
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-  //
-  // for(var j=0; j<this.generatedPieces.length;j++)
-  // {
-  //   //console.log("piece " + j +" this.generatedPieces[j].body.length"+this.generatedPieces[j].body.length);
-  //   for(var k=0; k<this.generatedPieces[j].body.length;k++)
-  //   {
-  //     if(!this.generatedPieces[j].body[k].erased)
-  //     {
-  //       //console.log("About to insepct this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-  //       //console.log("About to insepct this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
-  //       if(this.generatedPieces[j].body[k].erase === true)
-  //       {
-  //         //console.log("erase j",j);
-  //         this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
-  //         this.generatedPieces[j].body[k].erased = true;
-  //         //console.log("this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-  //         //console.log("this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
-  //         $(this.generatedPieces[j].body[k].selector).remove();
-  //       }
-  //       else if(this.generatedPieces[j].body[k].displacement>0)
-  //       {
-  //         //console.log("displace j",j);
-  //         this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
-  //         //console.log("before this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-  //         //console.log("before this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
-  //         this.generatedPieces[j].body[k].row+=this.generatedPieces[j].body[k].displacement;
-  //         //console.log("after this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-  //         //console.log("after this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
-  //         this.generatedPieces[j].body[k].position.row = this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].center.row;
-  //         this.generatedPieces[j].body[k].displacement = 0;
-  //         var selector = this.generatedPieces[j].body[k].selector;
-  //         $(selector).css({top: this.generatedPieces[j].body[k].position.row.toString()+'px', left: this.generatedPieces[j].body[k].position.column.toString()+'px'});
-  //       }
-  //     }
-  //   }
-  // }
-  //
-  // for(var j=0; j<this.generatedPieces.length;j++)
-  // {
-  //   for(var k=0; k<this.generatedPieces[j].body.length;k++)
-  //   {
-  //     if(!this.generatedPieces[j].body[k].erased)
-  //     {
-  //       this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = false;
-  //     }
-  //   }
-  // }
-  //
-  // //console.log("this.regions from updateRegions after",this.regions);
-  // return completedRows;
 };
 
 Piece.prototype.chooseBody = function (){

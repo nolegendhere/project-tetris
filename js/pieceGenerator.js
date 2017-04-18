@@ -7,17 +7,16 @@ function PieceGenerator(options){
   this.boardSelector = options.pieceGeneratorSelector;
   this.rowsToComplete = options.rowsToComplete;
   this.regions = options.regions;
-  this.limitColumnRight = options.limitColumnRight
+  this.limitColumnRight = options.limitColumnRight;
 
 }
 
 //Creates one pieces at a time
 PieceGenerator.prototype.generatePiece = function (options) {
-  //console.log("generatePiece");
+
   var pieceGenerated = new Piece(options,this.numberOfPieces,this.generatedPieces);
   pieceGenerated.chooseBody();
   pieceGenerated.chooseColor();
-  //console.log("generate");
 
   for (var i = 0; i < pieceGenerated.body.length; i++)
   {
@@ -40,16 +39,12 @@ PieceGenerator.prototype.actualPiece = function(){
 
 //Draw all the pieces with the divs calling their function to do it
 PieceGenerator.prototype.drawPiece = function (){
-  // this.generatedPieces.forEach(function(piece){
-  //   piece.drawPiece();
-  // });
   this.actualPieceMoved.drawPiece();
 };
 
 PieceGenerator.prototype.updateRegions = function (){
-  //console.log("hiiiii");
-  this.actualPieceMoved.updateRegions();
 
+  this.actualPieceMoved.updateRegions();
   var completedRows = 0;
 
   for(var i=this.rowsToComplete.length-1; i>=0;i--)
@@ -68,7 +63,6 @@ PieceGenerator.prototype.updateRegions = function (){
     }
   }
 
-  //console.log()
   for(var i=this.rowsToComplete.length-1; i>=0;i--)
   {
     if(this.rowsToComplete[i]===this.limitColumnRight)
@@ -83,7 +77,6 @@ PieceGenerator.prototype.updateRegions = function (){
           // console.log("this.generatedPieces[j].body[k].erased",this.generatedPieces[j].body[k].erased);
           if(!this.generatedPieces[j].body[k].erased)
           {
-
             if(this.generatedPieces[j].body[k].row === i)
             {
               this.generatedPieces[j].body[k].erase = true;
@@ -136,28 +129,28 @@ PieceGenerator.prototype.updateRegions = function (){
     }
   }
 
+  var tempArray = [];
   for(var j=0; j<this.generatedPieces.length;j++)
   {
+    var counterBlocks = 0;
     for(var k=0; k<this.generatedPieces[j].body.length;k++)
     {
       if(!this.generatedPieces[j].body[k].erased)
       {
         this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = false;
       }
+      else {
+        counterBlocks++;
+      }
+    }
+    if(counterBlocks<this.generatedPieces[j].body.length)
+    {
+      tempArray.push(this.generatedPieces[j]);
     }
   }
+
+  this.generatedPieces = tempArray;
 
   //console.log("this.regions from updateRegions after",this.regions);
   return completedRows;
 };
-
-//Clear all the pieces of the divs calling their function to do it
-// PieceGenerator.prototype.clearPieces = function (){
-//   //console.log("this.generatedPieces.length",this.generatedPieces.length);
-//   this.generatedPieces.forEach(function(piece){
-//     piece.clearPiece();
-//   });
-// };
-
-//TO-DO: see if the pieces are makin a line with their blocks; in that case, delete the row and move down all the pieces
-//Make every row has a counter of cells filled, When it is filled, make it disappear.
