@@ -348,4 +348,5 @@ Game.prototype.displayResult = function () {
 
 Game.prototype.restartGame = function () {
   console.log("restart");
+  $(this.playerLayout).remove();
 };

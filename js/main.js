@@ -54,7 +54,48 @@ Menu.prototype.addListenerToRestart = function()
   $(this.restartListener).on('click', function(){
 
     this.playerOne.restartGame();
+    delete this.playerOne.pieceGenerator;
+    delete this.playerOne;
+    this.playerOne = new Game({
+        box :document.getElementById('box'),
+        boxPos : 10,
+        boxLastPos : 10,
+        boxVelocity : 0.08,
+        fpsDisplay : document.getElementById('fpsDisplay'),
+        limit : 300,
+        lastFrameTimeMs : 0,
+        maxFPS : 100,
+        delta : 0,
+        timestep : 1000 / 100,
+        fps : 60,
+        framesThisSecond : 0,
+        lastFpsUpdate : 0,
+        running : false,
+        started : false,
+        frameID : 0,
+        rows: 50,
+        columns: 50,
+        limitRowBottom: 30,
+        limitColumnLeft: 0,
+        limitColumnRight: 10,
+        keys: arrows1,
+        width: 650,
+        height: 650,
+        offsetRow: 0,
+        offsetColumn: 50,
+        initialRegionRow: 1,
+        initialRegionColumn: 5,
+        playerNumber: 0,
+    });
+
+    setTimeout(function(){
+      this.playerOne.startGame();
+    }.bind(this), 3000);
+
   }.bind(this));
+
+
+
 };
 
 Menu.prototype.addListenerToStart = function()
