@@ -14,7 +14,7 @@ PieceGenerator.prototype.generatePiece = function (options) {
   var pieceGenerated = new Piece(options,this.numberOfPieces,this.generatedPieces);
   pieceGenerated.chooseBody();
   pieceGenerated.chooseColor();
-  console.log("generate");
+  //console.log("generate");
 
   for (var i = 0; i < pieceGenerated.body.length; i++)
   {

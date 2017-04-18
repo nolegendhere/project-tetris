@@ -23,7 +23,6 @@ function Piece(options, numberOfPieces,generatedPieces ){
   ];
 
   this.listOfBodies = [
-
     [
       {row:this.initialRegion.row-1, column:this.initialRegion.column-1, rotationPoint: false, selector: "", erase: false, erased:false, displacement: 0, position: {row: this.regions[this.initialRegion.row-1][this.initialRegion.column-1].center.row, column: this.regions[this.initialRegion.row-1][this.initialRegion.column-1].center.column}},
 
@@ -378,7 +377,7 @@ Piece.prototype.updateRegions = function (){
     //this.rowsToComplete[element.row]++;
 
   }.bind(this));
-  console.log("this.regions from updateRegions",this.regions);
+  // console.log("this.regions from updateRegions",this.regions);
 
   for(var j=0; j<this.generatedPieces.length;j++)
   {
@@ -397,25 +396,25 @@ Piece.prototype.updateRegions = function (){
     if(this.rowsToComplete[i]===this.limitColumnRight)
     {
       completedRows++;
-      console.log("HIIIIIIIIIII");
-      console.log("this.generatedPieces.length",this.generatedPieces.length);
+      // console.log("HIIIIIIIIIII");
+      // console.log("this.generatedPieces.length",this.generatedPieces.length);
       for(var j=0; j<this.generatedPieces.length;j++)
       {
         for(var k=0; k<this.generatedPieces[j].body.length;k++)
         {
-          console.log("this.generatedPieces[j].body[k].erased",this.generatedPieces[j].body[k].erased);
+          // console.log("this.generatedPieces[j].body[k].erased",this.generatedPieces[j].body[k].erased);
           if(!this.generatedPieces[j].body[k].erased)
           {
 
             if(this.generatedPieces[j].body[k].row === i)
             {
               this.generatedPieces[j].body[k].erase = true;
-              console.log("erase");
+              //console.log("erase");
             }
             else if(this.generatedPieces[j].body[k].row<i)
             {
               this.generatedPieces[j].body[k].displacement++;
-              console.log("displacement", this.generatedPieces[j].body[k].displacement);
+              // console.log("displacement", this.generatedPieces[j].body[k].displacement);
             }
           }
         }
@@ -425,31 +424,31 @@ Piece.prototype.updateRegions = function (){
 
   for(var j=0; j<this.generatedPieces.length;j++)
   {
-    console.log("piece " + j +" this.generatedPieces[j].body.length"+this.generatedPieces[j].body.length);
+    //console.log("piece " + j +" this.generatedPieces[j].body.length"+this.generatedPieces[j].body.length);
     for(var k=0; k<this.generatedPieces[j].body.length;k++)
     {
       if(!this.generatedPieces[j].body[k].erased)
       {
-        console.log("About to insepct this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-        console.log("About to insepct this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+        //console.log("About to insepct this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+        //console.log("About to insepct this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
         if(this.generatedPieces[j].body[k].erase === true)
         {
-          console.log("erase j",j);
+          //console.log("erase j",j);
           this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
           this.generatedPieces[j].body[k].erased = true;
-          console.log("this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-          console.log("this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+          //console.log("this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+          //console.log("this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
           $(this.generatedPieces[j].body[k].selector).remove();
         }
         else if(this.generatedPieces[j].body[k].displacement>0)
         {
-          console.log("displace j",j);
+          //console.log("displace j",j);
           this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
-          console.log("before this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-          console.log("before this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+          //console.log("before this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+          //console.log("before this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
           this.generatedPieces[j].body[k].row+=this.generatedPieces[j].body[k].displacement;
-          console.log("after this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-          console.log("after this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+          //console.log("after this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+          //console.log("after this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
           this.generatedPieces[j].body[k].position.row = this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].center.row;
           this.generatedPieces[j].body[k].displacement = 0;
           var selector = this.generatedPieces[j].body[k].selector;
@@ -470,7 +469,7 @@ Piece.prototype.updateRegions = function (){
     }
   }
 
-  console.log("this.regions from updateRegions after",this.regions);
+  //console.log("this.regions from updateRegions after",this.regions);
   return completedRows;
 };
 
