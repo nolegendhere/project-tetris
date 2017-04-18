@@ -11,7 +11,6 @@ function Piece(options, numberOfPieces,generatedPieces ){
   this.limitColumnRight= options.limitColumnRight;
 
   this.regions = options.regions;
-  this.rowsToComplete = options.rowsToComplete;
   this.numberOfPieces = numberOfPieces;
   this.generatedPieces = generatedPieces;
 
@@ -360,12 +359,12 @@ Piece.prototype.drawPiece = function () {
 
 Piece.prototype.updateRegions = function (){
   //console.log("this.regions",this.regions);
-  var completedRows = 0;
-
-  for(var i=this.rowsToComplete.length-1; i>=0;i--)
-  {
-    this.rowsToComplete[i]=0;
-  }
+  // var completedRows = 0;
+  //
+  // for(var i=this.rowsToComplete.length-1; i>=0;i--)
+  // {
+  //   this.rowsToComplete[i]=0;
+  // }
 
   this.body.forEach(function(element){
     //console.log("this.regions[element.row][element.column]",this.regions[element.row][element.column]);
@@ -379,98 +378,98 @@ Piece.prototype.updateRegions = function (){
   }.bind(this));
   // console.log("this.regions from updateRegions",this.regions);
 
-  for(var j=0; j<this.generatedPieces.length;j++)
-  {
-    for(var k=0; k<this.generatedPieces[j].body.length;k++)
-    {
-      if(!this.generatedPieces[j].body[k].erased)
-      {
-        this.rowsToComplete[this.generatedPieces[j].body[k].row]++;
-      }
-    }
-  }
-
-  //console.log()
-  for(var i=this.rowsToComplete.length-1; i>=0;i--)
-  {
-    if(this.rowsToComplete[i]===this.limitColumnRight)
-    {
-      completedRows++;
-      // console.log("HIIIIIIIIIII");
-      // console.log("this.generatedPieces.length",this.generatedPieces.length);
-      for(var j=0; j<this.generatedPieces.length;j++)
-      {
-        for(var k=0; k<this.generatedPieces[j].body.length;k++)
-        {
-          // console.log("this.generatedPieces[j].body[k].erased",this.generatedPieces[j].body[k].erased);
-          if(!this.generatedPieces[j].body[k].erased)
-          {
-
-            if(this.generatedPieces[j].body[k].row === i)
-            {
-              this.generatedPieces[j].body[k].erase = true;
-              //console.log("erase");
-            }
-            else if(this.generatedPieces[j].body[k].row<i)
-            {
-              this.generatedPieces[j].body[k].displacement++;
-              // console.log("displacement", this.generatedPieces[j].body[k].displacement);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  for(var j=0; j<this.generatedPieces.length;j++)
-  {
-    //console.log("piece " + j +" this.generatedPieces[j].body.length"+this.generatedPieces[j].body.length);
-    for(var k=0; k<this.generatedPieces[j].body.length;k++)
-    {
-      if(!this.generatedPieces[j].body[k].erased)
-      {
-        //console.log("About to insepct this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-        //console.log("About to insepct this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
-        if(this.generatedPieces[j].body[k].erase === true)
-        {
-          //console.log("erase j",j);
-          this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
-          this.generatedPieces[j].body[k].erased = true;
-          //console.log("this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-          //console.log("this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
-          $(this.generatedPieces[j].body[k].selector).remove();
-        }
-        else if(this.generatedPieces[j].body[k].displacement>0)
-        {
-          //console.log("displace j",j);
-          this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
-          //console.log("before this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-          //console.log("before this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
-          this.generatedPieces[j].body[k].row+=this.generatedPieces[j].body[k].displacement;
-          //console.log("after this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-          //console.log("after this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
-          this.generatedPieces[j].body[k].position.row = this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].center.row;
-          this.generatedPieces[j].body[k].displacement = 0;
-          var selector = this.generatedPieces[j].body[k].selector;
-          $(selector).css({top: this.generatedPieces[j].body[k].position.row.toString()+'px', left: this.generatedPieces[j].body[k].position.column.toString()+'px'});
-        }
-      }
-    }
-  }
-
-  for(var j=0; j<this.generatedPieces.length;j++)
-  {
-    for(var k=0; k<this.generatedPieces[j].body.length;k++)
-    {
-      if(!this.generatedPieces[j].body[k].erased)
-      {
-        this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = false;
-      }
-    }
-  }
-
-  //console.log("this.regions from updateRegions after",this.regions);
-  return completedRows;
+  // for(var j=0; j<this.generatedPieces.length;j++)
+  // {
+  //   for(var k=0; k<this.generatedPieces[j].body.length;k++)
+  //   {
+  //     if(!this.generatedPieces[j].body[k].erased)
+  //     {
+  //       this.rowsToComplete[this.generatedPieces[j].body[k].row]++;
+  //     }
+  //   }
+  // }
+  //
+  // //console.log()
+  // for(var i=this.rowsToComplete.length-1; i>=0;i--)
+  // {
+  //   if(this.rowsToComplete[i]===this.limitColumnRight)
+  //   {
+  //     completedRows++;
+  //     // console.log("HIIIIIIIIIII");
+  //     // console.log("this.generatedPieces.length",this.generatedPieces.length);
+  //     for(var j=0; j<this.generatedPieces.length;j++)
+  //     {
+  //       for(var k=0; k<this.generatedPieces[j].body.length;k++)
+  //       {
+  //         // console.log("this.generatedPieces[j].body[k].erased",this.generatedPieces[j].body[k].erased);
+  //         if(!this.generatedPieces[j].body[k].erased)
+  //         {
+  //
+  //           if(this.generatedPieces[j].body[k].row === i)
+  //           {
+  //             this.generatedPieces[j].body[k].erase = true;
+  //             //console.log("erase");
+  //           }
+  //           else if(this.generatedPieces[j].body[k].row<i)
+  //           {
+  //             this.generatedPieces[j].body[k].displacement++;
+  //             // console.log("displacement", this.generatedPieces[j].body[k].displacement);
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+  //
+  // for(var j=0; j<this.generatedPieces.length;j++)
+  // {
+  //   //console.log("piece " + j +" this.generatedPieces[j].body.length"+this.generatedPieces[j].body.length);
+  //   for(var k=0; k<this.generatedPieces[j].body.length;k++)
+  //   {
+  //     if(!this.generatedPieces[j].body[k].erased)
+  //     {
+  //       //console.log("About to insepct this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+  //       //console.log("About to insepct this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+  //       if(this.generatedPieces[j].body[k].erase === true)
+  //       {
+  //         //console.log("erase j",j);
+  //         this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
+  //         this.generatedPieces[j].body[k].erased = true;
+  //         //console.log("this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+  //         //console.log("this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+  //         $(this.generatedPieces[j].body[k].selector).remove();
+  //       }
+  //       else if(this.generatedPieces[j].body[k].displacement>0)
+  //       {
+  //         //console.log("displace j",j);
+  //         this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
+  //         //console.log("before this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+  //         //console.log("before this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+  //         this.generatedPieces[j].body[k].row+=this.generatedPieces[j].body[k].displacement;
+  //         //console.log("after this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
+  //         //console.log("after this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+  //         this.generatedPieces[j].body[k].position.row = this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].center.row;
+  //         this.generatedPieces[j].body[k].displacement = 0;
+  //         var selector = this.generatedPieces[j].body[k].selector;
+  //         $(selector).css({top: this.generatedPieces[j].body[k].position.row.toString()+'px', left: this.generatedPieces[j].body[k].position.column.toString()+'px'});
+  //       }
+  //     }
+  //   }
+  // }
+  //
+  // for(var j=0; j<this.generatedPieces.length;j++)
+  // {
+  //   for(var k=0; k<this.generatedPieces[j].body.length;k++)
+  //   {
+  //     if(!this.generatedPieces[j].body[k].erased)
+  //     {
+  //       this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = false;
+  //     }
+  //   }
+  // }
+  //
+  // //console.log("this.regions from updateRegions after",this.regions);
+  // return completedRows;
 };
 
 Piece.prototype.chooseBody = function (){

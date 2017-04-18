@@ -54,6 +54,7 @@ Menu.prototype.addListenerToRestart = function()
   $(this.restartListener).on('click', function(){
 
     this.playerOne.restartGame();
+    this.playerOne.gamePaused = true;
     delete this.playerOne.pieceGenerator;
     delete this.playerOne;
     this.playerOne = new Game({

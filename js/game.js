@@ -31,6 +31,7 @@ function Game(options) {
   this.directionRight = false;
   this.rotateLeft = false;
   this.rotateRight = false;
+  this.pausePressed = false;
 
   this.movementCount = 0;
   this.movementCountLength = 10;
@@ -42,6 +43,9 @@ function Game(options) {
   this.inputResponseRotateLeftLength = 10;
   this.inputResponseRotateRight = 0;
   this.inputResponseRotateRightLength = 10;
+
+  this.inputResponsePause = 0;
+  this.inputResponsePauseLength = 10;
 
   this.width = options.width;
   this.height = options.height;
@@ -57,28 +61,40 @@ function Game(options) {
   this.playerNumber = options.playerNumber;
   this.playerScore = 0;
 
+  this.gamePaused = false;
+
 }
 
 
 Game.prototype.update = function () {
   //console.log("entra update");
-  if(this.pieceGenerator.actualPiece().contact)
+  if(!this.gamePaused)
   {
-    this.playerScore+=this.pieceGenerator.actualPiece().updateRegions();
-    //console.log("this.playerScore",this.playerScore);
-    this.pieceGenerator.actualPiece().drawPiece();
-    this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight, rowsToComplete: this.rowsToComplete });
-    //console.log("this.regions from update",this.regions);
+    if(this.pieceGenerator.actualPiece().contact)
+    {
+      this.playerScore+=this.pieceGenerator.updateRegions();
+      //console.log("this.playerScore",this.playerScore);
+      this.pieceGenerator.actualPiece().drawPiece();
+      this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
+      //console.log("this.regions from update",this.regions);
+    }
   }
 
-  this.movementCount++;
-  this.assignControlKeys();
-  if(this.movementCount==this.movementCountLength)
+  //this.assignControlKeys();
+
+  if(!this.gamePaused)
   {
-    //console.log("moveDown from update");
-    this.pieceGenerator.actualPiece().moveDown();
-    this.movementCount=0;
+    this.movementCount++;
+
+    if(this.movementCount==this.movementCountLength)
+    {
+      //console.log("moveDown from update");
+      this.pieceGenerator.actualPiece().moveDown();
+      this.movementCount=0;
+    }
   }
+
+  this.assignControlKeys();
 
     // this.boxLastPos = this.boxPos;
     // this.boxPos += this.boxVelocity * this.delta;
@@ -90,9 +106,11 @@ Game.prototype.draw = function(interp) {
     // this.box.style.left = (this.boxLastPos + (this.boxPos - this.boxLastPos) * interp) + 'px';
     this.fpsDisplay.textContent = Math.round(this.fps) + ' FPS';
     // this.pieceGenerator.clearPieces();
-
-    this.pieceGenerator.drawPiece();
-    this.displayResult();
+    if(!this.gamePaused)
+    {
+      this.pieceGenerator.drawPiece();
+      this.displayResult();
+    }
 };
 
 
@@ -126,7 +144,7 @@ Game.prototype.startGame = function() {
         this.generateInPlayMenu();
         // $('.container').append($('<div>').addClass('cell'));
         //console.log("this.regions",this.regions);
-        this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight, rowsToComplete: this.rowsToComplete });
+        this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
         this.frameID = requestAnimationFrame(function(timestamp) {
             this.draw(1);
             this.running = true;
@@ -227,11 +245,11 @@ Game.prototype.generateRegions = function () {
 
   this.pieceGeneratorSelector = '[player-number-piece-generator='+this.playerNumber.toString()+']';
 
-  this.pieceGenerator = new PieceGenerator(this.playerNumber,this.pieceGeneratorSelector);
+  this.pieceGenerator = new PieceGenerator({playerNumber: this.playerNumber,pieceGeneratorSelector: this.pieceGeneratorSelector,rowsToComplete: this.rowsToComplete,regions:this.regions,limitColumnRight:this.limitColumnRight});
 };
 
 Game.prototype.assignControlKeys = function () {
-  if(!this.paused)
+  if(!this.gamePaused)
   {
     if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && !this.keys.turnLeft)
     {
@@ -313,17 +331,49 @@ Game.prototype.assignControlKeys = function () {
       this.inputResponseRight++;
     }
     //console.log("entra1");
-    if(this.keys.pause)
+    if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
     {
-      console.log("ENTRA");
-      this.paused = true;
+      //Pause
+      console.log("entra PauseTrue 1");
+      this.pausePressed = false;
+      this.gamePaused = true;
+      this.inputResponsePause = 0;
+    }
+    else if(this.keys.pause && this.inputResponsePause===0)
+    {
+      //Pause
+      console.log("entra PauseTrue 2");
+      this.pausePressed = true;
+
+      this.inputResponsePause++;
+    }
+    else if(this.inputResponsePause>0)
+    {
+      console.log("entra PauseTrue 3");
+      this.inputResponsePause++;
     }
   }
   else {
-    console.log("entra2");
-    if(this.keys.pause)
+
+    if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
     {
-        this.paused = false;
+      //Pause
+      console.log("entra2 PauseFalse 1");
+      this.pausePressed = false;
+      this.gamePaused = false;
+      this.inputResponsePause = 0;
+    }
+    else if(this.keys.pause && this.inputResponsePause===0)
+    {
+      //Pause
+      this.pausePressed = true;
+      console.log("entra2 PauseFalse 2");
+      this.inputResponsePause++;
+    }
+    else if(this.inputResponsePause>0)
+    {
+      console.log("entra2 PauseFalse 3");
+      this.inputResponsePause++;
     }
   }
 };
