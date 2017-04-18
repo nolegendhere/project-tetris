@@ -123,7 +123,7 @@ PieceGenerator.prototype.updateRegions = function (){
           this.generatedPieces[j].body[k].position.row = this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].center.row;
           this.generatedPieces[j].body[k].displacement = 0;
           var selector = this.generatedPieces[j].body[k].selector;
-          $(selector).css({top: this.generatedPieces[j].body[k].position.row.toString()+'px', left: this.generatedPieces[j].body[k].position.column.toString()+'px'});
+          selector.css({top: this.generatedPieces[j].body[k].position.row.toString()+'px', left: this.generatedPieces[j].body[k].position.column.toString()+'px'});
         }
       }
     }

@@ -329,7 +329,7 @@ Piece.prototype.rotatePieceRight = function () {
 //Draw the piece with divs
 Piece.prototype.drawPiece = function () {
   this.body.forEach(function(element){
-      $(element.selector).css({top: element.position.row.toString()+'px', left: element.position.column.toString()+'px'});
+      element.selector.css({top: element.position.row.toString()+'px', left: element.position.column.toString()+'px'});
   });
 
 };

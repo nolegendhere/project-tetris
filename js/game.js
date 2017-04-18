@@ -212,9 +212,9 @@ Game.prototype.generateRegions = function () {
 
     for (var columnIndex = 0; columnIndex < this.limitColumnRight; columnIndex++)
     {
-      var selector ='[player-number-region='+this.playerNumber.toString()+'][data-row='+rowIndex.toString()+'][data-column='+ columnIndex.toString() +']';
+      // var selector ='[player-number-region='+this.playerNumber.toString()+'][data-row='+rowIndex.toString()+'][data-column='+ columnIndex.toString() +']';
 
-      region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop + rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop + (rowIndex+1) * this.cellHeight, state: true, regionColor: 'black', selectorRegion: selector});
+      region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop + rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop + (rowIndex+1) * this.cellHeight, state: true, regionColor: 'black'});
 
       tempArray[columnIndex] = region;
 
