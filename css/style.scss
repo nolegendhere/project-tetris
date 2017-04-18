@@ -1,0 +1,68 @@
+
+.player-layout{
+
+  .player-board {
+    background-size: contain;
+    /*border: 1px solid white;*/
+    box-sizing: border-box;
+    /*float: left;*/
+    position: relative;
+    float:left;
+    height: 400px;
+    width: 200px;
+
+    .cell {
+      background-size: contain;
+      /*border: 1px solid white;*/
+      box-sizing: border-box;
+      /*float: left;*/
+      height: 13px;
+      width: 13px;
+    }
+
+    .piece-generator {
+      background-size: contain;
+      /*border: 1px solid white;*/
+      box-sizing: border-box;
+      /*float: left;*/
+      height: 400px;
+      width: 200px;
+
+      .cell {
+        background-size: contain;
+        /*border: 1px solid white;*/
+        box-sizing: border-box;
+        /*float: left;*/
+        height: 13px;
+        width: 13px;
+      }
+    }
+  }
+
+  .player-inplaymenu {
+    background-size: contain;
+    /*border: 1px solid white;*/
+    box-sizing: border-box;
+    background-color: red;
+    /*float: left;*/
+    /*position: relative;*/
+    float:left;
+    height: 400px;
+    width: 200px;
+
+    .score{
+      background-size: contain;
+      /*border: 1px solid white;*/
+      box-sizing: border-box;
+      background-color: red;
+      height: 100px;
+      width: 100px;
+      padding: 0;
+
+      p{
+        margin: 0;
+        text-align: left;
+      }
+    }
+  }
+}

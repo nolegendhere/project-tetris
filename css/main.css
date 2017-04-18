@@ -11,7 +11,7 @@
   /*float: left;*/
   position: relative;
   float:left;
-  height: 650px;
+  height: 400px;
   width: 200px;
 }
 
@@ -20,7 +20,7 @@
   /*border: 1px solid white;*/
   box-sizing: border-box;
   /*float: left;*/
-  height: 650px;
+  height: 400px;
   width: 200px;
 }
 
@@ -33,14 +33,14 @@
   width: 13px;
 }
 
-/*.board {
-	background-color: #E3D4AB;
-}*/
-
-.piece {
-  /*background-color: #95BE69;*/
+.player-inplaymenu {
+  background-size: contain;
+  /*border: 1px solid white;*/
+  box-sizing: border-box;
+  background-color: red;
+  /*float: left;*/
+  /*position: relative;*/
+  float:left;
+  height: 400px;
+  width: 200px;
 }
-
-/*.food {
-	background-color: red;
-}*/

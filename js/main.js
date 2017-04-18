@@ -65,6 +65,7 @@ Game.prototype.update = function () {
   if(this.pieceGenerator.actualPiece().contact)
   {
     this.playerScore+=this.pieceGenerator.actualPiece().updateRegions();
+    console.log("this.playerScore",this.playerScore);
     this.pieceGenerator.actualPiece().drawPiece();
     this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight, rowsToComplete: this.rowsToComplete });
     //console.log("this.regions from update",this.regions);
@@ -85,13 +86,13 @@ Game.prototype.update = function () {
     // if (this.boxPos >= this.limit || this.boxPos <= 0) this.boxVelocity = -this.boxVelocity;
 };
 
-
 Game.prototype.draw = function(interp) {
     // this.box.style.left = (this.boxLastPos + (this.boxPos - this.boxLastPos) * interp) + 'px';
     this.fpsDisplay.textContent = Math.round(this.fps) + ' FPS';
     // this.pieceGenerator.clearPieces();
 
     this.pieceGenerator.drawPiece();
+    this.displayResult();
 };
 
 
@@ -120,7 +121,9 @@ Game.prototype.stop = function() {
 Game.prototype.startGame = function() {
     if (!this.started) {
         this.started = true;
+        this.generateLayout();
         this.generateRegions();
+        this.generateInPlayMenu();
         // $('.container').append($('<div>').addClass('cell'));
         //console.log("this.regions",this.regions);
         this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight, rowsToComplete: this.rowsToComplete });
@@ -175,6 +178,13 @@ Game.prototype.mainLoop=function(timestamp) {
     this.frameID = requestAnimationFrame(this.mainLoop.bind(this));
 };
 
+Game.prototype.generateLayout = function () {
+
+  this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
+
+  $('.container').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+
+};
 
 Game.prototype.generateRegions = function () {
   this.cellWidth = this.width / this.columns;
@@ -185,7 +195,9 @@ Game.prototype.generateRegions = function () {
   this.levelTop = this.offset.row;
   var region;
 
-  var boardSelector ='[player='+this.playerNumber.toString()+']'; $('.container').append($('<div>').addClass('player-board').attr('player',this.playerNumber.toString()));
+  this.boardSelector ='[player-number-board='+this.playerNumber.toString()+']';
+
+  $(this.playerLayout).append($('<div>').addClass('player-board').attr('player-number-board',this.playerNumber.toString()));
 
   for (var rowIndex = 0; rowIndex < this.limitRowBottom; rowIndex++)
   {
@@ -205,17 +217,17 @@ Game.prototype.generateRegions = function () {
       // tempArray[columnIndex] = true;
       //console.log(region.color);
       // $('.container').append($('<div>').addClass('cell board').attr('data-row', rowIndex).attr('data-column', columnIndex).css({backgroundColor: region.regionColor, position: 'absolute', top: region.center.row.toString()+'px', left: region.center.column.toString()+'px'}));
-      $(boardSelector).append($('<div>').addClass('cell board').attr('player-number-region',this.playerNumber.toString()).attr('data-row', rowIndex).attr('data-column', columnIndex).css({backgroundColor: region.regionColor, position: 'absolute', top: region.center.row.toString()+'px', left: region.center.column.toString()+'px'}));
+      $(this.boardSelector).append($('<div>').addClass('cell board').attr('player-number-region',this.playerNumber.toString()).attr('data-row', rowIndex).attr('data-column', columnIndex).css({backgroundColor: region.regionColor, position: 'absolute', top: region.center.row.toString()+'px', left: region.center.column.toString()+'px'}));
 
     }
     this.regions.push(tempArray);
   }
 
-  $(boardSelector).append($('<div>').addClass('piece-generator').attr('player-number-piece-generator',this.playerNumber.toString()));
+  $(this.boardSelector).append($('<div>').addClass('piece-generator').attr('player-number-piece-generator',this.playerNumber.toString()));
 
-  var pieceGeneratorSelector = '[player-number-piece-generator='+this.playerNumber.toString()+']';
+  this.pieceGeneratorSelector = '[player-number-piece-generator='+this.playerNumber.toString()+']';
 
-  this.pieceGenerator = new PieceGenerator(this.playerNumber,pieceGeneratorSelector);
+  this.pieceGenerator = new PieceGenerator(this.playerNumber,this.pieceGeneratorSelector);
 };
 
 Game.prototype.assignControlKeys = function () {
@@ -318,15 +330,27 @@ Game.prototype.assignControlKeys = function () {
 
 Game.prototype.generateInPlayMenu = function (){
 
+  this.InPlayMenuSelector ='[player-number-inplaymenu='+this.playerNumber.toString()+']';
+
+  $(this.playerLayout).append($('<div>').addClass('player-inplaymenu').attr('player-number-inplaymenu',this.playerNumber.toString()));
+
+  this.playerScoreSelector ='#player-number-score'+this.playerNumber.toString();
+
+  $(this.InPlayMenuSelector).append($('<div>').addClass('score').attr('id','player-number-score'+this.playerNumber.toString()).append($('<p>')));
+
 };
 
-Game.prototype.returnResult = function () {
-
+Game.prototype.displayResult = function () {
+  console.log("entra",$(this.playerScoreSelector));
+  $(this.playerScoreSelector+' p').html(this.playerScore.toString());
+  //console.log("this",this);
 };
 
 $(document).ready(function(){
 
-  var arrowCodes  = {190: "turnLeft", 189: "turnRight", 37: "left", 38: "up", 39: "right", 40: "down", 80: "pause"};
+  var arrowCodes1  = {97: "turnLeft", 98: "turnRight", 37: "left", 38: "up", 39: "right", 40: "down", 80: "pause"};
+
+  var arrowCodes2  = {71: "turnLeft", 72: "turnRight", 65: "left", 87: "up", 68: "right", 83: "down", 80: "pause"};
 
   function trackKeys(codes) {
     var pressed = Object.create(null);
@@ -335,7 +359,7 @@ $(document).ready(function(){
       if (codes.hasOwnProperty(event.keyCode)) {
         var down = event.type == "keydown";
         pressed[codes[event.keyCode]] = down;
-        //console.log("pressed",pressed);
+        console.log("pressed",pressed);
         event.preventDefault();
       }
     }
@@ -344,7 +368,14 @@ $(document).ready(function(){
     return pressed;
   }
   console.log("hi2");
-  var arrows = trackKeys(arrowCodes);// Initial values
+  var arrows1 = trackKeys(arrowCodes1);
+  var arrows2 = trackKeys(arrowCodes2);
+
+  // $('body').on('keydown',function(e){
+  //   console.log(e.keyCode);
+  // });
+
+  // Initial values
 
   var game1 = new Game({
       box :document.getElementById('box'),
@@ -368,7 +399,7 @@ $(document).ready(function(){
       limitRowBottom: 40,
       limitColumnLeft: 0,
       limitColumnRight: 10,
-      keys: arrows,
+      keys: arrows1,
       width: 650,
       height: 650,
       offsetRow: 0,
@@ -378,39 +409,39 @@ $(document).ready(function(){
       playerNumber: 0,
   });
 
-  var game2 = new Game({
-      box :document.getElementById('box'),
-      boxPos : 10,
-      boxLastPos : 10,
-      boxVelocity : 0.08,
-      fpsDisplay : document.getElementById('fpsDisplay'),
-      limit : 300,
-      lastFrameTimeMs : 0,
-      maxFPS : 100,
-      delta : 0,
-      timestep : 1000 / 100,
-      fps : 60,
-      framesThisSecond : 0,
-      lastFpsUpdate : 0,
-      running : false,
-      started : false,
-      frameID : 0,
-      rows: 50,
-      columns: 50,
-      limitRowBottom: 40,
-      limitColumnLeft: 0,
-      limitColumnRight: 10,
-      keys: arrows,
-      width: 650,
-      height: 650,
-      offsetRow: 0,
-      offsetColumn: 50,
-      initialRegionRow: 1,
-      initialRegionColumn: 5,
-      playerNumber: 1,
-  });
+  // var game2 = new Game({
+  //     box :document.getElementById('box'),
+  //     boxPos : 10,
+  //     boxLastPos : 10,
+  //     boxVelocity : 0.08,
+  //     fpsDisplay : document.getElementById('fpsDisplay'),
+  //     limit : 300,
+  //     lastFrameTimeMs : 0,
+  //     maxFPS : 100,
+  //     delta : 0,
+  //     timestep : 1000 / 100,
+  //     fps : 60,
+  //     framesThisSecond : 0,
+  //     lastFpsUpdate : 0,
+  //     running : false,
+  //     started : false,
+  //     frameID : 0,
+  //     rows: 50,
+  //     columns: 50,
+  //     limitRowBottom: 40,
+  //     limitColumnLeft: 0,
+  //     limitColumnRight: 10,
+  //     keys: arrows2,
+  //     width: 650,
+  //     height: 650,
+  //     offsetRow: 0,
+  //     offsetColumn: 50,
+  //     initialRegionRow: 1,
+  //     initialRegionColumn: 5,
+  //     playerNumber: 1,
+  // });
 
   game1.startGame();
-  game2.startGame();
+  // game2.startGame();
   // console.log("game.regions from document jquery",game2.regions);
 });
