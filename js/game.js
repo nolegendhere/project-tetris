@@ -74,7 +74,7 @@ Game.prototype.update = function () {
       console.log("this.pieceGenerator.numberOfPieces",this.pieceGenerator.numberOfPieces);
       this.playerScore+=this.pieceGenerator.updateRegions();
       //this.pieceGenerator.actualPiece().drawPiece();
-      this.pieceGenerator.deploy();
+      this.pieceGenerator.deployPiece();
       console.log("after");
       console.log("after deploy this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
       console.log("after deploy this.pieceGenerator.numberOfPieces",this.pieceGenerator.numberOfPieces);
@@ -142,7 +142,7 @@ Game.prototype.startGame = function() {
         this.generateRegions();
         this.generatePieceGenerator();
         this.generateInPlayMenu();
-        this.pieceGenerator.deployFirstTime();
+        this.pieceGenerator.deployPiece();
         this.frameID = requestAnimationFrame(function(timestamp) {
             this.draw(1);
             this.running = true;

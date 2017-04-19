@@ -1,12 +1,8 @@
 function PieceGenerator(options){
 
   this.actualPieceMoved = undefined;
-  this.actualPieceMovedDual = undefined;
-  this.futurePieces = [];
-  this.futurePiecesCounter = 0;
   this.generatedPieces = [];
   this.numberOfPieces = 0;
-  this.numberOfPiecesDual = 0;
   this.playerNumber = options.playerNumber;
   this.boardSelector = options.pieceGeneratorSelector;
   this.rowsToComplete = options.rowsToComplete;
@@ -34,35 +30,6 @@ PieceGenerator.prototype.chooseColor = function(){
 
 };
 
-PieceGenerator.prototype.deployFirstTime = function () {
-  console.log("deploy0***********************************************");
-    this.deployPiece();
-    this.numberOfPieces++;
-    this.numberOfPiecesDual++;
-    this.generatedPieces.push(this.actualPieceMoved);
-    this.deployPieceDual();
-};
-
-PieceGenerator.prototype.deploy = function () {
-
-  if(this.numberOfPieces%2!==0)
-  {
-    console.log("deploy1**********************************************");
-    this.numberOfPieces++;
-    this.numberOfPiecesDual++;
-    this.generatedPieces.push(this.actualPieceMovedDual);
-    this.deployPiece();
-
-  }
-  else
-  {
-    console.log("deploy2***********************************************");
-    this.numberOfPieces++;
-    this.numberOfPiecesDual++;
-    this.generatedPieces.push(this.actualPieceMoved);
-    this.deployPieceDual();
-  }
-};
 
 //Creates one pieces at a time
 PieceGenerator.prototype.deployPiece = function () {
@@ -77,92 +44,33 @@ PieceGenerator.prototype.deployPiece = function () {
       console.log("this.numberOfPieces",this.numberOfPieces);
       console.log("this.numberOfPieces",this.numberOfPiecesDual);
       this.actualPieceMoved.body[i].pieceNumber = this.numberOfPieces;
-      console.log("this.actualPieceMoved.body[i].pieceNumber = this.numberOfPiecesDual",this.actualPieceMoved.body[i].pieceNumber = this.numberOfPiecesDual);
+      console.log("this.actualPieceMoved.body[i].pieceNumber",this.actualPieceMoved.body[i].pieceNumber);
       var selector ='[player-number-piece='+this.playerNumber.toString()+'][index='+i.toString()+'][piece='+ this.numberOfPieces +']';
       this.actualPieceMoved.body[i].selector = $(selector);
   }
+
+  this.numberOfPieces++;
+  this.generatedPieces.push(this.actualPieceMoved);
 
   console.log("this.actualPieceMoved",this.actualPieceMoved);
   console.log("this.actualPieceMoved.body[0].selector",this.actualPieceMoved.body[0].selector);
 };
 
-PieceGenerator.prototype.deployPieceDual = function () {
-
-  this.actualPieceMovedDual = new Piece({regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
-  this.actualPieceMovedDual.body = this.chooseBody();
-  this.actualPieceMovedDual.bodyColor = this.chooseColor();
-
-  for (var i = 0; i < this.actualPieceMovedDual.body.length; i++)
-  {
-      $(this.boardSelector).append($('<div>').addClass('cell piece').attr('player-number-piece',this.playerNumber.toString()).attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({backgroundColor: this.actualPieceMovedDual.bodyColor, position: 'absolute', top: this.actualPieceMovedDual.body[i].position.row.toString()+'px', left: this.actualPieceMovedDual.body[i].position.column.toString()+'px'}));
-      console.log("this.numberOfPieces",this.numberOfPieces);
-      console.log("this.numberOfPieces",this.numberOfPiecesDual);
-      this.actualPieceMovedDual.body[i].pieceNumber = this.numberOfPiecesDual;
-      console.log("this.actualPieceMovedDual.body[i].pieceNumber = this.numberOfPiecesDual",this.actualPieceMovedDual.body[i].pieceNumber = this.numberOfPiecesDual);
-      var selector ='[player-number-piece='+this.playerNumber.toString()+'][index='+i.toString()+'][piece='+ this.numberOfPiecesDual +']';
-      this.actualPieceMovedDual.body[i].selector = $(selector);
-  }
-
-
-  console.log("this.actualPieceMovedDual",this.actualPieceMovedDual);
-  console.log("this.actualPieceMovedDual.body[0].selector",this.actualPieceMovedDual.body[0].selector);
-};
-
 
 //Returns the actual piece being controlled
 PieceGenerator.prototype.actualPiece = function(){
-  if(this.numberOfPieces%2!==0)
-  {
-    console.log("actual1");
-    console.log("this.actualPieceMoved",this.actualPieceMoved);
-    console.log("this.actualPieceMoved.body[0].selector",this.actualPieceMoved.body[0].selector);
-    if(this.actualPieceMoved.contact)
-    {
-      console.log("contact1-----------------------------------------");
-      console.log("this.actualPieceMoved",this.actualPieceMoved);
-      console.log("this.actualPieceMoved.body[0].selector",this.actualPieceMoved.body[0].selector);
-    }
-
-    return this.actualPieceMoved;
-  }
-  else
-  {
-    console.log("actual2");
-    console.log("this.actualPieceMovedDual",this.actualPieceMovedDual);
-    console.log("this.actualPieceMovedDual.body[0].selector",this.actualPieceMovedDual.body[0].selector);
-    if(this.actualPieceMovedDual.contact)
-    {
-      console.log("contact2-------------------------------------------");
-      console.log("this.actualPieceMovedDual",this.actualPieceMovedDual);
-      console.log("this.actualPieceMovedDual.body[0].selector",this.actualPieceMovedDual.body[0].selector);
-    }
-
-    return this.actualPieceMovedDual;
-  }
+  return this.actualPieceMoved;
 };
 
 //Draw all the pieces with the divs calling their function to do it
 PieceGenerator.prototype.drawPiece = function (){
-
-  if(this.numberOfPieces%2!==0)
-  {
-    this.actualPieceMoved.drawPiece();
-  }
-  else
-  {
-    this.actualPieceMovedDual.drawPiece();
-  }
+  this.actualPieceMoved.drawPiece();
 };
 
 PieceGenerator.prototype.updateRegions = function (){
-  if(this.numberOfPieces%2!==0)
-  {
-    this.actualPieceMoved.updateRegions();
-  }
-  else
-  {
-    this.actualPieceMovedDual.updateRegions();
-  }
+
+  this.actualPieceMoved.updateRegions();
+
 
   var completedRows = 0;
 
