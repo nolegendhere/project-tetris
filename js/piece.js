@@ -137,7 +137,7 @@ Piece.prototype.collisionTestmoveDown = function (row, column) {
 Piece.prototype.collisionTestLaterals = function (column,row) {
   var lateralContact = false;
 
-  if(column>this.limitColumnRight-1 || column < 0)
+  if(column>this.limitColumnRight-1 || column < 0 || row<0)
   {
     lateralContact = true;
   }
@@ -265,15 +265,3 @@ Piece.prototype.updateRegions = function (){
   }.bind(this));
 
 };
-
-// Piece.prototype.chooseBody = function (){
-//   this.numberOfBlocks = 7;
-//   this.body = this.listOfBodies[Math.floor(Math.random()*this.numberOfBlocks)];
-//   // this.body = this.listOfBodies[5];
-// };
-//
-// Piece.prototype.chooseColor = function(){
-//   this.numberOfColors = 7;
-//   this.bodyColor = this.listOfColors[Math.floor(Math.random()*this.numberOfColors)];
-//
-// };
