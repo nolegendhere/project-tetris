@@ -84,6 +84,7 @@ Game.prototype.update = function () {
     if(this.movementCount==this.movementCountLength)
     {
       this.pieceGenerator.actualPiece().moveDown();
+      console.log("this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
       this.movementCount=0;
     }
   }
@@ -153,6 +154,7 @@ Game.prototype.mainLoop=function(timestamp) {
     // Throttle the frame rate.
     if (timestamp < this.lastFrameTimeMs + (1000 / this.maxFPS)) {
         this.frameID = requestAnimationFrame(this.mainLoop.bind(this));
+        console.log("request1");
         return;
     }
 
@@ -181,6 +183,7 @@ Game.prototype.mainLoop=function(timestamp) {
 
     this.draw(this.delta / this.timestep);
     this.end(this.fps);
+    console.log("request2");
     this.frameID = requestAnimationFrame(this.mainLoop.bind(this));
 };
 
