@@ -71,9 +71,13 @@ Game.prototype.update = function () {
   {
     if(this.pieceGenerator.actualPiece().contact)
     {
+      console.log("this.pieceGenerator.numberOfPieces",this.pieceGenerator.numberOfPieces);
       this.playerScore+=this.pieceGenerator.updateRegions();
-      this.pieceGenerator.actualPiece().drawPiece();
-      this.pieceGenerator.deployPiece();
+      //this.pieceGenerator.actualPiece().drawPiece();
+      this.pieceGenerator.deploy();
+      console.log("after");
+      console.log("after deploy this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
+      console.log("after deploy this.pieceGenerator.numberOfPieces",this.pieceGenerator.numberOfPieces);
     }
   }
 
@@ -84,7 +88,7 @@ Game.prototype.update = function () {
     if(this.movementCount==this.movementCountLength)
     {
       this.pieceGenerator.actualPiece().moveDown();
-      console.log("this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
+      // console.log("this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
       this.movementCount=0;
     }
   }
@@ -138,7 +142,7 @@ Game.prototype.startGame = function() {
         this.generateRegions();
         this.generatePieceGenerator();
         this.generateInPlayMenu();
-        this.pieceGenerator.deployPieceFirstTime();
+        this.pieceGenerator.deployFirstTime();
         this.frameID = requestAnimationFrame(function(timestamp) {
             this.draw(1);
             this.running = true;
@@ -154,7 +158,7 @@ Game.prototype.mainLoop=function(timestamp) {
     // Throttle the frame rate.
     if (timestamp < this.lastFrameTimeMs + (1000 / this.maxFPS)) {
         this.frameID = requestAnimationFrame(this.mainLoop.bind(this));
-        console.log("request1");
+
         return;
     }
 
@@ -173,7 +177,9 @@ Game.prototype.mainLoop=function(timestamp) {
 
     var numUpdateSteps = 0;
     while (this.delta >= this.timestep) {
+      console.log("before request1");
         this.update(this.timestep);
+        console.log("after request1");
         this.delta -= this.timestep;
         if (++this.numUpdateSteps >= 240) {
             this.panic();

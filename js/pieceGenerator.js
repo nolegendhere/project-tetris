@@ -1,9 +1,12 @@
 function PieceGenerator(options){
 
   this.actualPieceMoved = undefined;
-  this.generatedPiece = undefined;
+  this.actualPieceMovedDual = undefined;
+  this.futurePieces = [];
+  this.futurePiecesCounter = 0;
   this.generatedPieces = [];
   this.numberOfPieces = 0;
+  this.numberOfPiecesDual = 0;
   this.playerNumber = options.playerNumber;
   this.boardSelector = options.pieceGeneratorSelector;
   this.rowsToComplete = options.rowsToComplete;
@@ -13,7 +16,6 @@ function PieceGenerator(options){
   this.limitColumnRight = options.limitColumnRight;
   this.numberOfBlocks = 7;
   this.numberOfColors = 7;
-  this.selector = "";
 
   this.listData = new ListData({initialRegionRow:this.initialRegionRow,initialRegionColumn:this.initialRegionColumn,regions:this.regions });
 
@@ -32,37 +34,38 @@ PieceGenerator.prototype.chooseColor = function(){
 
 };
 
-//Creates one pieces at a time
-PieceGenerator.prototype.generatePiece = function () {
-  this.pieceGenerated = new Piece({regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
-  this.pieceGenerated.body = this.chooseBody();
-  this.pieceGenerated.bodyColor = this.chooseColor();
+PieceGenerator.prototype.deployFirstTime = function () {
+  console.log("deploy0***********************************************");
+    this.deployPiece();
+    this.numberOfPieces++;
+    this.numberOfPiecesDual++;
+    this.generatedPieces.push(this.actualPieceMoved);
+    this.deployPieceDual();
+};
 
-  for (var i = 0; i < this.pieceGenerated.body.length; i++)
+PieceGenerator.prototype.deploy = function () {
+
+  if(this.numberOfPieces%2!==0)
   {
-      $(this.boardSelector).append($('<div>').addClass('cell piece').attr('player-number-piece',this.playerNumber.toString()).attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({backgroundColor: this.pieceGenerated.bodyColor, position: 'absolute', top: this.pieceGenerated.body[i].position.row.toString()+'px', left: this.pieceGenerated.body[i].position.column.toString()+'px'}));
+    console.log("deploy1**********************************************");
+    this.numberOfPieces++;
+    this.numberOfPiecesDual++;
+    this.generatedPieces.push(this.actualPieceMovedDual);
+    this.deployPiece();
 
-      this.selector ='[player-number-piece='+this.playerNumber.toString()+'][index='+i.toString()+'][piece='+ this.numberOfPieces +']';
-      this.pieceGenerated.body[i].selector = $(this.selector);
+  }
+  else
+  {
+    console.log("deploy2***********************************************");
+    this.numberOfPieces++;
+    this.numberOfPiecesDual++;
+    this.generatedPieces.push(this.actualPieceMoved);
+    this.deployPieceDual();
   }
 };
 
 //Creates one pieces at a time
 PieceGenerator.prototype.deployPiece = function () {
-  this.actualPieceMoved = this.pieceGenerated;
-  this.numberOfPieces++;
-  this.generatedPieces.push(this.actualPieceMoved);
-  console.log("before generate number of pieces",this.numberOfPieces);
-  this.generatePiece();
-
-  console.log("after generate number of pieces",this.numberOfPieces);
-  console.log("this.pieceGenerated",this.pieceGenerated);
-  console.log("this.generatePiece.body[0].selector",this.pieceGenerated.body[0].selector);
-  console.log("this.actualPieceMoved",this.actualPieceMoved);
-  console.log("this.actualPieceMoved.body[0].selector",this.actualPieceMoved.body[0].selector);
-};
-
-PieceGenerator.prototype.deployPieceFirstTime = function () {
 
   this.actualPieceMoved = new Piece({regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
   this.actualPieceMoved.body = this.chooseBody();
@@ -71,35 +74,96 @@ PieceGenerator.prototype.deployPieceFirstTime = function () {
   for (var i = 0; i < this.actualPieceMoved.body.length; i++)
   {
       $(this.boardSelector).append($('<div>').addClass('cell piece').attr('player-number-piece',this.playerNumber.toString()).attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({backgroundColor: this.actualPieceMoved.bodyColor, position: 'absolute', top: this.actualPieceMoved.body[i].position.row.toString()+'px', left: this.actualPieceMoved.body[i].position.column.toString()+'px'}));
-
-      this.selector ='[player-number-piece='+this.playerNumber.toString()+'][index='+i.toString()+'][piece='+ this.numberOfPieces +']';
-      this.actualPieceMoved.body[i].selector = $(this.selector);
+      console.log("this.numberOfPieces",this.numberOfPieces);
+      console.log("this.numberOfPieces",this.numberOfPiecesDual);
+      this.actualPieceMoved.body[i].pieceNumber = this.numberOfPieces;
+      console.log("this.actualPieceMoved.body[i].pieceNumber = this.numberOfPiecesDual",this.actualPieceMoved.body[i].pieceNumber = this.numberOfPiecesDual);
+      var selector ='[player-number-piece='+this.playerNumber.toString()+'][index='+i.toString()+'][piece='+ this.numberOfPieces +']';
+      this.actualPieceMoved.body[i].selector = $(selector);
   }
 
-  this.numberOfPieces++;
-  this.generatedPieces.push(this.actualPieceMoved);
-  console.log("before generate number of pieces",this.numberOfPieces);
-  this.generatePiece();
-  console.log("after generate number of pieces",this.numberOfPieces);
-  console.log("this.pieceGenerated",this.pieceGenerated);
-  console.log("this.generatePiece.body[0].selector",this.pieceGenerated.body[0].selector);
   console.log("this.actualPieceMoved",this.actualPieceMoved);
   console.log("this.actualPieceMoved.body[0].selector",this.actualPieceMoved.body[0].selector);
 };
 
+PieceGenerator.prototype.deployPieceDual = function () {
+
+  this.actualPieceMovedDual = new Piece({regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
+  this.actualPieceMovedDual.body = this.chooseBody();
+  this.actualPieceMovedDual.bodyColor = this.chooseColor();
+
+  for (var i = 0; i < this.actualPieceMovedDual.body.length; i++)
+  {
+      $(this.boardSelector).append($('<div>').addClass('cell piece').attr('player-number-piece',this.playerNumber.toString()).attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({backgroundColor: this.actualPieceMovedDual.bodyColor, position: 'absolute', top: this.actualPieceMovedDual.body[i].position.row.toString()+'px', left: this.actualPieceMovedDual.body[i].position.column.toString()+'px'}));
+      console.log("this.numberOfPieces",this.numberOfPieces);
+      console.log("this.numberOfPieces",this.numberOfPiecesDual);
+      this.actualPieceMovedDual.body[i].pieceNumber = this.numberOfPiecesDual;
+      console.log("this.actualPieceMovedDual.body[i].pieceNumber = this.numberOfPiecesDual",this.actualPieceMovedDual.body[i].pieceNumber = this.numberOfPiecesDual);
+      var selector ='[player-number-piece='+this.playerNumber.toString()+'][index='+i.toString()+'][piece='+ this.numberOfPiecesDual +']';
+      this.actualPieceMovedDual.body[i].selector = $(selector);
+  }
+
+
+  console.log("this.actualPieceMovedDual",this.actualPieceMovedDual);
+  console.log("this.actualPieceMovedDual.body[0].selector",this.actualPieceMovedDual.body[0].selector);
+};
+
+
 //Returns the actual piece being controlled
 PieceGenerator.prototype.actualPiece = function(){
-  return this.actualPieceMoved;
+  if(this.numberOfPieces%2!==0)
+  {
+    console.log("actual1");
+    console.log("this.actualPieceMoved",this.actualPieceMoved);
+    console.log("this.actualPieceMoved.body[0].selector",this.actualPieceMoved.body[0].selector);
+    if(this.actualPieceMoved.contact)
+    {
+      console.log("contact1-----------------------------------------");
+      console.log("this.actualPieceMoved",this.actualPieceMoved);
+      console.log("this.actualPieceMoved.body[0].selector",this.actualPieceMoved.body[0].selector);
+    }
+
+    return this.actualPieceMoved;
+  }
+  else
+  {
+    console.log("actual2");
+    console.log("this.actualPieceMovedDual",this.actualPieceMovedDual);
+    console.log("this.actualPieceMovedDual.body[0].selector",this.actualPieceMovedDual.body[0].selector);
+    if(this.actualPieceMovedDual.contact)
+    {
+      console.log("contact2-------------------------------------------");
+      console.log("this.actualPieceMovedDual",this.actualPieceMovedDual);
+      console.log("this.actualPieceMovedDual.body[0].selector",this.actualPieceMovedDual.body[0].selector);
+    }
+
+    return this.actualPieceMovedDual;
+  }
 };
 
 //Draw all the pieces with the divs calling their function to do it
 PieceGenerator.prototype.drawPiece = function (){
-  this.actualPieceMoved.drawPiece();
+
+  if(this.numberOfPieces%2!==0)
+  {
+    this.actualPieceMoved.drawPiece();
+  }
+  else
+  {
+    this.actualPieceMovedDual.drawPiece();
+  }
 };
 
 PieceGenerator.prototype.updateRegions = function (){
+  if(this.numberOfPieces%2!==0)
+  {
+    this.actualPieceMoved.updateRegions();
+  }
+  else
+  {
+    this.actualPieceMovedDual.updateRegions();
+  }
 
-  this.actualPieceMoved.updateRegions();
   var completedRows = 0;
 
   for(var i=this.rowsToComplete.length-1; i>=0;i--)
