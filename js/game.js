@@ -33,19 +33,43 @@ function Game(options) {
   this.rotateRight = false;
   this.pausePressed = false;
 
+  // this.movementCount = 0;
+  // this.movementCountLength = 10;
+  // this.inputResponseLeft = 0;
+  // this.inputResponseLeftLength = 10;
+  // this.inputResponseRight = 0;
+  // this.inputResponseRightLength = 10;
+  // this.inputResponseRotateLeft = 0;
+  // this.inputResponseRotateLeftLength = 10;
+  // this.inputResponseRotateRight = 0;
+  // this.inputResponseRotateRightLength = 10;
+  //
+  // this.inputResponsePause = 0;
+  // this.inputResponsePauseLength = 10;
+
   this.movementCount = 0;
-  this.movementCountLength = 10;
+  this.movementCountVelocity = 10;
+  this.movementCountLength = 1000;
+
   this.inputResponseLeft = 0;
-  this.inputResponseLeftLength = 10;
+  this.inputResponseLeftVelocity = 10;
+  this.inputResponseLeftLength = 1000;
+
   this.inputResponseRight = 0;
-  this.inputResponseRightLength = 10;
+  this.inputResponseRightVelocity = 10;
+  this.inputResponseRightLength = 1000;
+
   this.inputResponseRotateLeft = 0;
-  this.inputResponseRotateLeftLength = 10;
+  this.inputResponseRotateLeftVelocity = 10;
+  this.inputResponseRotateLeftLength = 1000;
+
   this.inputResponseRotateRight = 0;
-  this.inputResponseRotateRightLength = 10;
+  this.inputResponseRotateRightVelocity = 10;
+  this.inputResponseRotateRightLength = 1000;
 
   this.inputResponsePause = 0;
-  this.inputResponsePauseLength = 10;
+  this.inputResponsePauseVelocity = 10;
+  this.inputResponsePauseLength = 1000;
 
   this.width = options.width;
   this.height = options.height;
@@ -68,7 +92,7 @@ function Game(options) {
 
 }
 
-Game.prototype.update = function () {
+Game.prototype.update = function (delta) {
 
   if(!this.gameLost && !this.gameWon)
   {
@@ -101,9 +125,9 @@ Game.prototype.update = function () {
           }
         }
 
-        this.movementCount++;
+        this.movementCount += this.movementCountVelocity*delta;
 
-        if(this.movementCount==this.movementCountLength)
+        if(this.movementCount>=this.movementCountLength)
         {
           this.pieceGenerator.actualPiece().moveDown();
           // console.log("this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
@@ -112,7 +136,7 @@ Game.prototype.update = function () {
       }
     }
 
-    this.assignControlKeys();
+    this.assignControlKeys(delta);
   }
     // this.boxLastPos = this.boxPos;
     // this.boxPos += this.boxVelocity * this.delta;
@@ -259,7 +283,7 @@ Game.prototype.generatePieceGenerator = function () {
   this.pieceGenerator = new PieceGenerator({playerNumber: this.playerNumber,pieceGeneratorSelector: this.pieceGeneratorSelector,rowsToComplete: this.rowsToComplete, initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column,regions:this.regions, limitRowBottom: this.limitRowBottom,limitColumnRight:this.limitColumnRight});
 };
 
-Game.prototype.assignControlKeys = function () {
+Game.prototype.assignControlKeys = function (delta) {
   if(!this.gameLost)
   {
     if(!this.gamePaused)
@@ -276,11 +300,11 @@ Game.prototype.assignControlKeys = function () {
       {
         //TurnLeft
         this.rotateLeft = true;
-        this.inputResponseRotateLeft++;
+        this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity;
       }
       else if(this.inputResponseRotateLeft>0)
       {
-        this.inputResponseRotateLeft++;
+        this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity;
       }
 
 
@@ -296,11 +320,11 @@ Game.prototype.assignControlKeys = function () {
       {
         //TurnRight
         this.rotateRight = true;
-        this.inputResponseRotateRight++;
+        this.inputResponseRotateRight+=this.inputResponseRotateRightVelocity*delta;
       }
       else if(this.inputResponseRotateRight>0)
       {
-        this.inputResponseRotationRight++;
+        this.inputResponseRotateRight+=this.inputResponseRotateRightVelocity*delta;
       }
 
       if(this.directionLeft && this.inputResponseLeft>=this.inputResponseLeftLength)
@@ -314,12 +338,12 @@ Game.prototype.assignControlKeys = function () {
       {
         //Left
         this.directionLeft = true;
-        this.inputResponseLeft++;
+        this.inputResponseLeft+=this.inputResponseLeftVelocity*delta;
 
       }
       else if(this.inputResponseLeft>0)
       {
-        this.inputResponseLeft++;
+        this.inputResponseLeft+=this.inputResponseLeftVelocity*delta;
       }
 
       if(this.directionRight  && this.inputResponseRight>=this.inputResponseRightLength)
@@ -333,11 +357,11 @@ Game.prototype.assignControlKeys = function () {
       {
         //Right
         this.directionRight = true;
-        this.inputResponseRight++;
+        this.inputResponseRight+=this.inputResponseRightVelocity*delta;
       }
       else if(this.inputResponseRight>0)
       {
-        this.inputResponseRight++;
+        this.inputResponseRight+=this.inputResponseRightVelocity*delta;
       }
 
       if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
@@ -351,11 +375,11 @@ Game.prototype.assignControlKeys = function () {
       {
         //Pause
         this.pausePressed = true;
-        this.inputResponsePause++;
+        this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
       }
       else if(this.inputResponsePause>0)
       {
-        this.inputResponsePause++;
+        this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
       }
     }
     else
@@ -373,12 +397,12 @@ Game.prototype.assignControlKeys = function () {
         //Pause
         this.pausePressed = true;
         console.log("entra2 PauseFalse 2");
-        this.inputResponsePause++;
+        this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
       }
       else if(this.inputResponsePause>0)
       {
         console.log("entra2 PauseFalse 3");
-        this.inputResponsePause++;
+        this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
       }
     }
   }
