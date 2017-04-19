@@ -300,11 +300,11 @@ Game.prototype.assignControlKeys = function (delta) {
       {
         //TurnLeft
         this.rotateLeft = true;
-        this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity;
+        this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
       }
       else if(this.inputResponseRotateLeft>0)
       {
-        this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity;
+        this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
       }
 
 
