@@ -48,7 +48,7 @@ function Game(options) {
   // this.inputResponsePauseLength = 10;
 
   this.movementCount = 0;
-  this.movementCountVelocity = 10;
+  this.movementCountVelocity = options.numberForLevel;
   this.movementCountLength = 1000;
 
   this.inputResponseLeft = 0;

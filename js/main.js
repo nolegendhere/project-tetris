@@ -86,6 +86,8 @@ Menu.prototype.generateMenu = function (){
   $('#number-player-button h3').html('ONE PLAYER');
   $('.start-game').append($('<button>').addClass('btn').attr('id','number-victory-button').append($('<h3>')));
   $('#number-victory-button h3').html('10PTS');
+  $('.start-game').append($('<button>').addClass('btn').attr('id','number-level-button').append($('<h3>')));
+  $('#number-level-button h3').html('1');
   $('.start-game').append($('<button>').addClass('btn').attr('id','resume-button').append($('<h3>')));
   $('#resume-button h3').html('RESUME GAME');
 
@@ -107,6 +109,7 @@ Menu.prototype.generateMenu = function (){
   this.startListener = '#start-button';
   this.numberOfPlayerListener = '#number-player-button';
   this.numberForVictoryListener = '#number-victory-button';
+  this.numberForLevelListener = '#number-level-button';
   this.resumeListener = '#resume-button';
   this.restartListener = '#restart-button';
   this.goBackMenuStart = '#go-back-menu-start-button';
@@ -114,6 +117,7 @@ Menu.prototype.generateMenu = function (){
   this.addListenerToStart();
   this.addListenerToNumberOfPLayers();
   this.addListenerToNumberForVictory();
+  this.addListenerToNumberForLevel();
   this.addListenerToResume();
   this.addListenerToRestart();
   this.addListenerToGoBackmenuStart();
@@ -126,12 +130,31 @@ Menu.prototype.generateMenu = function (){
 
 };
 
+Menu.prototype.addListenerToNumberForLevel = function()
+{
+  this.numberForLevel=1;
+  this.lastnumberForLevel=this.numberForlevel;
+  console.log(this.numberForLevel);
+  $(this.numberForLevelListener).on('click', function(){
+
+    var tempString = this.numberForLevelListener+' h3';
+    this.numberForLevel+=1;
+    if(this.numberForLevel%21===0)
+    {
+      this.numberForLevel = 1;
+    }
+
+    $(tempString).html(this.numberForLevel.toString());
+
+    console.log(this.numberForLevel);
+  }.bind(this));
+};
 
 Menu.prototype.addListenerToNumberForVictory = function()
 {
   this.numberForVictory=10;
   this.lastnumberForVictory=this.numberForVictory;
-  console.log(this.numberOfPlayers);
+  console.log(this.numberForVictory);
   $(this.numberForVictoryListener).on('click', function(){
 
     var tempString = this.numberForVictoryListener+' h3';
@@ -265,7 +288,8 @@ Menu.prototype.addListenerToRestart = function()
             initialRegionRow: 1,
             initialRegionColumn: 5,
             playerNumber: 0,
-            numberForVictory: this.lastnumberForVictory
+            numberForVictory: this.lastnumberForVictory,
+            numberForLevel: this.lastnumberForLevel
         });
 
         this.playerOne.addRivalPlayer({rivalPlayerExists: false});
@@ -317,7 +341,8 @@ Menu.prototype.addListenerToRestart = function()
             initialRegionRow: 1,
             initialRegionColumn: 5,
             playerNumber: 0,
-            numberForVictory: this.lastnumberForVictory
+            numberForVictory: this.lastnumberForVictory,
+            numberForLevel: this.lastnumberForLevel
         });
 
         this.playerTwo = new Game({
@@ -350,7 +375,8 @@ Menu.prototype.addListenerToRestart = function()
             initialRegionRow: 1,
             initialRegionColumn: 5,
             playerNumber: 1,
-            numberForVictory: this.lastnumberForVictory
+            numberForVictory: this.lastnumberForVictory,
+            numberForLevel: this.lastnumberForLevel
         });
 
         this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
@@ -386,6 +412,7 @@ Menu.prototype.addListenerToStart = function()
           this.OnePlayer = true;
           this.lastPlayedNumberOfPlayers=1;
           this.lastnumberForVictory = this.numberForVictory;
+          this.lastnumberForLevel = this.numberForLevel;
 
           $(this.menuLayoutStartSelector).hide();
 
@@ -419,7 +446,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
-              numberForVictory: this.numberForVictory
+              numberForVictory: this.numberForVictory,
+              numberForLevel: this.numberForLevel
           });
 
           this.playerOne.addRivalPlayer({rivalPlayerExists: false});
@@ -436,6 +464,7 @@ Menu.prototype.addListenerToStart = function()
         {
           this.lastPlayedNumberOfPlayers=1;
           this.lastnumberForVictory = this.numberForVictory;
+          this.lastnumberForLevel = this.numberForLevel;
           this.playerOne.restartGame();
           this.playerOne.gamePaused = true;
           delete this.playerOne.pieceGenerator;
@@ -473,7 +502,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
-              numberForVictory: this.numberForVictory
+              numberForVictory: this.numberForVictory,
+              numberForLevel: this.numberForLevel
           });
 
           this.playerOne.addRivalPlayer({rivalPlayerExists: false});
@@ -490,6 +520,7 @@ Menu.prototype.addListenerToStart = function()
         {
           this.lastPlayedNumberOfPlayers=1;
           this.lastnumberForVictory = this.numberForVictory;
+          this.lastnumberForLevel = this.numberForLevel;
           this.TwoPlayers = false;
           this.OnePlayer = true;
           this.playerOne.restartGame();
@@ -533,7 +564,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
-              numberForVictory: this.numberForVictory
+              numberForVictory: this.numberForVictory,
+              numberForLevel: this.numberForLevel
           });
 
           this.playerOne.addRivalPlayer({rivalPlayerExists: false});
@@ -554,6 +586,7 @@ Menu.prototype.addListenerToStart = function()
           this.lastPlayedNumberOfPlayers=2;
           this.TwoPlayers = true;
           this.lastnumberForVictory = this.numberForVictory;
+          this.lastnumberForLevel = this.numberForLevel;
 
           $(this.menuLayoutStartSelector).hide();
 
@@ -587,7 +620,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
-              numberForVictory: this.numberForVictory
+              numberForVictory: this.numberForVictory,
+              numberForLevel: this.numberForLevel
           });
 
           this.playerTwo = new Game({
@@ -620,7 +654,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 1,
-              numberForVictory: this.numberForVictory
+              numberForVictory: this.numberForVictory,
+              numberForLevel: this.numberForLevel
           });
 
           this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
@@ -640,6 +675,7 @@ Menu.prototype.addListenerToStart = function()
         {
           this.lastPlayedNumberOfPlayers=2;
           this.lastnumberForVictory = this.numberForVictory;
+          this.lastnumberForLevel = this.numberForLevel;
           this.OnePlayer = false;
           this.TwoPlayers = true;
           this.playerOne.restartGame();
@@ -679,7 +715,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
-              numberForVictory: this.numberForVictory
+              numberForVictory: this.numberForVictory,
+              numberForLevel: this.numberForLevel
           });
 
           this.playerTwo = new Game({
@@ -712,7 +749,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 1,
-              numberForVictory: this.numberForVictory
+              numberForVictory: this.numberForVictory,
+              numberForLevel: this.numberForLevel
           });
 
           this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
@@ -732,6 +770,7 @@ Menu.prototype.addListenerToStart = function()
         {
           this.lastPlayedNumberOfPlayers=2;
           this.lastnumberForVictory = this.numberForVictory;
+          this.lastnumberForLevel = this.numberForLevel;
           this.playerOne.restartGame();
           this.playerTwo.restartGame();
           this.playerOne.gamePaused = true;
@@ -773,7 +812,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
-              numberForVictory: this.numberForVictory
+              numberForVictory: this.numberForVictory,
+              numberForLevel: this.numberForLevel
           });
 
           this.playerTwo = new Game({
@@ -806,7 +846,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 1,
-              numberForVictory: this.numberForVictory
+              numberForVictory: this.numberForVictory,
+              numberForLevel: this.numberForLevel
           });
 
           this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
