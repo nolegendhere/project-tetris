@@ -1,10 +1,5 @@
 function Piece(options){
 
-  this.initialRegion = {
-      row: options.initialRegionRow,
-      column: options.initialRegionColumn
-  };
-
   this.limitRowBottom = options.limitRowBottom;
   this.limitColumnRight= options.limitColumnRight;
 
@@ -12,13 +7,6 @@ function Piece(options){
 
   this.rowsToDisplace = 0;
   this.rowsToErase = 0;
-
-
-  this.listData = new ListData({initialRegionRow:options.initialRegionRow,initialRegionColumn:options.initialRegionColumn,regions:options.regions });
-
-  this.listOfBodies = this.listData.listOfBodies;
-  this.listOfColors = this.listData.listOfColors;
-
 
   this.rotationPoint = -1;
   this.rotationMatrixLeft = [[0,-1],[1,0]];
@@ -266,14 +254,14 @@ Piece.prototype.updateRegions = function (){
 
 };
 
-Piece.prototype.chooseBody = function (){
-  this.numberOfBlocks = 7;
-  this.body = this.listOfBodies[Math.floor(Math.random()*this.numberOfBlocks)];
-  // this.body = this.listOfBodies[5];
-};
-
-Piece.prototype.chooseColor = function(){
-  this.numberOfColors = 7;
-  this.bodyColor = this.listOfColors[Math.floor(Math.random()*this.numberOfColors)];
-
-};
+// Piece.prototype.chooseBody = function (){
+//   this.numberOfBlocks = 7;
+//   this.body = this.listOfBodies[Math.floor(Math.random()*this.numberOfBlocks)];
+//   // this.body = this.listOfBodies[5];
+// };
+//
+// Piece.prototype.chooseColor = function(){
+//   this.numberOfColors = 7;
+//   this.bodyColor = this.listOfColors[Math.floor(Math.random()*this.numberOfColors)];
+//
+// };

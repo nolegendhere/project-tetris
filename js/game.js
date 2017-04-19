@@ -72,8 +72,8 @@ Game.prototype.update = function () {
     if(this.pieceGenerator.actualPiece().contact)
     {
       this.playerScore+=this.pieceGenerator.updateRegions();
-      this.pieceGenerator.actualPiece().drawPiece();
-      this.pieceGenerator.deployPiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
+      //this.pieceGenerator.actualPiece().drawPiece();
+      this.pieceGenerator.deployPiece();
     }
   }
 
@@ -137,7 +137,7 @@ Game.prototype.startGame = function() {
         this.generateRegions();
         this.generatePieceGenerator();
         this.generateInPlayMenu();
-        this.pieceGenerator.deployPiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
+        this.pieceGenerator.deployPieceFirstTime();
         this.frameID = requestAnimationFrame(function(timestamp) {
             this.draw(1);
             this.running = true;
@@ -231,7 +231,9 @@ Game.prototype.generatePieceGenerator = function () {
 
   this.pieceGeneratorSelector = '[player-number-piece-generator='+this.playerNumber.toString()+']';
 
-  this.pieceGenerator = new PieceGenerator({playerNumber: this.playerNumber,pieceGeneratorSelector: this.pieceGeneratorSelector,rowsToComplete: this.rowsToComplete,regions:this.regions,limitColumnRight:this.limitColumnRight});
+  this.pieceGenerator = new PieceGenerator({playerNumber: this.playerNumber,pieceGeneratorSelector: this.pieceGeneratorSelector,rowsToComplete: this.rowsToComplete, initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column,regions:this.regions, limitRowBottom: this.limitRowBottom,limitColumnRight:this.limitColumnRight});
+
+
 };
 
 Game.prototype.assignControlKeys = function () {

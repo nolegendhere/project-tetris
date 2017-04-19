@@ -1,53 +1,76 @@
 function PieceGenerator(options){
 
   this.actualPieceMoved = undefined;
-  // this.generatedPiece = undefined;
+  this.generatedPiece = undefined;
   this.generatedPieces = [];
   this.numberOfPieces = 0;
   this.playerNumber = options.playerNumber;
   this.boardSelector = options.pieceGeneratorSelector;
   this.rowsToComplete = options.rowsToComplete;
   this.regions = options.regions;
+  this.initialRegionRow = options.initialRegionRow; this.initialRegionColumn = options.initialRegionColumn;
+  this.limitRowBottom = options.limitRowBottom;
   this.limitColumnRight = options.limitColumnRight;
+  this.numberOfBlocks = 7;
+  this.numberOfColors = 7;
+
+  this.listData = new ListData({initialRegionRow:this.initialRegionRow,initialRegionColumn:this.initialRegionColumn,regions:this.regions });
+
+  this.listOfBodies = this.listData.listOfBodies;
+  this.listOfColors = this.listData.listOfColors;
 
 }
 
-// PieceGenerator.prototype.chooseBody = function (){
-//   this.numberOfBlocks = 7;
-//   this.body = this.listOfBodies[Math.floor(Math.random()*this.numberOfBlocks)];
-//   // this.body = this.listOfBodies[5];
-// };
-//
-// PieceGenerator.prototype.chooseColor = function(){
-//   this.numberOfColors = 7;
-//   this.bodyColor = this.listOfColors[Math.floor(Math.random()*this.numberOfColors)];
-//
-// };
-//
-// //Creates one pieces at a time
-// PieceGenerator.prototype.generatePiece = function (options) {
-//
-// };
+PieceGenerator.prototype.chooseBody = function (){
+  return this.listOfBodies[Math.floor(Math.random()*this.numberOfBlocks)];
+  // this.body = this.listOfBodies[5];
+};
+
+PieceGenerator.prototype.chooseColor = function(){
+  return this.listOfColors[Math.floor(Math.random()*this.numberOfColors)];
+
+};
 
 //Creates one pieces at a time
-PieceGenerator.prototype.deployPiece = function (options) {
+PieceGenerator.prototype.generatePiece = function () {
+  this.pieceGenerated = new Piece({regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
+  this.pieceGenerated.body = this.chooseBody();
+  this.pieceGenerated.bodyColor = this.chooseColor();
 
-  var pieceGenerated = new Piece(options);
-  pieceGenerated.chooseBody();
-  pieceGenerated.chooseColor();
-
-  for (var i = 0; i < pieceGenerated.body.length; i++)
+  for (var i = 0; i < this.pieceGenerated.body.length; i++)
   {
-      $(this.boardSelector).append($('<div>').addClass('cell piece').attr('player-number-piece',this.playerNumber.toString()).attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({backgroundColor: pieceGenerated.bodyColor, position: 'absolute', top: pieceGenerated.body[i].position.row.toString()+'px', left: pieceGenerated.body[i].position.column.toString()+'px'}));
+      $(this.boardSelector).append($('<div>').addClass('cell piece').attr('player-number-piece',this.playerNumber.toString()).attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({backgroundColor: this.pieceGenerated.bodyColor, position: 'absolute', top: this.pieceGenerated.body[i].position.row.toString()+'px', left: this.pieceGenerated.body[i].position.column.toString()+'px'}));
 
       var selector ='[player-number-piece='+this.playerNumber.toString()+'][index='+i.toString()+'][piece='+ this.numberOfPieces +']';
-      pieceGenerated.body[i].selector = $(selector);
+      this.pieceGenerated.body[i].selector = $(selector);
+  }
+};
+
+//Creates one pieces at a time
+PieceGenerator.prototype.deployPiece = function () {
+  this.actualPieceMoved = this.pieceGenerated;
+  this.generatedPieces.push(this.actualPieceMoved);
+  this.numberOfPieces++;
+  this.generatePiece();
+};
+
+PieceGenerator.prototype.deployPieceFirstTime = function () {
+
+  this.actualPieceMoved = new Piece({regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
+  this.actualPieceMoved.body = this.chooseBody();
+  this.actualPieceMoved.bodyColor = this.chooseColor();
+
+  for (var i = 0; i < this.actualPieceMoved.body.length; i++)
+  {
+      $(this.boardSelector).append($('<div>').addClass('cell piece').attr('player-number-piece',this.playerNumber.toString()).attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({backgroundColor: this.actualPieceMoved.bodyColor, position: 'absolute', top: this.actualPieceMoved.body[i].position.row.toString()+'px', left: this.actualPieceMoved.body[i].position.column.toString()+'px'}));
+
+      var selector ='[player-number-piece='+this.playerNumber.toString()+'][index='+i.toString()+'][piece='+ this.numberOfPieces +']';
+      this.actualPieceMoved.body[i].selector = $(selector);
   }
 
-  this.actualPieceMoved = pieceGenerated;
-  this.generatedPieces.push(pieceGenerated);
+  this.generatedPieces.push(this.actualPieceMoved);
   this.numberOfPieces++;
-
+  this.generatePiece();
 };
 
 //Returns the actual piece being controlled
