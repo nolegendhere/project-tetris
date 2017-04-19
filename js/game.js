@@ -72,7 +72,7 @@ Game.prototype.update = function () {
     if(this.pieceGenerator.actualPiece().contact)
     {
       this.playerScore+=this.pieceGenerator.updateRegions();
-      //this.pieceGenerator.actualPiece().drawPiece();
+      this.pieceGenerator.actualPiece().drawPiece();
       this.pieceGenerator.deployPiece();
     }
   }
