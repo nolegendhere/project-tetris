@@ -123,13 +123,10 @@ Game.prototype.update = function () {
 Game.prototype.draw = function(interp) {
     // this.box.style.left = (this.boxLastPos + (this.boxPos - this.boxLastPos) * interp) + 'px';
     this.fpsDisplay.textContent = Math.round(this.fps) + ' FPS';
-    if(!this.gameLost && !this.gameWon)
+    if(!this.gamePaused)
     {
-      if(!this.gamePaused)
-      {
-        this.pieceGenerator.drawPiece();
-        this.displayResult();
-      }
+      this.pieceGenerator.drawPiece();
+      this.displayResult();
     }
 };
 
