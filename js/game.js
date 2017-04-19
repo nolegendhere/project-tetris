@@ -232,8 +232,6 @@ Game.prototype.generatePieceGenerator = function () {
   this.pieceGeneratorSelector = '[player-number-piece-generator='+this.playerNumber.toString()+']';
 
   this.pieceGenerator = new PieceGenerator({playerNumber: this.playerNumber,pieceGeneratorSelector: this.pieceGeneratorSelector,rowsToComplete: this.rowsToComplete, initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column,regions:this.regions, limitRowBottom: this.limitRowBottom,limitColumnRight:this.limitColumnRight});
-
-
 };
 
 Game.prototype.assignControlKeys = function () {
