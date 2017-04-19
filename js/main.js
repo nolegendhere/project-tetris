@@ -1,9 +1,5 @@
 
 function Menu(){
-  this.playerOneWon = false;
-  this.playerOneLost = false;
-  this.playerTwoWon = false;
-  this.playerTwoLost = false;
 
 }
 
@@ -20,11 +16,8 @@ Menu.prototype.checkStateGame = function () {
       {
         console.log("Player 1 Wins");
         console.log($(this.playerOne.boardSelector));
-        $(this.playerOne.boardSelector).append($('<h1>').addClass('player-message win').attr('id','win1').css({position: 'absolute', top: '20px', left: '20px'}));
+        $(this.playerOne.boardSelector).append($('<h3>').addClass('player-message win').attr('id','win1').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
         $('#win1').html('PLAYER 1 WINS');
-
-        this.playerOneWon = true;
-        this.playerOneLost = false;
 
         this.checkStateGameClear();
       }
@@ -32,12 +25,8 @@ Menu.prototype.checkStateGame = function () {
       {
         console.log("Player 1 Loses");
         console.log($(this.playerOne.boardSelector));
-        $(this.playerOne.boardSelector).append($('<h1>').addClass('player-message lose').attr('id','lose1').css({position: 'absolute', top: '500px', left: '500px', fontSize: '100px'}));
+        $(this.playerOne.boardSelector).append($('<h3>').addClass('player-message lose').attr('id','lose1').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
         $('#lose1').html('PLAYER 1 LOSES');
-        console.log($('#lose1'));
-
-        this.playerOneLost = true;
-        this.playerOneWon = false;
 
         this.checkStateGameClear();
       }
@@ -53,33 +42,25 @@ Menu.prototype.checkStateGame = function () {
       if(this.playerOne.gameWon || this.playerTwo.gameLost)
       {
         console.log("Player 1 Wins");
-        $(this.playerOne.boardSelector).append($('<h1>').addClass('player-message win').attr('id','win1').css({position: 'absolute', top: '20px', left: '20px'}));
+        $(this.playerOne.boardSelector).append($('<h3>').addClass('player-message win').attr('id','win1').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
         $('#win1').html('PLAYER 1 WINS');
         console.log("Player 2 Loses");
-        $(this.playerTwo.boardSelector).append($('<h1>').addClass('player-message lose').attr('id','lose2').css({position: 'absolute', top: '20px', left: '20px'}));
-        $('#wlose2').html('PLAYER 2 LOSES');
+        $(this.playerTwo.boardSelector).append($('<h3>').addClass('player-message lose').attr('id','lose2').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
+        $('#lose2').html('PLAYER 2 LOSES');
 
-        this.playerOneWon = true;
-        this.playerOneLost = false;
-        this.playerTwoLost = true;
-        this.playerTwoWon = false;
+        console.log($('lose2'));
 
         this.checkStateGameClear();
       }
       else if(this.playerOne.gameLost || this.playerTwo.gameWon)
       {
         console.log("Player 1 Loses");
-        $(this.playerOne.boardSelector).append($('<h1>').addClass('player-message lose').attr('id','lose1').css({position: 'absolute', top: '20px', left: '20px'}));
-        $('#lose2').html('PLAYER 1 LOSES');
+        $(this.playerOne.boardSelector).append($('<h3>').addClass('player-message lose').attr('id','lose1').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
+        $('#lose1').html('PLAYER 1 LOSES');
         console.log("Player 2 Wins");
-        $(this.playerTwo.boardSelector).append($('<h1>').addClass('player-message win').attr('id','win2').css({position: 'absolute', top: '20px', left: '20px'}));
-        $('#win2').html('PLAYER 2 WINS');
+        $(this.playerTwo.boardSelector).append($('<h3>').addClass('player-message win').attr('id','win2').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
+        $('#wins2').html('PLAYER 2 WINS');
         console.log("Player 2 Loses");
-
-        this.playerOneLost = true;
-        this.playerOneWon = false;
-        this.playerTwoWon = true;
-        this.playerTwoLost = false;
 
         this.checkStateGameClear();
       }
@@ -93,31 +74,6 @@ Menu.prototype.checkStateGame = function () {
 
 Menu.prototype.checkStateGameClear = function () {
   console.log("clear");
-  if(this.lastPlayedNumberOfPlayers===1)
-  {
-    if(this.playerOneWon)
-    {
-      $('#win1').remove();
-    }
-    else if(this.playerOneLost)
-    {
-      $('#lose1').remove();
-    }
-  }
-  else
-  {
-    if(this.playerOne.gameWon || this.playerTwo.gameLost)
-    {
-      $('#win1').remove();
-      $('#lose2').remove();
-    }
-    else if(this.playerOne.gameLost || this.playerTwo.gameWon)
-    {
-      $('#lose1').remove();
-      $('#win2').remove();
-    }
-  }
-
   clearInterval(this.intervalID);
 };
 
