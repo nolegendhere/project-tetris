@@ -1,5 +1,9 @@
 
 function Menu(){
+  this.playerOneWon = false;
+  this.playerOneLost = false;
+  this.playerTwoWon = false;
+  this.playerTwoLost = false;
 
 }
 
@@ -9,6 +13,112 @@ Menu.prototype.startApp = function () {
 
 Menu.prototype.checkStateGame = function () {
 
+  if(this.lastPlayedNumberOfPlayers===1)
+  {
+    this.intervalID = setInterval(function(){
+      if(this.playerOne.gameWon)
+      {
+        console.log("Player 1 Wins");
+        console.log($(this.playerOne.boardSelector));
+        $(this.playerOne.boardSelector).append($('<h1>').addClass('player-message win').attr('id','win1').css({position: 'absolute', top: '20px', left: '20px'}));
+        $('#win1').html('PLAYER 1 WINS');
+
+        this.playerOneWon = true;
+        this.playerOneLost = false;
+
+        this.checkStateGameClear();
+      }
+      else if(this.playerOne.gameLost)
+      {
+        console.log("Player 1 Loses");
+        console.log($(this.playerOne.boardSelector));
+        $(this.playerOne.boardSelector).append($('<h1>').addClass('player-message lose').attr('id','lose1').css({position: 'absolute', top: '500px', left: '500px', fontSize: '100px'}));
+        $('#lose1').html('PLAYER 1 LOSES');
+        console.log($('#lose1'));
+
+        this.playerOneLost = true;
+        this.playerOneWon = false;
+
+        this.checkStateGameClear();
+      }
+      else
+      {
+         console.log("goOn");
+      }
+    }.bind(this), 100);
+  }
+  else
+  {
+    this.intervalID = setInterval(function(){
+      if(this.playerOne.gameWon || this.playerTwo.gameLost)
+      {
+        console.log("Player 1 Wins");
+        $(this.playerOne.boardSelector).append($('<h1>').addClass('player-message win').attr('id','win1').css({position: 'absolute', top: '20px', left: '20px'}));
+        $('#win1').html('PLAYER 1 WINS');
+        console.log("Player 2 Loses");
+        $(this.playerTwo.boardSelector).append($('<h1>').addClass('player-message lose').attr('id','lose2').css({position: 'absolute', top: '20px', left: '20px'}));
+        $('#wlose2').html('PLAYER 2 LOSES');
+
+        this.playerOneWon = true;
+        this.playerOneLost = false;
+        this.playerTwoLost = true;
+        this.playerTwoWon = false;
+
+        this.checkStateGameClear();
+      }
+      else if(this.playerOne.gameLost || this.playerTwo.gameWon)
+      {
+        console.log("Player 1 Loses");
+        $(this.playerOne.boardSelector).append($('<h1>').addClass('player-message lose').attr('id','lose1').css({position: 'absolute', top: '20px', left: '20px'}));
+        $('#lose2').html('PLAYER 1 LOSES');
+        console.log("Player 2 Wins");
+        $(this.playerTwo.boardSelector).append($('<h1>').addClass('player-message win').attr('id','win2').css({position: 'absolute', top: '20px', left: '20px'}));
+        $('#win2').html('PLAYER 2 WINS');
+        console.log("Player 2 Loses");
+
+        this.playerOneLost = true;
+        this.playerOneWon = false;
+        this.playerTwoWon = true;
+        this.playerTwoLost = false;
+
+        this.checkStateGameClear();
+      }
+      else
+      {
+         console.log("goOn");
+      }
+    }.bind(this), 100);
+  }
+};
+
+Menu.prototype.checkStateGameClear = function () {
+  console.log("clear");
+  if(this.lastPlayedNumberOfPlayers===1)
+  {
+    if(this.playerOneWon)
+    {
+      $('#win1').remove();
+    }
+    else if(this.playerOneLost)
+    {
+      $('#lose1').remove();
+    }
+  }
+  else
+  {
+    if(this.playerOne.gameWon || this.playerTwo.gameLost)
+    {
+      $('#win1').remove();
+      $('#lose2').remove();
+    }
+    else if(this.playerOne.gameLost || this.playerTwo.gameWon)
+    {
+      $('#lose1').remove();
+      $('#win2').remove();
+    }
+  }
+
+  clearInterval(this.intervalID);
 };
 
 Menu.prototype.generateMenu = function (){
@@ -18,10 +128,8 @@ Menu.prototype.generateMenu = function (){
   $('#start-button h3').html('START GAME');
   $('.start-game').append($('<button>').addClass('btn').attr('id','number-player-button').append($('<h3>')));
   $('#number-player-button h3').html('ONE PLAYER');
-
   $('.start-game').append($('<button>').addClass('btn').attr('id','number-victory-button').append($('<h3>')));
   $('#number-victory-button h3').html('10PTS');
-
   $('.start-game').append($('<button>').addClass('btn').attr('id','resume-button').append($('<h3>')));
   $('#resume-button h3').html('RESUME GAME');
 
@@ -127,6 +235,8 @@ Menu.prototype.addListenerToResume = function()
         this.playerOne.gamePaused = false;
         this.playerTwo.gamePaused = false;
       }
+
+      this.checkStateGame();
     }
   }.bind(this));
 };
@@ -151,6 +261,8 @@ Menu.prototype.addListenerToGoBackmenuStart = function()
       $(this.resumeListener).show();
       $(this.menuLayoutRestartSelector).hide();
       $(this.playerLayoutSelector).hide();
+
+      this.checkStateGameClear();
     }
   }.bind(this));
 };
@@ -200,9 +312,12 @@ Menu.prototype.addListenerToRestart = function()
             numberForVictory: this.lastnumberForVictory
         });
 
+        this.playerOne.addRivalPlayer({rivalPlayerExists: false});
+
         setTimeout(function(){
           this.playerOne.startGame();
           this.inactiveButton=false;
+          this.checkStateGame();
         }.bind(this), 1000);
       }
       else
@@ -282,10 +397,15 @@ Menu.prototype.addListenerToRestart = function()
             numberForVictory: this.lastnumberForVictory
         });
 
+        this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
+
+        this.playerTwo.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerOne});
+
         setTimeout(function(){
           this.playerOne.startGame();
           this.playerTwo.startGame();
           this.inactiveButton = false;
+          this.checkStateGame();
         }.bind(this), 1000);
       }
     }
@@ -346,11 +466,14 @@ Menu.prototype.addListenerToStart = function()
               numberForVictory: this.numberForVictory
           });
 
+          this.playerOne.addRivalPlayer({rivalPlayerExists: false});
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.inactiveButton=false;
+            this.checkStateGame();
           }.bind(this), 1000);
         }
         else if(this.OnePlayer && !this.TwoPlayers)
@@ -397,11 +520,14 @@ Menu.prototype.addListenerToStart = function()
               numberForVictory: this.numberForVictory
           });
 
+          this.playerOne.addRivalPlayer({rivalPlayerExists: false});
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.inactiveButton=false;
+            this.checkStateGame();
           }.bind(this), 1000);
         }
         else if(this.TwoPlayers)
@@ -454,11 +580,14 @@ Menu.prototype.addListenerToStart = function()
               numberForVictory: this.numberForVictory
           });
 
+          this.playerOne.addRivalPlayer({rivalPlayerExists: false});
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.inactiveButton=false;
+            this.checkStateGame();
           }.bind(this), 1000);
         }
       }
@@ -538,12 +667,17 @@ Menu.prototype.addListenerToStart = function()
               numberForVictory: this.numberForVictory
           });
 
+          this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
+
+          this.playerTwo.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerOne});
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.playerTwo.startGame();
             this.inactiveButton=false;
+            this.checkStateGame();
           }.bind(this), 1000);
         }
         else if(this.OnePlayer && !this.TwoPlayers)
@@ -625,12 +759,17 @@ Menu.prototype.addListenerToStart = function()
               numberForVictory: this.numberForVictory
           });
 
+          this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
+
+          this.playerTwo.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerOne});
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.playerTwo.startGame();
             this.inactiveButton=false;
+            this.checkStateGame();
           }.bind(this), 1000);
         }
         else if(this.TwoPlayers)
@@ -714,12 +853,17 @@ Menu.prototype.addListenerToStart = function()
               numberForVictory: this.numberForVictory
           });
 
+          this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
+
+          this.playerTwo.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerOne});
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.playerTwo.startGame();
             this.inactiveButton=false;
+            this.checkStateGame();
           }.bind(this), 1000);
         }
       }
@@ -733,77 +877,5 @@ $(document).ready(function(){
   var menu = new Menu();
 
   menu.startApp();
-  // $('body').on('keydown',function(e){
-  //   console.log(e.keyCode);
-  // });
 
-  // Initial values
-
-  // var game1 = new Game({
-  //     box :document.getElementById('box'),
-  //     boxPos : 10,
-  //     boxLastPos : 10,
-  //     boxVelocity : 0.08,
-  //     fpsDisplay : document.getElementById('fpsDisplay'),
-  //     limit : 300,
-  //     lastFrameTimeMs : 0,
-  //     maxFPS : 100,
-  //     delta : 0,
-  //     timestep : 1000 / 100,
-  //     fps : 60,
-  //     framesThisSecond : 0,
-  //     lastFpsUpdate : 0,
-  //     running : false,
-  //     started : false,
-  //     frameID : 0,
-  //     rows: 50,
-  //     columns: 50,
-  //     limitRowBottom: 40,
-  //     limitColumnLeft: 0,
-  //     limitColumnRight: 10,
-  //     keys: arrows1,
-  //     width: 650,
-  //     height: 650,
-  //     offsetRow: 0,
-  //     offsetColumn: 50,
-  //     initialRegionRow: 1,
-  //     initialRegionColumn: 5,
-  //     playerNumber: 0,
-  // });
-
-  // var game2 = new Game({
-  //     box :document.getElementById('box'),
-  //     boxPos : 10,
-  //     boxLastPos : 10,
-  //     boxVelocity : 0.08,
-  //     fpsDisplay : document.getElementById('fpsDisplay'),
-  //     limit : 300,
-  //     lastFrameTimeMs : 0,
-  //     maxFPS : 100,
-  //     delta : 0,
-  //     timestep : 1000 / 100,
-  //     fps : 60,
-  //     framesThisSecond : 0,
-  //     lastFpsUpdate : 0,
-  //     running : false,
-  //     started : false,
-  //     frameID : 0,
-  //     rows: 50,
-  //     columns: 50,
-  //     limitRowBottom: 40,
-  //     limitColumnLeft: 0,
-  //     limitColumnRight: 10,
-  //     keys: arrows2,
-  //     width: 650,
-  //     height: 650,
-  //     offsetRow: 0,
-  //     offsetColumn: 50,
-  //     initialRegionRow: 1,
-  //     initialRegionColumn: 5,
-  //     playerNumber: 1,
-  // });
-
-  // game1.startGame();
-  // game2.startGame();
-  // console.log("game.regions from document jquery",game2.regions);
 });

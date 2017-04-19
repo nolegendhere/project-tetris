@@ -69,38 +69,46 @@ function Game(options) {
 }
 
 Game.prototype.update = function () {
+
   if(!this.gameLost && !this.gameWon)
   {
     if(!this.gamePaused)
     {
-      if(this.pieceGenerator.actualPiece().contact)
+      if(this.rivalPlayer.gameWon)
       {
-        this.playerScore+=this.pieceGenerator.updateRegions();
-        //this.pieceGenerator.actualPiece().drawPiece();
-
-        if(this.playerScore>=this.numberForVictory)
-        {
-          this.gameWon = true;
-        }
-
-        this.pieceGenerator.deployPiece();
-
-        if(!this.pieceGenerator.actualPiece().checkDeploy())
-        {
-          this.gameLost = true;
-        }
+        this.gameLost = true;
       }
-    }
-
-    if(!this.gamePaused)
-    {
-      this.movementCount++;
-
-      if(this.movementCount==this.movementCountLength)
+      else if(this.rivalPlayer.gameLost)
       {
-        this.pieceGenerator.actualPiece().moveDown();
-        // console.log("this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
-        this.movementCount=0;
+        this.gameWon = true;
+      }
+      else
+      {
+        if(this.pieceGenerator.actualPiece().contact)
+        {
+          this.playerScore+=this.pieceGenerator.updateRegions();
+          //this.pieceGenerator.actualPiece().drawPiece();
+          if(this.playerScore>=this.numberForVictory)
+          {
+            this.gameWon = true;
+          }
+
+          this.pieceGenerator.deployPiece();
+
+          if(!this.pieceGenerator.actualPiece().checkDeploy())
+          {
+            this.gameLost = true;
+          }
+        }
+
+        this.movementCount++;
+
+        if(this.movementCount==this.movementCountLength)
+        {
+          this.pieceGenerator.actualPiece().moveDown();
+          // console.log("this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
+          this.movementCount=0;
+        }
       }
     }
 
@@ -353,8 +361,8 @@ Game.prototype.assignControlKeys = function () {
         this.inputResponsePause++;
       }
     }
-    else {
-
+    else
+    {
       if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
       {
         //Pause
@@ -400,4 +408,20 @@ Game.prototype.displayResult = function () {
 Game.prototype.restartGame = function () {
   console.log("restart");
   $(this.playerLayout).remove();
+};
+
+Game.prototype.addRivalPlayer = function(options){
+  if(options.rivalPlayerExists)
+  {
+    this.rivalPlayerExists = options.rivalPlayerExists;
+    this.rivalPlayer = options.rivalPlayer;
+  }
+  else
+  {
+    this.rivalPlayer ={
+      gameWon : false,
+      gameLost : false
+    };
+    this.rivalPlayerExists = false;
+  }
 };
