@@ -26,6 +26,7 @@ function Game(options) {
   this.regions = [];
   this.rowsToComplete = [];
   this.keys = options.keys;
+  this.keysUp = options.keysUp;
 
   this.directionLeft = false;
   this.directionRight = false;
@@ -49,7 +50,12 @@ function Game(options) {
 
   this.movementCount = 0;
   this.movementCountVelocity = options.numberForLevel;
+  this.movementCountVelocityOriginal = options.numberForLevel;
   this.movementCountLength = 1000;
+
+  this.inputResponseDown = 0;
+  this.inputResponseDownVelocity = 10;
+  this.inputResponseDownLength = 1000;
 
   this.inputResponseLeft = 0;
   this.inputResponseLeftVelocity = 10;
@@ -325,6 +331,30 @@ Game.prototype.assignControlKeys = function (delta) {
       else if(this.inputResponseRotateRight>0)
       {
         this.inputResponseRotateRight+=this.inputResponseRotateRightVelocity*delta;
+      }
+
+      if(this.directionDown && this.inputResponseDown>=this.inputResponseDownLength)
+      {
+        //Left
+        this.directionDown = false;
+        this.inputResponseDown = 0;
+        this.movementCountVelocity = this.pieceGenerator.actualPiece().goDownFaster();
+      }
+      else if(this.keys.down && this.inputResponseDown===0)
+      {
+        //Left
+        this.directionDown = true;
+        this.inputResponseDown+=this.inputResponseDownVelocity*delta;
+
+      }
+      else if(this.inputResponseDown>0)
+      {
+        this.inputResponseDown+=this.inputResponseDownVelocity*delta;
+      }
+
+      if(this.keysUp.down)
+      {
+        this.movementCountVelocity = this.movementCountVelocityOriginal;
       }
 
       if(this.directionLeft && this.inputResponseLeft>=this.inputResponseLeftLength)

@@ -57,10 +57,9 @@ Menu.prototype.checkStateGame = function () {
         console.log("Player 1 Loses");
         $(this.playerOne.boardSelector).append($('<h3>').addClass('player-message lose').attr('id','lose1').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
         $('#lose1').html('PLAYER 1 LOSES');
-        console.log("Player 2 Wins");
         $(this.playerTwo.boardSelector).append($('<h3>').addClass('player-message win').attr('id','win2').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
-        $('#wins2').html('PLAYER 2 WINS');
-        console.log("Player 2 Loses");
+        $('#win2').html('PLAYER 2 WINS');
+        console.log("Player 2 wins");
 
         this.checkStateGameClear();
       }
@@ -281,6 +280,7 @@ Menu.prototype.addListenerToRestart = function()
             limitColumnLeft: 0,
             limitColumnRight: 10,
             keys: arrows1,
+            keysUp: arrows1up,
             width: 650,
             height: 650,
             offsetRow: 0,
@@ -334,6 +334,7 @@ Menu.prototype.addListenerToRestart = function()
             limitColumnLeft: 0,
             limitColumnRight: 10,
             keys: arrows1,
+            keysUp: arrows1up,
             width: 650,
             height: 650,
             offsetRow: 0,
@@ -368,6 +369,7 @@ Menu.prototype.addListenerToRestart = function()
             limitColumnLeft: 0,
             limitColumnRight: 10,
             keys: arrows2,
+            keysUp: arrows2up,
             width: 650,
             height: 650,
             offsetRow: 0,
@@ -439,6 +441,7 @@ Menu.prototype.addListenerToStart = function()
               limitColumnLeft: 0,
               limitColumnRight: 10,
               keys: arrows1,
+              keysUp: arrows1up,
               width: 650,
               height: 650,
               offsetRow: 0,
@@ -495,6 +498,7 @@ Menu.prototype.addListenerToStart = function()
               limitColumnLeft: 0,
               limitColumnRight: 10,
               keys: arrows1,
+              keysUp: arrows1up,
               width: 650,
               height: 650,
               offsetRow: 0,
@@ -557,6 +561,7 @@ Menu.prototype.addListenerToStart = function()
               limitColumnLeft: 0,
               limitColumnRight: 10,
               keys: arrows1,
+              keysUp: arrows1up,
               width: 650,
               height: 650,
               offsetRow: 0,
@@ -613,6 +618,7 @@ Menu.prototype.addListenerToStart = function()
               limitColumnLeft: 0,
               limitColumnRight: 10,
               keys: arrows1,
+              keysUp: arrows1up,
               width: 650,
               height: 650,
               offsetRow: 0,
@@ -647,6 +653,7 @@ Menu.prototype.addListenerToStart = function()
               limitColumnLeft: 0,
               limitColumnRight: 10,
               keys: arrows2,
+              keysUp: arrows2up,
               width: 650,
               height: 650,
               offsetRow: 0,
@@ -708,6 +715,7 @@ Menu.prototype.addListenerToStart = function()
               limitColumnLeft: 0,
               limitColumnRight: 10,
               keys: arrows1,
+              keysUp: arrows1up,
               width: 650,
               height: 650,
               offsetRow: 0,
@@ -742,6 +750,7 @@ Menu.prototype.addListenerToStart = function()
               limitColumnLeft: 0,
               limitColumnRight: 10,
               keys: arrows2,
+              keysUp: arrows2up,
               width: 650,
               height: 650,
               offsetRow: 0,
@@ -805,6 +814,7 @@ Menu.prototype.addListenerToStart = function()
               limitColumnLeft: 0,
               limitColumnRight: 10,
               keys: arrows1,
+              keysUp: arrows1up,
               width: 650,
               height: 650,
               offsetRow: 0,
@@ -839,6 +849,7 @@ Menu.prototype.addListenerToStart = function()
               limitColumnLeft: 0,
               limitColumnRight: 10,
               keys: arrows2,
+              keysUp: arrows2up,
               width: 650,
               height: 650,
               offsetRow: 0,

@@ -117,7 +117,7 @@ Piece.prototype.goRight = function () {
 
 //TO-DO move the piece down faster
 Piece.prototype.goDownFaster = function (maxRows) {
-
+  return 20;
 };
 
 //Define collisions with ground
