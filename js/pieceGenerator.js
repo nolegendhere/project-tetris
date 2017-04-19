@@ -1,6 +1,7 @@
 function PieceGenerator(options){
 
   this.actualPieceMoved = undefined;
+  // this.generatedPiece = undefined;
   this.generatedPieces = [];
   this.numberOfPieces = 0;
   this.playerNumber = options.playerNumber;
@@ -11,10 +12,27 @@ function PieceGenerator(options){
 
 }
 
-//Creates one pieces at a time
-PieceGenerator.prototype.generatePiece = function (options) {
+// PieceGenerator.prototype.chooseBody = function (){
+//   this.numberOfBlocks = 7;
+//   this.body = this.listOfBodies[Math.floor(Math.random()*this.numberOfBlocks)];
+//   // this.body = this.listOfBodies[5];
+// };
+//
+// PieceGenerator.prototype.chooseColor = function(){
+//   this.numberOfColors = 7;
+//   this.bodyColor = this.listOfColors[Math.floor(Math.random()*this.numberOfColors)];
+//
+// };
+//
+// //Creates one pieces at a time
+// PieceGenerator.prototype.generatePiece = function (options) {
+//
+// };
 
-  var pieceGenerated = new Piece(options,this.numberOfPieces,this.generatedPieces);
+//Creates one pieces at a time
+PieceGenerator.prototype.deployPiece = function (options) {
+
+  var pieceGenerated = new Piece(options);
   pieceGenerated.chooseBody();
   pieceGenerated.chooseColor();
 

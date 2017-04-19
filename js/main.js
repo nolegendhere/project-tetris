@@ -170,7 +170,7 @@ Menu.prototype.addListenerToRestart = function()
         setTimeout(function(){
           this.playerOne.startGame();
           this.inactiveButton=false;
-        }.bind(this), 3000);
+        }.bind(this), 1000);
       }
       else
       {
@@ -251,7 +251,7 @@ Menu.prototype.addListenerToRestart = function()
           this.playerOne.startGame();
           this.playerTwo.startGame();
           this.inactiveButton = false;
-        }.bind(this), 3000);
+        }.bind(this), 1000);
       }
     }
 
@@ -314,7 +314,7 @@ Menu.prototype.addListenerToStart = function()
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.inactiveButton=false;
-          }.bind(this), 3000);
+          }.bind(this), 1000);
         }
         else if(this.OnePlayer && !this.TwoPlayers)
         {
@@ -363,7 +363,7 @@ Menu.prototype.addListenerToStart = function()
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.inactiveButton=false;
-          }.bind(this), 3000);
+          }.bind(this), 1000);
         }
         else if(this.TwoPlayers)
         {
@@ -418,7 +418,7 @@ Menu.prototype.addListenerToStart = function()
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.inactiveButton=false;
-          }.bind(this), 3000);
+          }.bind(this), 1000);
         }
       }
       else
@@ -500,7 +500,7 @@ Menu.prototype.addListenerToStart = function()
             this.playerOne.startGame();
             this.playerTwo.startGame();
             this.inactiveButton=false;
-          }.bind(this), 3000);
+          }.bind(this), 1000);
         }
         else if(this.OnePlayer && !this.TwoPlayers)
         {
@@ -584,7 +584,7 @@ Menu.prototype.addListenerToStart = function()
             this.playerOne.startGame();
             this.playerTwo.startGame();
             this.inactiveButton=false;
-          }.bind(this), 3000);
+          }.bind(this), 1000);
         }
         else if(this.TwoPlayers)
         {
@@ -670,7 +670,7 @@ Menu.prototype.addListenerToStart = function()
             this.playerOne.startGame();
             this.playerTwo.startGame();
             this.inactiveButton=false;
-          }.bind(this), 3000);
+          }.bind(this), 1000);
         }
       }
     }

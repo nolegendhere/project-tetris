@@ -65,7 +65,6 @@ function Game(options) {
 
 }
 
-
 Game.prototype.update = function () {
 
   if(!this.gamePaused)
@@ -74,7 +73,7 @@ Game.prototype.update = function () {
     {
       this.playerScore+=this.pieceGenerator.updateRegions();
       this.pieceGenerator.actualPiece().drawPiece();
-      this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
+      this.pieceGenerator.deployPiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
     }
   }
 
@@ -136,8 +135,9 @@ Game.prototype.startGame = function() {
         this.started = true;
         this.generateLayout();
         this.generateRegions();
+        this.generatePieceGenerator();
         this.generateInPlayMenu();
-        this.pieceGenerator.generatePiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
+        this.pieceGenerator.deployPiece({initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column, regions: this.regions, limitRowBottom: this.limitRowBottom, limitColumnRight: this.limitColumnRight});
         this.frameID = requestAnimationFrame(function(timestamp) {
             this.draw(1);
             this.running = true;
@@ -223,6 +223,10 @@ Game.prototype.generateRegions = function () {
     this.regions.push(tempArray);
   }
 
+
+};
+
+Game.prototype.generatePieceGenerator = function () {
   $(this.boardSelector).append($('<div>').addClass('piece-generator').attr('player-number-piece-generator',this.playerNumber.toString()));
 
   this.pieceGeneratorSelector = '[player-number-piece-generator='+this.playerNumber.toString()+']';
