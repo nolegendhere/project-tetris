@@ -60,41 +60,52 @@ function Game(options) {
 
   this.playerNumber = options.playerNumber;
   this.playerScore = 0;
+  this.numberForVictory = options.numberForVictory;
 
   this.gamePaused = false;
+  this.gameLost = false;
+  this.gameWon = false;
 
 }
 
 Game.prototype.update = function () {
-
-  if(!this.gamePaused)
+  if(!this.gameLost && !this.gameWon)
   {
-    if(this.pieceGenerator.actualPiece().contact)
+    if(!this.gamePaused)
     {
-      console.log("this.pieceGenerator.numberOfPieces",this.pieceGenerator.numberOfPieces);
-      this.playerScore+=this.pieceGenerator.updateRegions();
-      //this.pieceGenerator.actualPiece().drawPiece();
-      this.pieceGenerator.deployPiece();
-      console.log("after");
-      console.log("after deploy this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
-      console.log("after deploy this.pieceGenerator.numberOfPieces",this.pieceGenerator.numberOfPieces);
+      if(this.pieceGenerator.actualPiece().contact)
+      {
+        this.playerScore+=this.pieceGenerator.updateRegions();
+        //this.pieceGenerator.actualPiece().drawPiece();
+
+        if(this.playerScore>=this.numberForVictory)
+        {
+          this.gameWon = true;
+        }
+
+        this.pieceGenerator.deployPiece();
+
+        if(!this.pieceGenerator.actualPiece().checkDeploy())
+        {
+          this.gameLost = true;
+        }
+      }
     }
-  }
 
-  if(!this.gamePaused)
-  {
-    this.movementCount++;
-
-    if(this.movementCount==this.movementCountLength)
+    if(!this.gamePaused)
     {
-      this.pieceGenerator.actualPiece().moveDown();
-      // console.log("this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
-      this.movementCount=0;
+      this.movementCount++;
+
+      if(this.movementCount==this.movementCountLength)
+      {
+        this.pieceGenerator.actualPiece().moveDown();
+        // console.log("this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
+        this.movementCount=0;
+      }
     }
+
+    this.assignControlKeys();
   }
-
-  this.assignControlKeys();
-
     // this.boxLastPos = this.boxPos;
     // this.boxPos += this.boxVelocity * this.delta;
     // // Switch directions if we go too far
@@ -104,11 +115,13 @@ Game.prototype.update = function () {
 Game.prototype.draw = function(interp) {
     // this.box.style.left = (this.boxLastPos + (this.boxPos - this.boxLastPos) * interp) + 'px';
     this.fpsDisplay.textContent = Math.round(this.fps) + ' FPS';
-
-    if(!this.gamePaused)
+    if(!this.gameLost && !this.gameWon)
     {
-      this.pieceGenerator.drawPiece();
-      this.displayResult();
+      if(!this.gamePaused)
+      {
+        this.pieceGenerator.drawPiece();
+        this.displayResult();
+      }
     }
 };
 
@@ -177,9 +190,9 @@ Game.prototype.mainLoop=function(timestamp) {
 
     var numUpdateSteps = 0;
     while (this.delta >= this.timestep) {
-      console.log("before request1");
+      // console.log("before request1");
         this.update(this.timestep);
-        console.log("after request1");
+        // console.log("after request1");
         this.delta -= this.timestep;
         if (++this.numUpdateSteps >= 240) {
             this.panic();
@@ -189,7 +202,7 @@ Game.prototype.mainLoop=function(timestamp) {
 
     this.draw(this.delta / this.timestep);
     this.end(this.fps);
-    console.log("request2");
+    // console.log("request2");
     this.frameID = requestAnimationFrame(this.mainLoop.bind(this));
 };
 
@@ -231,8 +244,6 @@ Game.prototype.generateRegions = function () {
     }
     this.regions.push(tempArray);
   }
-
-
 };
 
 Game.prototype.generatePieceGenerator = function () {
@@ -244,123 +255,126 @@ Game.prototype.generatePieceGenerator = function () {
 };
 
 Game.prototype.assignControlKeys = function () {
-  if(!this.gamePaused)
+  if(!this.gameLost)
   {
-    if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && !this.keys.turnLeft)
+    if(!this.gamePaused)
     {
-      //TurnRight
-      this.rotateLeft = false;
-      this.inputResponseRotateLeft = 0;
-      this.pieceGenerator.actualPiece().defineRotationPoint();
-      this.pieceGenerator.actualPiece().rotatePieceLeft();
-    }
-    else if(this.keys.turnLeft && this.inputResponseRotateLeft===0)
-    {
-      //TurnLeft
-      this.rotateLeft = true;
-      this.inputResponseRotateLeft++;
-    }
-    else if(this.inputResponseRotateLeft>0)
-    {
-      this.inputResponseRotateLeft++;
-    }
+      if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && !this.keys.turnLeft)
+      {
+        //TurnRight
+        this.rotateLeft = false;
+        this.inputResponseRotateLeft = 0;
+        this.pieceGenerator.actualPiece().defineRotationPoint();
+        this.pieceGenerator.actualPiece().rotatePieceLeft();
+      }
+      else if(this.keys.turnLeft && this.inputResponseRotateLeft===0)
+      {
+        //TurnLeft
+        this.rotateLeft = true;
+        this.inputResponseRotateLeft++;
+      }
+      else if(this.inputResponseRotateLeft>0)
+      {
+        this.inputResponseRotateLeft++;
+      }
 
 
-    if(this.rotateRight && this.inputResponseRotateRight>=this.inputResponseRotateRight && !this.keys.turnRight)
-    {
-      //TurnRight
-      this.rotateRight = false;
-      this.inputResponseRotateRight = 0;
-      this.pieceGenerator.actualPiece().defineRotationPoint();
-      this.pieceGenerator.actualPiece().rotatePieceRight();
-    }
-    else if(this.keys.turnRight && this.inputResponseRotateRight===0)
-    {
-      //TurnRight
-      this.rotateRight = true;
-      this.inputResponseRotateRight++;
-    }
-    else if(this.inputResponseRotateRight>0)
-    {
-      this.inputResponseRotationRight++;
-    }
+      if(this.rotateRight && this.inputResponseRotateRight>=this.inputResponseRotateRight && !this.keys.turnRight)
+      {
+        //TurnRight
+        this.rotateRight = false;
+        this.inputResponseRotateRight = 0;
+        this.pieceGenerator.actualPiece().defineRotationPoint();
+        this.pieceGenerator.actualPiece().rotatePieceRight();
+      }
+      else if(this.keys.turnRight && this.inputResponseRotateRight===0)
+      {
+        //TurnRight
+        this.rotateRight = true;
+        this.inputResponseRotateRight++;
+      }
+      else if(this.inputResponseRotateRight>0)
+      {
+        this.inputResponseRotationRight++;
+      }
 
-    if(this.directionLeft && this.inputResponseLeft>=this.inputResponseLeftLength)
-    {
-      //Left
-      this.directionLeft = false;
-      this.inputResponseLeft = 0;
-      this.pieceGenerator.actualPiece().goLeft();
-    }
-    else if(this.keys.left && this.inputResponseLeft===0)
-    {
-      //Left
-      this.directionLeft = true;
-      this.inputResponseLeft++;
+      if(this.directionLeft && this.inputResponseLeft>=this.inputResponseLeftLength)
+      {
+        //Left
+        this.directionLeft = false;
+        this.inputResponseLeft = 0;
+        this.pieceGenerator.actualPiece().goLeft();
+      }
+      else if(this.keys.left && this.inputResponseLeft===0)
+      {
+        //Left
+        this.directionLeft = true;
+        this.inputResponseLeft++;
 
-    }
-    else if(this.inputResponseLeft>0)
-    {
-      this.inputResponseLeft++;
-    }
+      }
+      else if(this.inputResponseLeft>0)
+      {
+        this.inputResponseLeft++;
+      }
 
-    if(this.directionRight  && this.inputResponseRight>=this.inputResponseRightLength)
-    {
-      //Right
-      this.directionRight = false;
-      this.inputResponseRight = 0;
-      this.pieceGenerator.actualPiece().goRight();
-    }
-    else if(this.keys.right && this.inputResponseRight===0)
-    {
-      //Right
-      this.directionRight = true;
-      this.inputResponseRight++;
-    }
-    else if(this.inputResponseRight>0)
-    {
-      this.inputResponseRight++;
-    }
+      if(this.directionRight  && this.inputResponseRight>=this.inputResponseRightLength)
+      {
+        //Right
+        this.directionRight = false;
+        this.inputResponseRight = 0;
+        this.pieceGenerator.actualPiece().goRight();
+      }
+      else if(this.keys.right && this.inputResponseRight===0)
+      {
+        //Right
+        this.directionRight = true;
+        this.inputResponseRight++;
+      }
+      else if(this.inputResponseRight>0)
+      {
+        this.inputResponseRight++;
+      }
 
-    if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
-    {
-      //Pause
-      this.pausePressed = false;
-      this.gamePaused = true;
-      this.inputResponsePause = 0;
+      if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
+      {
+        //Pause
+        this.pausePressed = false;
+        this.gamePaused = true;
+        this.inputResponsePause = 0;
+      }
+      else if(this.keys.pause && this.inputResponsePause===0)
+      {
+        //Pause
+        this.pausePressed = true;
+        this.inputResponsePause++;
+      }
+      else if(this.inputResponsePause>0)
+      {
+        this.inputResponsePause++;
+      }
     }
-    else if(this.keys.pause && this.inputResponsePause===0)
-    {
-      //Pause
-      this.pausePressed = true;
-      this.inputResponsePause++;
-    }
-    else if(this.inputResponsePause>0)
-    {
-      this.inputResponsePause++;
-    }
-  }
-  else {
+    else {
 
-    if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
-    {
-      //Pause
-      console.log("entra2 PauseFalse 1");
-      this.pausePressed = false;
-      this.gamePaused = false;
-      this.inputResponsePause = 0;
-    }
-    else if(this.keys.pause && this.inputResponsePause===0)
-    {
-      //Pause
-      this.pausePressed = true;
-      console.log("entra2 PauseFalse 2");
-      this.inputResponsePause++;
-    }
-    else if(this.inputResponsePause>0)
-    {
-      console.log("entra2 PauseFalse 3");
-      this.inputResponsePause++;
+      if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
+      {
+        //Pause
+        console.log("entra2 PauseFalse 1");
+        this.pausePressed = false;
+        this.gamePaused = false;
+        this.inputResponsePause = 0;
+      }
+      else if(this.keys.pause && this.inputResponsePause===0)
+      {
+        //Pause
+        this.pausePressed = true;
+        console.log("entra2 PauseFalse 2");
+        this.inputResponsePause++;
+      }
+      else if(this.inputResponsePause>0)
+      {
+        console.log("entra2 PauseFalse 3");
+        this.inputResponsePause++;
+      }
     }
   }
 };

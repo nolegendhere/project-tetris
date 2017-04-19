@@ -16,6 +16,18 @@ function Piece(options){
   this.update = false;
 }
 
+Piece.prototype.checkDeploy = function () {
+  console.log("entra0");
+  var respawn = true;
+  this.body.forEach(function(element){
+    if(!this.regions[element.row][element.column].state)
+    {
+      console.log("entra1");
+      respawn = false;
+    }
+  }.bind(this));
+  return respawn;
+};
 
 //move automatically piece down;
 Piece.prototype.moveDown = function () {

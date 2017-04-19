@@ -7,6 +7,10 @@ Menu.prototype.startApp = function () {
   this.generateMenu();
 };
 
+Menu.prototype.checkStateGame = function () {
+
+};
+
 Menu.prototype.generateMenu = function (){
   $('.container').append($('<div>').addClass('menu-layout-start').attr('id','menu-layout-start'));
   $('.menu-layout-start').append($('<div>').addClass('start-game'));
@@ -14,6 +18,10 @@ Menu.prototype.generateMenu = function (){
   $('#start-button h3').html('START GAME');
   $('.start-game').append($('<button>').addClass('btn').attr('id','number-player-button').append($('<h3>')));
   $('#number-player-button h3').html('ONE PLAYER');
+
+  $('.start-game').append($('<button>').addClass('btn').attr('id','number-victory-button').append($('<h3>')));
+  $('#number-victory-button h3').html('10PTS');
+
   $('.start-game').append($('<button>').addClass('btn').attr('id','resume-button').append($('<h3>')));
   $('#resume-button h3').html('RESUME GAME');
 
@@ -34,12 +42,14 @@ Menu.prototype.generateMenu = function (){
 
   this.startListener = '#start-button';
   this.numberOfPlayerListener = '#number-player-button';
+  this.numberForVictoryListener = '#number-victory-button';
   this.resumeListener = '#resume-button';
   this.restartListener = '#restart-button';
   this.goBackMenuStart = '#go-back-menu-start-button';
 
   this.addListenerToStart();
   this.addListenerToNumberOfPLayers();
+  this.addListenerToNumberForVictory();
   this.addListenerToResume();
   this.addListenerToRestart();
   this.addListenerToGoBackmenuStart();
@@ -52,15 +62,37 @@ Menu.prototype.generateMenu = function (){
 
 };
 
+
+Menu.prototype.addListenerToNumberForVictory = function()
+{
+  this.numberForVictory=10;
+  this.lastnumberForVictory=this.numberForVictory;
+  console.log(this.numberOfPlayers);
+  $(this.numberForVictoryListener).on('click', function(){
+
+    var tempString = this.numberForVictoryListener+' h3';
+    this.numberForVictory+=10;
+    if(this.numberForVictory%110===0)
+    {
+      this.numberForVictory = 10;
+    }
+
+    $(tempString).html(this.numberForVictory.toString()+"PTS");
+
+    console.log(this.numberForVictory);
+  }.bind(this));
+};
+
+
 Menu.prototype.addListenerToNumberOfPLayers = function()
 {
   this.numberOfPlayers=1;
   this.lastPlayedNumberOfPlayers=1;
   console.log(this.numberOfPlayers);
   $(this.numberOfPlayerListener).on('click', function(){
-    this.numberOfPlayers++;
-    var tempString = this.numberOfPlayerListener+' h3';
 
+    var tempString = this.numberOfPlayerListener+' h3';
+    this.numberOfPlayers++;
     if(this.numberOfPlayers%3===0)
     {
       this.numberOfPlayers = 1;
@@ -165,6 +197,7 @@ Menu.prototype.addListenerToRestart = function()
             initialRegionRow: 1,
             initialRegionColumn: 5,
             playerNumber: 0,
+            numberForVictory: this.lastnumberForVictory
         });
 
         setTimeout(function(){
@@ -213,6 +246,7 @@ Menu.prototype.addListenerToRestart = function()
             initialRegionRow: 1,
             initialRegionColumn: 5,
             playerNumber: 0,
+            numberForVictory: this.lastnumberForVictory
         });
 
         this.playerTwo = new Game({
@@ -245,6 +279,7 @@ Menu.prototype.addListenerToRestart = function()
             initialRegionRow: 1,
             initialRegionColumn: 5,
             playerNumber: 1,
+            numberForVictory: this.lastnumberForVictory
         });
 
         setTimeout(function(){
@@ -274,6 +309,7 @@ Menu.prototype.addListenerToStart = function()
         {
           this.OnePlayer = true;
           this.lastPlayedNumberOfPlayers=1;
+          this.lastnumberForVictory = this.numberForVictory;
 
           $(this.menuLayoutStartSelector).hide();
 
@@ -307,6 +343,7 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
+              numberForVictory: this.numberForVictory
           });
 
           setTimeout(function(){
@@ -319,6 +356,7 @@ Menu.prototype.addListenerToStart = function()
         else if(this.OnePlayer && !this.TwoPlayers)
         {
           this.lastPlayedNumberOfPlayers=1;
+          this.lastnumberForVictory = this.numberForVictory;
           this.playerOne.restartGame();
           this.playerOne.gamePaused = true;
           delete this.playerOne.pieceGenerator;
@@ -356,6 +394,7 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
+              numberForVictory: this.numberForVictory
           });
 
           setTimeout(function(){
@@ -368,6 +407,7 @@ Menu.prototype.addListenerToStart = function()
         else if(this.TwoPlayers)
         {
           this.lastPlayedNumberOfPlayers=1;
+          this.lastnumberForVictory = this.numberForVictory;
           this.TwoPlayers = false;
           this.OnePlayer = true;
           this.playerOne.restartGame();
@@ -411,6 +451,7 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
+              numberForVictory: this.numberForVictory
           });
 
           setTimeout(function(){
@@ -427,6 +468,7 @@ Menu.prototype.addListenerToStart = function()
         {
           this.lastPlayedNumberOfPlayers=2;
           this.TwoPlayers = true;
+          this.lastnumberForVictory = this.numberForVictory;
 
           $(this.menuLayoutStartSelector).hide();
 
@@ -460,6 +502,7 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
+              numberForVictory: this.numberForVictory
           });
 
           this.playerTwo = new Game({
@@ -492,6 +535,7 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 1,
+              numberForVictory: this.numberForVictory
           });
 
           setTimeout(function(){
@@ -505,6 +549,7 @@ Menu.prototype.addListenerToStart = function()
         else if(this.OnePlayer && !this.TwoPlayers)
         {
           this.lastPlayedNumberOfPlayers=2;
+          this.lastnumberForVictory = this.numberForVictory;
           this.OnePlayer = false;
           this.TwoPlayers = true;
           this.playerOne.restartGame();
@@ -544,6 +589,7 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
+              numberForVictory: this.numberForVictory
           });
 
           this.playerTwo = new Game({
@@ -576,6 +622,7 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 1,
+              numberForVictory: this.numberForVictory
           });
 
           setTimeout(function(){
@@ -589,6 +636,7 @@ Menu.prototype.addListenerToStart = function()
         else if(this.TwoPlayers)
         {
           this.lastPlayedNumberOfPlayers=2;
+          this.lastnumberForVictory = this.numberForVictory;
           this.playerOne.restartGame();
           this.playerTwo.restartGame();
           this.playerOne.gamePaused = true;
@@ -630,6 +678,7 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 0,
+              numberForVictory: this.numberForVictory
           });
 
           this.playerTwo = new Game({
@@ -662,6 +711,7 @@ Menu.prototype.addListenerToStart = function()
               initialRegionRow: 1,
               initialRegionColumn: 5,
               playerNumber: 1,
+              numberForVictory: this.numberForVictory
           });
 
           setTimeout(function(){

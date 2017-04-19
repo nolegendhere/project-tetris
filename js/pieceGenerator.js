@@ -41,10 +41,9 @@ PieceGenerator.prototype.deployPiece = function () {
   for (var i = 0; i < this.actualPieceMoved.body.length; i++)
   {
       $(this.boardSelector).append($('<div>').addClass('cell piece').attr('player-number-piece',this.playerNumber.toString()).attr('index', i.toString()).attr('piece',this.numberOfPieces.toString()).css({backgroundColor: this.actualPieceMoved.bodyColor, position: 'absolute', top: this.actualPieceMoved.body[i].position.row.toString()+'px', left: this.actualPieceMoved.body[i].position.column.toString()+'px'}));
-      console.log("this.numberOfPieces",this.numberOfPieces);
-      console.log("this.numberOfPieces",this.numberOfPiecesDual);
+      // console.log("this.numberOfPieces",this.numberOfPieces);
       this.actualPieceMoved.body[i].pieceNumber = this.numberOfPieces;
-      console.log("this.actualPieceMoved.body[i].pieceNumber",this.actualPieceMoved.body[i].pieceNumber);
+      // console.log("this.actualPieceMoved.body[i].pieceNumber",this.actualPieceMoved.body[i].pieceNumber);
       var selector ='[player-number-piece='+this.playerNumber.toString()+'][index='+i.toString()+'][piece='+ this.numberOfPieces +']';
       this.actualPieceMoved.body[i].selector = $(selector);
   }
@@ -52,8 +51,13 @@ PieceGenerator.prototype.deployPiece = function () {
   this.numberOfPieces++;
   this.generatedPieces.push(this.actualPieceMoved);
 
-  console.log("this.actualPieceMoved",this.actualPieceMoved);
-  console.log("this.actualPieceMoved.body[0].selector",this.actualPieceMoved.body[0].selector);
+  // console.log("this.actualPieceMoved",this.actualPieceMoved);
+  // console.log("this.actualPieceMoved.body[0].selector",this.actualPieceMoved.body[0].selector);
+};
+
+
+PieceGenerator.prototype.mirar = function () {
+  // return this.actualPieceMoved.checkDeploy();
 };
 
 
