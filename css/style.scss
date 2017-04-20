@@ -1,285 +1,136 @@
 .container{
+  margin-top: 100px;
+  margin-bottom: 200px;
+  background-color: #00FFFF;
+  font-family: fantasy;
+
+  .custom-btn{
+    width: 200px;
+    background: none;
+    border:none;
+    outline:none;
+  }
+  .custom-btn:hover{
+    width: 200px;
+
+    -webkit-animation: color-change 1s infinite;
+    -moz-animation: color-change 1s infinite;
+    animation: color-change 1s infinite;
+  }
+
+  .custom-btn:active{
+    background: none;
+    border:none;
+    outline:none;
+  }
+
   .menu-layout-start{
     margin-top: 50px;
+    margin-bottom: 100px;
     background-color: #00FFFF;
+
+    .title{
+      margin-bottom: 100px;
+      h3{
+        text-align: center;
+        font-size: 50px;
+        letter-spacing: 10px;
+
+        -webkit-animation: color-change 1s infinite;
+        -moz-animation: color-change 1s infinite;
+        animation: color-change 1s infinite;
+      }
+    }
   }
 
   .menu-layout-restart{
     background-color: #00FFFF;
+    margin-bottom: 100px;
   }
-  .custom-btn{
-    width: 200px;
-    background: none;
-  }
-  .custom-btn:hover{
-    width: 200px;
-    color:red;
-  }
-}
+
 
   .ingame-layout{
-    // margin-top: 200px;
-    // background-color: #00FFFF;
-    // box-sizing: border-box;
-    // background-color: blue;
-    // background-size: contain;
-    // margin:0 auto;
-    // height: 400px;
-    // width: 800px;
-    // float:left;
-    height: 400px;
-    margin-top: 50px;
+    height: 450px;
+    margin-top: 100px;
+    margin-bottom: 50px;
     background-color: #00FFFF;
+    // box-sizing: border-box;
+    // background-size: contain;
 
-    .player-layout{
-      box-sizing: border-box;
-      height: inherit;
-      float:left;
-      width: 400px;
+    #row-players{
+      height: 600px;
 
-      .player-board {
-        background-size: contain;
-        /*border: 1px solid white;*/
+      .player-layout{
         box-sizing: border-box;
-        /*float: left;*/
-        position: relative;
+        height: 450px;
         float:left;
-        height: inherit;
-        width: 50%;
+        width: 400px;
 
-        .cell {
-          background-size: contain;
-          /*border: 1px solid white;*/
-          box-sizing: border-box;
-          /*float: left;*/
-          height: 13px;
-          width: 13px;
-        }
-
-        .piece-generator {
-          background-size: contain;
-          /*border: 1px solid white;*/
-          box-sizing: border-box;
-          /*float: left;*/
-          height: inherit;
-          width: 50%;
+        .player-board {
+          position: relative;
+          height: 400px;
+          width: 100%;
 
           .cell {
-            background-size: contain;
-            /*border: 1px solid white;*/
-            box-sizing: border-box;
-            /*float: left;*/
             height: 13px;
             width: 13px;
           }
+
+          .piece-generator {
+
+            .cell {
+              height: 13px;
+              width: 13px;
+            }
+          }
         }
-      }
 
-      .player-inplaymenu {
-        background-size: contain;
-        /*border: 1px solid white;*/
-        box-sizing: border-box;
-        background-color: red;
-        /*float: left;*/
-        /*position: relative;*/
-        float:left;
-        display: inline-block;
-        height: inherit;
-        width: 50%;
-
-        .score{
+        .player-inplaymenu {
           background-size: contain;
-          /*border: 1px solid white;*/
-          box-sizing: border-box;
-          background-color: red;
-          height: 100px;
+          height: 50px;
           width: 100%;
-          padding: 0;
 
-          p{
-            margin: 0;
-            text-align: left;
+          .score{
+            background-size: contain;
+            box-sizing: border-box;
+            height: inherit;
+            width: 100%;
+            padding: 0;
+
+            h3{
+              margin: 0;
+              margin-top: 10px;
+              text-align: left;
+            }
           }
         }
       }
     }
   }
+}
 
+@-webkit-keyframes color-change {
+  0% { color: red; }
+  20% { color: blue; }
+  40% { color: green; }
+  60% { color: yellow; }
+  80% { color: orange; }
+  100% { color: red; }
+}
+@-moz-keyframes color-change {
+  0% { color: red; }
+  20% { color: blue; }
+  40% { color: green; }
+  60% { color: yellow; }
+  80% { color: orange; }
+  100% { color: red; }
+}
 
-// .container{
-//   font-size: 16px;
-//
-//
-//   .menu-layout-start{
-//     height: 480px;
-//     width: 800px;
-//     box-sizing: border-box;
-//     background-color: blue;
-//     background-size: contain;
-//     margin:0 auto;
-//     margin-top: 50px;
-//
-//     .start-game{
-//       height: 50px;
-//       width: 100px;
-//       box-sizing: border-box;
-//       background-color: red;
-//       background-size: contain;
-//
-//       .btn{
-//         height: 100%;
-//         width: 100%;
-//         box-sizing: border-box;
-//         background-color: green;
-//         padding: 0;
-//         margin: 0 auto;
-//
-//         h3{
-//           margin: 0;
-//           text-align: left;
-//         }
-//       }
-//     }
-//   }
-//
-//   .ingame-layout{
-//     box-sizing: border-box;
-//     background-color: blue;
-//     background-size: contain;
-//     margin:0 auto;
-//     margin-top: 50px;
-//     height: 400px;
-//     width: 800px;
-//     float:left;
-//
-//     .player-layout{
-//       box-sizing: border-box;
-//       height: inherit;
-//       float:left;
-//       width: 400px;
-//
-//       .player-board {
-//         background-size: contain;
-//         /*border: 1px solid white;*/
-//         box-sizing: border-box;
-//         /*float: left;*/
-//         position: relative;
-//         float:left;
-//         height: inherit;
-//         width: 50%;
-//
-//         .cell {
-//           background-size: contain;
-//           /*border: 1px solid white;*/
-//           box-sizing: border-box;
-//           /*float: left;*/
-//           height: 13px;
-//           width: 13px;
-//         }
-//
-//         .piece-generator {
-//           background-size: contain;
-//           /*border: 1px solid white;*/
-//           box-sizing: border-box;
-//           /*float: left;*/
-//           height: inherit;
-//           width: 50%;
-//
-//           .cell {
-//             background-size: contain;
-//             /*border: 1px solid white;*/
-//             box-sizing: border-box;
-//             /*float: left;*/
-//             height: 13px;
-//             width: 13px;
-//           }
-//         }
-//       }
-//
-//       .player-inplaymenu {
-//         background-size: contain;
-//         /*border: 1px solid white;*/
-//         box-sizing: border-box;
-//         background-color: red;
-//         /*float: left;*/
-//         /*position: relative;*/
-//         float:left;
-//         display: inline-block;
-//         height: inherit;
-//         width: 50%;
-//
-//         .score{
-//           background-size: contain;
-//           /*border: 1px solid white;*/
-//           box-sizing: border-box;
-//           background-color: red;
-//           height: 100px;
-//           width: 100%;
-//           padding: 0;
-//
-//           p{
-//             margin: 0;
-//             text-align: left;
-//           }
-//         }
-//       }
-//     }
-//   }
-//
-//   .menu-layout-restart{
-//     height: 80px;
-//     width: 800px;
-//     box-sizing: border-box;
-//     background-color: green;
-//     background-size: contain;
-//     margin:0 auto;
-//     clear: both;
-//
-//     .restart-game{
-//       height: 50px;
-//       width: 100px;
-//       box-sizing: border-box;
-//       background-color: red;
-//       background-size: contain;
-//       margin: 0 auto;
-//
-//       .btn{
-//         height: 100%;
-//         width: 100%;
-//         box-sizing: border-box;
-//         background-color: green;
-//         padding: 0;
-//         margin: 0 auto;
-//
-//         h3{
-//           margin: 0;
-//           text-align: left;
-//         }
-//       }
-//     }
-//
-//     .go-back-menu-start  {
-//       height: 50px;
-//       width: 100px;
-//       box-sizing: border-box;
-//       background-color: red;
-//       background-size: contain;
-//       margin: 0 auto;
-//
-//       .btn{
-//         height: 100%;
-//         width: 100%;
-//         box-sizing: border-box;
-//         background-color: green;
-//         padding: 0;
-//         margin: 0 auto;
-//
-//         h3{
-//           margin: 0;
-//           text-align: left;
-//         }
-//       }
-//     }
-//   }
-//
-// }
+@keyframes color-change {
+  0% { color: red; }
+  20% { color: blue; }
+  40% { color: green; }
+  60% { color: yellow; }
+  80% { color: orange; }
+  100% { color: red; }
+}

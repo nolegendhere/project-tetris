@@ -174,9 +174,9 @@ Game.prototype.startGame = function() {
     if (!this.started) {
         this.started = true;
         this.generateLayout();
+        this.generateInPlayMenu();
         this.generateRegions();
         this.generatePieceGenerator();
-        this.generateInPlayMenu();
         this.pieceGenerator.deployPiece();
         this.frameID = requestAnimationFrame(function(timestamp) {
             this.draw(1);
@@ -237,18 +237,22 @@ Game.prototype.generateLayout = function () {
       this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
 
       // $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
-      $('.ingame-layout #row-players').append($('<div>').addClass('col-xs-offset-2 col-xs-2 col-md-offset-1 col-md-2').attr('id','column-player'+this.playerNumber.toString()));
+      $('.ingame-layout #row-players').append($('<div>').addClass('col-xs-offset-2 col-xs-2 col-md-offset-2 col-md-2').attr('id','column-player'+this.playerNumber.toString()));
 
       $('#column-player'+this.playerNumber.toString()).append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+
+      this.playerLayoutRemove='#column-player'+this.playerNumber.toString();
     }
     else
     {
       this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
 
       // $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
-      $('.ingame-layout #row-players').append($('<div>').addClass('col-xs-offset-2 col-xs-2 col-md-offset-1 col-md-2').attr('id','column-player'+this.playerNumber.toString()));
+      $('.ingame-layout #row-players').append($('<div>').addClass('col-xs-offset-1 col-xs-2 col-md-offset-3 col-md-2').attr('id','column-player'+this.playerNumber.toString()));
 
       $('#column-player'+this.playerNumber.toString()).append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+
+      this.playerLayoutRemove='#column-player'+this.playerNumber.toString();
     }
   }
   else
@@ -259,6 +263,8 @@ Game.prototype.generateLayout = function () {
     $('.ingame-layout #row-players').append($('<div>').addClass('col-xs-offset-4 col-xs-2 col-md-offset-5 col-md-2').attr('id','column-player'+this.playerNumber.toString()));
 
     $('#column-player'+this.playerNumber.toString()).append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+
+    this.playerLayoutRemove='#column-player'+this.playerNumber.toString();
 
   }
 
@@ -462,19 +468,19 @@ Game.prototype.generateInPlayMenu = function (){
 
   this.playerScoreSelector ='#player-number-score'+this.playerNumber.toString();
 
-  $(this.InPlayMenuSelector).append($('<div>').addClass('score').attr('id','player-number-score'+this.playerNumber.toString()).append($('<p>')));
+  $(this.InPlayMenuSelector).append($('<div>').addClass('score').attr('id','player-number-score'+this.playerNumber.toString()).append($('<h3>')));
 
 };
 
 Game.prototype.displayResult = function () {
   //console.log("entra",$(this.playerScoreSelector));
-  $(this.playerScoreSelector+' p').html(this.playerScore.toString());
+  $(this.playerScoreSelector+' h3').html(this.playerScore.toString()+'PTS');
   //console.log("this",this);
 };
 
 Game.prototype.restartGame = function () {
   console.log("restart");
-  $(this.playerLayout).remove();
+  $(this.playerLayoutRemove).remove();
 };
 
 Game.prototype.addRivalPlayer = function(options){
