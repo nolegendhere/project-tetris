@@ -224,7 +224,6 @@ Game.prototype.mainLoop=function(timestamp) {
 
     this.draw(this.delta / this.timestep);
     this.end(this.fps);
-    // console.log("request2");
     this.frameID = requestAnimationFrame(this.mainLoop.bind(this));
 };
 
@@ -236,7 +235,6 @@ Game.prototype.generateLayout = function () {
     {
       this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
 
-      // $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
       $('.ingame-layout #row-players').append($('<div>').addClass('col-xs-offset-2 col-xs-2 col-md-offset-2 col-md-2').attr('id','column-player'+this.playerNumber.toString()));
 
       $('#column-player'+this.playerNumber.toString()).append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
@@ -247,7 +245,6 @@ Game.prototype.generateLayout = function () {
     {
       this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
 
-      // $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
       $('.ingame-layout #row-players').append($('<div>').addClass('col-xs-offset-1 col-xs-2 col-md-offset-3 col-md-2').attr('id','column-player'+this.playerNumber.toString()));
 
       $('#column-player'+this.playerNumber.toString()).append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
@@ -259,7 +256,6 @@ Game.prototype.generateLayout = function () {
   {
     this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
 
-    // $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
     $('.ingame-layout #row-players').append($('<div>').addClass('col-xs-offset-4 col-xs-2 col-md-offset-5 col-md-2').attr('id','column-player'+this.playerNumber.toString()));
 
     $('#column-player'+this.playerNumber.toString()).append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
@@ -273,9 +269,7 @@ Game.prototype.generateLayout = function () {
 
 Game.prototype.generateRegions = function () {
   this.cellWidth = this.width / this.columns;
-  //console.log("this.cellWidth",this.cellWidth);
   this.cellHeight = this.height / this.rows;
-  //console.log("this.cellHeight",this.cellHeight);
   this.levelLeft = this.offset.column;
   this.levelTop = this.offset.row;
   var region;
