@@ -267,7 +267,7 @@ Piece.prototype.drawPiece = function () {
 
 };
 
-//the regions where the blocks of the pieces are present are updated to a state of false;
+//the regions where the blocks of the pieces are present are updated to a state of false; only occurs when the piece is stopped
 Piece.prototype.updateRegions = function (){
   this.body.forEach(function(element){
     this.regions[element.row][element.column].state = false;
