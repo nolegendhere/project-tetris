@@ -100,7 +100,7 @@ Menu.prototype.generateMenu = function (){
   this.inactiveButton = false;
 
 };
-
+//Loading screen; adds pause before beginning
 Menu.prototype.displayLoadingLayout = function(){
   var counter = 3;
   var tempString = this.loadingSelector +' h3';
