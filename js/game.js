@@ -88,6 +88,7 @@ function Game(options) {
     column: options.initialRegionColumn
   };
 
+  this.numberOfPlayers = options.numberOfPlayers
   this.playerNumber = options.playerNumber;
   this.playerScore = 0;
   this.numberForVictory = options.numberForVictory;
@@ -462,9 +463,8 @@ Game.prototype.restartGame = function () {
 };
 
 Game.prototype.addRivalPlayer = function(options){
-  if(options.rivalPlayerExists)
+  if(this.numberOfPlayers === 2)
   {
-    this.rivalPlayerExists = options.rivalPlayerExists;
     this.rivalPlayer = options.rivalPlayer;
   }
   else
@@ -473,6 +473,5 @@ Game.prototype.addRivalPlayer = function(options){
       gameWon : false,
       gameLost : false
     };
-    this.rivalPlayerExists = false;
   }
 };

@@ -266,10 +266,11 @@ Menu.prototype.addListenerToRestart = function()
             initialRegionColumn: 5,
             playerNumber: 0,
             numberForVictory: this.lastnumberForVictory,
-            numberForLevel: this.lastnumberForLevel
+            numberForLevel: this.lastnumberForLevel,
+            numberOfPlayers: this.lastPlayedNumberOfPlayers
         });
 
-        this.playerOne.addRivalPlayer({rivalPlayerExists: false});
+        this.playerOne.addRivalPlayer();
 
         setTimeout(function(){
           this.playerOne.startGame();
@@ -320,7 +321,8 @@ Menu.prototype.addListenerToRestart = function()
             initialRegionColumn: 5,
             playerNumber: 0,
             numberForVictory: this.lastnumberForVictory,
-            numberForLevel: this.lastnumberForLevel
+            numberForLevel: this.lastnumberForLevel,
+            numberOfPlayers: this.lastPlayedNumberOfPlayers
         });
 
         this.playerTwo = new Game({
@@ -355,12 +357,13 @@ Menu.prototype.addListenerToRestart = function()
             initialRegionColumn: 5,
             playerNumber: 1,
             numberForVictory: this.lastnumberForVictory,
-            numberForLevel: this.lastnumberForLevel
+            numberForLevel: this.lastnumberForLevel,
+            numberOfPlayers: this.lastPlayedNumberOfPlayers
         });
 
-        this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
+        this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
-        this.playerTwo.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerOne});
+        this.playerTwo.addRivalPlayer({rivalPlayer:this.playerOne});
 
         setTimeout(function(){
           this.playerOne.startGame();
@@ -427,10 +430,11 @@ Menu.prototype.addListenerToStart = function()
               initialRegionColumn: 5,
               playerNumber: 0,
               numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel
+              numberForLevel: this.numberForLevel,
+              numberOfPlayers: this.numberOfPlayers
           });
 
-          this.playerOne.addRivalPlayer({rivalPlayerExists: false});
+          this.playerOne.addRivalPlayer();
 
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
@@ -484,10 +488,11 @@ Menu.prototype.addListenerToStart = function()
               initialRegionColumn: 5,
               playerNumber: 0,
               numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel
+              numberForLevel: this.numberForLevel,
+              numberOfPlayers: this.numberOfPlayers
           });
 
-          this.playerOne.addRivalPlayer({rivalPlayerExists: false});
+          this.playerOne.addRivalPlayer();
 
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
@@ -547,10 +552,11 @@ Menu.prototype.addListenerToStart = function()
               initialRegionColumn: 5,
               playerNumber: 0,
               numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel
+              numberForLevel: this.numberForLevel,
+              numberOfPlayers: this.numberOfPlayers
           });
 
-          this.playerOne.addRivalPlayer({rivalPlayerExists: false});
+          this.playerOne.addRivalPlayer();
 
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
@@ -604,7 +610,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionColumn: 5,
               playerNumber: 0,
               numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel
+              numberForLevel: this.numberForLevel,
+              numberOfPlayers: this.numberOfPlayers
           });
 
           this.playerTwo = new Game({
@@ -639,12 +646,13 @@ Menu.prototype.addListenerToStart = function()
               initialRegionColumn: 5,
               playerNumber: 1,
               numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel
+              numberForLevel: this.numberForLevel,
+              numberOfPlayers: this.numberOfPlayers
           });
 
-          this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
+          this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
-          this.playerTwo.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerOne});
+          this.playerTwo.addRivalPlayer({rivalPlayer:this.playerOne});
 
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
@@ -701,7 +709,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionColumn: 5,
               playerNumber: 0,
               numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel
+              numberForLevel: this.numberForLevel,
+              numberOfPlayers: this.numberOfPlayers
           });
 
           this.playerTwo = new Game({
@@ -736,12 +745,13 @@ Menu.prototype.addListenerToStart = function()
               initialRegionColumn: 5,
               playerNumber: 1,
               numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel
+              numberForLevel: this.numberForLevel,
+              numberOfPlayers: this.numberOfPlayers
           });
 
-          this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
+          this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
-          this.playerTwo.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerOne});
+          this.playerTwo.addRivalPlayer({rivalPlayer:this.playerOne});
 
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
@@ -800,7 +810,8 @@ Menu.prototype.addListenerToStart = function()
               initialRegionColumn: 5,
               playerNumber: 0,
               numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel
+              numberForLevel: this.numberForLevel,
+              numberOfPlayers: this.numberOfPlayers
           });
 
           this.playerTwo = new Game({
@@ -835,12 +846,13 @@ Menu.prototype.addListenerToStart = function()
               initialRegionColumn: 5,
               playerNumber: 1,
               numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel
+              numberForLevel: this.numberForLevel,
+              numberOfPlayers: this.numberOfPlayers
           });
 
-          this.playerOne.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerTwo});
+          this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
-          this.playerTwo.addRivalPlayer({rivalPlayerExists: true,rivalPlayer:this.playerOne});
+          this.playerTwo.addRivalPlayer({rivalPlayer:this.playerOne});
 
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
