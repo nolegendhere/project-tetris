@@ -152,7 +152,7 @@ Game.prototype.update = function (delta) {
 
 Game.prototype.draw = function(interp) {
     // this.box.style.left = (this.boxLastPos + (this.boxPos - this.boxLastPos) * interp) + 'px';
-    this.fpsDisplay.textContent = Math.round(this.fps) + ' FPS';
+    // this.fpsDisplay.textContent = Math.round(this.fps) + ' FPS';
     if(!this.gamePaused)
     {
       this.pieceGenerator.drawPiece();

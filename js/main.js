@@ -77,29 +77,6 @@ Menu.prototype.checkStateGameClear = function () {
 };
 
 Menu.prototype.generateMenu = function (){
-  $('.container').append($('<div>').addClass('menu-layout-start').attr('id','menu-layout-start'));
-  $('.menu-layout-start').append($('<div>').addClass('start-game'));
-  $('.start-game').append($('<button>').addClass('btn').attr('id','start-button').append($('<h3>')));
-  $('#start-button h3').html('START GAME');
-  $('.start-game').append($('<button>').addClass('btn').attr('id','number-player-button').append($('<h3>')));
-  $('#number-player-button h3').html('ONE PLAYER');
-  $('.start-game').append($('<button>').addClass('btn').attr('id','number-victory-button').append($('<h3>')));
-  $('#number-victory-button h3').html('10PTS TO WIN');
-  $('.start-game').append($('<button>').addClass('btn').attr('id','number-level-button').append($('<h3>')));
-  $('#number-level-button h3').html('LEVEL 1');
-  $('.start-game').append($('<button>').addClass('btn').attr('id','resume-button').append($('<h3>')));
-  $('#resume-button h3').html('RESUME GAME');
-
-  $('.container').append($('<div>').addClass('ingame-layout').attr('id','ingame-layout'));
-
-
-  $('.container').append($('<div>').addClass('menu-layout-restart').attr('id','menu-layout-restart'));
-  $('.menu-layout-restart').append($('<div>').addClass('restart-game'));
-  $('.restart-game').append($('<button>').addClass('btn').attr('id','restart-button').append($('<h3>')));
-  $('#restart-button h3').html('RESTART GAME');
-  $('.menu-layout-restart').append($('<div>').addClass('go-back-menu-start'));
-  $('.go-back-menu-start').append($('<button>').addClass('btn').attr('id','go-back-menu-start-button').append($('<h3>')));
-  $('#go-back-menu-start-button h3').html('MAIN PAGE');
 
   this.menuLayoutStartSelector = '#menu-layout-start';
   this.playerLayoutSelector = '#ingame-layout';

@@ -1,46 +1,30 @@
 .container{
-  font-size: 16px;
-
-
   .menu-layout-start{
-    height: 480px;
-    width: 800px;
-    box-sizing: border-box;
-    background-color: blue;
-    background-size: contain;
-    margin:0 auto;
-    margin-top: 50px;
-
-    .start-game{
-      height: 50px;
-      width: 100px;
-      box-sizing: border-box;
-      background-color: red;
-      background-size: contain;
-      margin: 0 auto;
-
-      .btn{
-        height: 100%;
-        width: 100%;
-        box-sizing: border-box;
-        background-color: green;
-        padding: 0;
-        margin: 0 auto;
-
-        h3{
-          margin: 0;
-          text-align: left;
-        }
-      }
-    }
+    margin-top: 200px;
+    background-color: #00FFFF;
   }
 
+  .menu-layout-restart{
+    margin-top: 200px;
+    background-color: #00FFFF;
+  }
+  .custom-btn{
+    width: 200px;
+    background: none;
+  }
+  .custom-btn:hover{
+    width: 200px;
+    color:red;
+  }
+}
+
   .ingame-layout{
+    margin-top: 200px;
+    background-color: #00FFFF;
     box-sizing: border-box;
     background-color: blue;
     background-size: contain;
     margin:0 auto;
-    margin-top: 50px;
     height: 400px;
     width: 800px;
     float:left;
@@ -119,60 +103,181 @@
     }
   }
 
-  .menu-layout-restart{
-    height: 80px;
-    width: 800px;
-    box-sizing: border-box;
-    background-color: green;
-    background-size: contain;
-    margin:0 auto;
-    clear: both;
 
-    .restart-game{
-      height: 50px;
-      width: 100px;
-      box-sizing: border-box;
-      background-color: red;
-      background-size: contain;
-      margin: 0 auto;
-
-      .btn{
-        height: 100%;
-        width: 100%;
-        box-sizing: border-box;
-        background-color: green;
-        padding: 0;
-        margin: 0 auto;
-
-        h3{
-          margin: 0;
-          text-align: left;
-        }
-      }
-    }
-
-    .go-back-menu-start  {
-      height: 50px;
-      width: 100px;
-      box-sizing: border-box;
-      background-color: red;
-      background-size: contain;
-      margin: 0 auto;
-
-      .btn{
-        height: 100%;
-        width: 100%;
-        box-sizing: border-box;
-        background-color: green;
-        padding: 0;
-        margin: 0 auto;
-
-        h3{
-          margin: 0;
-          text-align: left;
-        }
-      }
-    }
-  }
-
-}
+// .container{
+//   font-size: 16px;
+//
+//
+//   .menu-layout-start{
+//     height: 480px;
+//     width: 800px;
+//     box-sizing: border-box;
+//     background-color: blue;
+//     background-size: contain;
+//     margin:0 auto;
+//     margin-top: 50px;
+//
+//     .start-game{
+//       height: 50px;
+//       width: 100px;
+//       box-sizing: border-box;
+//       background-color: red;
+//       background-size: contain;
+//
+//       .btn{
+//         height: 100%;
+//         width: 100%;
+//         box-sizing: border-box;
+//         background-color: green;
+//         padding: 0;
+//         margin: 0 auto;
+//
+//         h3{
+//           margin: 0;
+//           text-align: left;
+//         }
+//       }
+//     }
+//   }
+//
+//   .ingame-layout{
+//     box-sizing: border-box;
+//     background-color: blue;
+//     background-size: contain;
+//     margin:0 auto;
+//     margin-top: 50px;
+//     height: 400px;
+//     width: 800px;
+//     float:left;
+//
+//     .player-layout{
+//       box-sizing: border-box;
+//       height: inherit;
+//       float:left;
+//       width: 400px;
+//
+//       .player-board {
+//         background-size: contain;
+//         /*border: 1px solid white;*/
+//         box-sizing: border-box;
+//         /*float: left;*/
+//         position: relative;
+//         float:left;
+//         height: inherit;
+//         width: 50%;
+//
+//         .cell {
+//           background-size: contain;
+//           /*border: 1px solid white;*/
+//           box-sizing: border-box;
+//           /*float: left;*/
+//           height: 13px;
+//           width: 13px;
+//         }
+//
+//         .piece-generator {
+//           background-size: contain;
+//           /*border: 1px solid white;*/
+//           box-sizing: border-box;
+//           /*float: left;*/
+//           height: inherit;
+//           width: 50%;
+//
+//           .cell {
+//             background-size: contain;
+//             /*border: 1px solid white;*/
+//             box-sizing: border-box;
+//             /*float: left;*/
+//             height: 13px;
+//             width: 13px;
+//           }
+//         }
+//       }
+//
+//       .player-inplaymenu {
+//         background-size: contain;
+//         /*border: 1px solid white;*/
+//         box-sizing: border-box;
+//         background-color: red;
+//         /*float: left;*/
+//         /*position: relative;*/
+//         float:left;
+//         display: inline-block;
+//         height: inherit;
+//         width: 50%;
+//
+//         .score{
+//           background-size: contain;
+//           /*border: 1px solid white;*/
+//           box-sizing: border-box;
+//           background-color: red;
+//           height: 100px;
+//           width: 100%;
+//           padding: 0;
+//
+//           p{
+//             margin: 0;
+//             text-align: left;
+//           }
+//         }
+//       }
+//     }
+//   }
+//
+//   .menu-layout-restart{
+//     height: 80px;
+//     width: 800px;
+//     box-sizing: border-box;
+//     background-color: green;
+//     background-size: contain;
+//     margin:0 auto;
+//     clear: both;
+//
+//     .restart-game{
+//       height: 50px;
+//       width: 100px;
+//       box-sizing: border-box;
+//       background-color: red;
+//       background-size: contain;
+//       margin: 0 auto;
+//
+//       .btn{
+//         height: 100%;
+//         width: 100%;
+//         box-sizing: border-box;
+//         background-color: green;
+//         padding: 0;
+//         margin: 0 auto;
+//
+//         h3{
+//           margin: 0;
+//           text-align: left;
+//         }
+//       }
+//     }
+//
+//     .go-back-menu-start  {
+//       height: 50px;
+//       width: 100px;
+//       box-sizing: border-box;
+//       background-color: red;
+//       background-size: contain;
+//       margin: 0 auto;
+//
+//       .btn{
+//         height: 100%;
+//         width: 100%;
+//         box-sizing: border-box;
+//         background-color: green;
+//         padding: 0;
+//         margin: 0 auto;
+//
+//         h3{
+//           margin: 0;
+//           text-align: left;
+//         }
+//       }
+//     }
+//   }
+//
+// }
