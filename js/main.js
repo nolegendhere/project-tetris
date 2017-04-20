@@ -230,6 +230,7 @@ Menu.prototype.addListenerToRestart = function()
       this.inactiveButton = true;
       if(this.lastPlayedNumberOfPlayers===1)
       {
+        this.checkStateGameClear();
         this.playerOne.restartGame();
         this.playerOne.gamePaused = true;
         delete this.playerOne.pieceGenerator;
@@ -280,6 +281,7 @@ Menu.prototype.addListenerToRestart = function()
       }
       else
       {
+        this.checkStateGameClear();
         this.playerOne.restartGame();
         this.playerTwo.restartGame();
         this.playerOne.gamePaused = true;

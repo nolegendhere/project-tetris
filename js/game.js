@@ -236,13 +236,19 @@ Game.prototype.generateLayout = function () {
     {
       this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
 
-      $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+      // $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+      $('.ingame-layout #row-players').append($('<div>').addClass('col-xs-offset-2 col-xs-2 col-md-offset-1 col-md-2').attr('id','column-player'+this.playerNumber.toString()));
+
+      $('#column-player'+this.playerNumber.toString()).append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
     }
     else
     {
       this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
 
-      $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+      // $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+      $('.ingame-layout #row-players').append($('<div>').addClass('col-xs-offset-2 col-xs-2 col-md-offset-1 col-md-2').attr('id','column-player'+this.playerNumber.toString()));
+
+      $('#column-player'+this.playerNumber.toString()).append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
     }
   }
   else
