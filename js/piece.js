@@ -1,28 +1,28 @@
+//object that represents the pieces created by the pieceGenerator
 function Piece(options){
-
+  //the limit row and column where the piece can be moved
   this.limitRowBottom = options.limitRowBottom;
   this.limitColumnRight= options.limitColumnRight;
-
+  //array of the regions present in the grid; for the movement of the pieces
   this.regions = options.regions;
 
-  this.rowsToDisplace = 0;
-  this.rowsToErase = 0;
-
+  //index that points to the block of the piece from where the rotation takes place
   this.rotationPoint = -1;
+  //matrix to rotate to the left
   this.rotationMatrixLeft = [[0,-1],[1,0]];
+  //matrix to rotate to the right
   this.rotationMatrixRight = [[0,1],[-1,0]];
-
+  //state of the piece; if true, it means that the piece has stopped because there is another piece down or because it is the limit of the grid
   this.contact = false;
   this.update = false;
 }
 
+//It checks if it can be spawned; if there is a piece in the regions of spawning, it retunrs false and the player will have lost the game
 Piece.prototype.checkDeploy = function () {
-  console.log("entra0");
   var respawn = true;
   this.body.forEach(function(element){
     if(!this.regions[element.row][element.column].state)
     {
-      console.log("entra1");
       respawn = false;
     }
   }.bind(this));
@@ -35,7 +35,7 @@ Piece.prototype.moveDown = function () {
   {
     var tempRow;
     var tempArray=[];
-
+    //checks each block of the piece
     this.body.forEach(function(element){
       if(!this.contact)
       {
