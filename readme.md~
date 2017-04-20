@@ -4,12 +4,33 @@ TETRIS GAME
 
 jquery, Javascript, html, css, bootstrap
 
+*************************************************************Instructions*********************************************************************
+
+**The Objectives**
+
+Completed as menu rows as the points for victory chosen in the main menu, and/or die after the rival if two players are playing the game.
+
+**Controls**
+
+The player one can move the actual piece with the next keys:
+	-the arrow left to go to the left
+	-the arrow right to go to the right
+	-the arrow down to go faster to the bottom of the grid
+	-the number one in the num pad to rotate left in ubuntu and the key } in Mac
+	-the number two in the num pad to rotate right in ubuntu and the key \ in Mac
+
+The player two can move the actual piece with the next keys:
+	-the 'a' to go to the left
+	-the 'd' to go to the right
+	-the 's' to go faster to the bottom of the grid
+	-the 'g' to rotate left
+	-the number 'h' to rotate right
+
 ***************************************************************Approach**************************************************************************
 
 This tretris was first inspired by the rover game made during the prework and by the game snake given as an example byt the teacher Thor.
 
-Basically, it consist into moving down pieces through a grid till they get to the bottom of this grid or they are placed in top of another piece. The objective is
-
+Basically, it consist into moving down pieces through a grid till they get to the bottom of this grid or they are placed in top of another piece.
 
 
 **The piece object**:
@@ -86,5 +107,45 @@ This object has a execution order that is the next:
 in this main loop the functions update and draw will be called.
 
 - Update: here, the logic of the game is updated:
+	- if the other player has won, the player has lost
+	- if the other player has lost, the player has won
 	- it is checked if the actual piece being moved has been stopped by the bottom of the grid or by an stationary piece.
-	- if the piece is stopped, another piece is created. Also
+	- if the piece is stopped, another piece is created. Also, the regions' states are updated to true or false depending if there are blocks of stationary pieces in them and rows of pieces are erased and/or displaced if it is the case
+	- if the number of rows completad is greater than the points for the victory, the player has won
+	- if a piece is present in the spawning zone, the player has lost
+	- the actual piece being moved increments its position to the bottom of the grid
+	- the input keys are taken into account to perform the different actions in a piece.
+
+In the movement of the piece and in the different actions performed, there is a velocity, a time delta and a distance (or delay) taken into account. In order to move the piece down, or to perform one of the actions, a distance has to be completed. This distance is completed by velocity*delta time, so it doesn't depend on the frames per second.
+
+- Draw: here the piece is draw and the score of the player is refreshed.
+
+Each player has its own game object (in fact, it is considered the player as it is implemented right now)
+
+**the main object**
+
+The object that manages the players and the game. It has three states: the main menu, the loading page, and the in-play menu. Each state has its owns options to interact with.
+
+The main object is initialized when the 'document', the DOM, is ready - jquery is being used -. The first state to appear is the main menu, where the menu-layout-start is presented. In this state, the player has the option to start the game choosing the number of players that will play it, the points for the victory, and the level of the game. Every button has its own listener.
+
+Once pressed the 'START GAME' button, a game object or two game objects will be created depending on the number of players selected. But before starting the logic of the game objects, the state of loading page is presented in the loading.layout. Here, a setInterval is used in order to remain in this page during a period of time, and then a setTimeout is also used to make the game or games begin in a state of pause during a seconds to give the player enough time to be actually ready.
+
+So, after the loading state, the in.game state is present. In this state, the ingame layout is shown. In this layout, the game or games are presented (the grids, the pieces, the score, etc). During the time that the game or games are being played, the main object is listening with a setInterval the states of the game or games. If a player wins, then, as the game or games stop by itself, the main object will show a message of victory or defeat in the screen.
+
+In the ingame state, the player has the options to restart the game, or to go back to the main menu. When a player goes back to the main menu, the game is paused. Then, in the main menu ( so in the main menu state ), a player can choose to return to the actual game, or to start a new game with a new configuration. Whatever the options choosed, the loading page state will appear again, and the game will resume or start in pause again.
+
+
+**********************************************************************************unsolved problems************************************************************************************************
+
+- The future piece couldn't be displayed. Working with requestFrameAnimation is giving some problems when assigning certains variables. Is has to be further studied
+- A better integration of the games with the menus' layouts. The development of the game itself has taken away a lot of time, and a better looking presentation and the integration of the grids in the layouts can be improved. New ideas have to be thought about it.
+- Make configurable the mapping of the keys in ubuntu and Mac. 
+- Test the game in Mac. It has been only tested in ubuntu.
+- Show the actual controls in a menu
+- Make different types of gamemodes
+ 
+
+
+
+
+	
