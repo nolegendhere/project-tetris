@@ -101,6 +101,10 @@
               margin: 0;
               margin-top: 10px;
               text-align: left;
+
+              -webkit-animation: color-change 1s infinite;
+              -moz-animation: color-change 1s infinite;
+              animation: color-change 1s infinite;
             }
           }
         }
@@ -113,16 +117,16 @@
   0% { color: red; }
   20% { color: blue; }
   40% { color: green; }
-  60% { color: yellow; }
-  80% { color: orange; }
+  60% { color: purple; }
+  80% { color: grey; }
   100% { color: red; }
 }
 @-moz-keyframes color-change {
   0% { color: red; }
   20% { color: blue; }
   40% { color: green; }
-  60% { color: yellow; }
-  80% { color: orange; }
+  60% { color: purple; }
+  80% { color: grey; }
   100% { color: red; }
 }
 
@@ -130,7 +134,7 @@
   0% { color: red; }
   20% { color: blue; }
   40% { color: green; }
-  60% { color: yellow; }
-  80% { color: orange; }
+  60% { color: purple; }
+  80% { color: grey; }
   100% { color: red; }
 }
