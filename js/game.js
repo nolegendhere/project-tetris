@@ -26,7 +26,6 @@ function Game(options) {
   this.regions = [];
   this.rowsToComplete = [];
   this.keys = options.keys;
-  this.keysUp = options.keysUp;
 
   this.directionLeft = false;
   this.directionRight = false;
@@ -285,7 +284,6 @@ Game.prototype.generateRegions = function () {
 
     for (var columnIndex = 0; columnIndex < this.limitColumnRight; columnIndex++)
     {
-      // var selector ='[player-number-region='+this.playerNumber.toString()+'][data-row='+rowIndex.toString()+'][data-column='+ columnIndex.toString() +']';
 
       region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop + rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop + (rowIndex+1) * this.cellHeight, state: true, regionColor: 'black'});
 
@@ -305,11 +303,13 @@ Game.prototype.generatePieceGenerator = function () {
   this.pieceGenerator = new PieceGenerator({playerNumber: this.playerNumber,pieceGeneratorSelector: this.pieceGeneratorSelector,rowsToComplete: this.rowsToComplete, initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column,regions:this.regions, limitRowBottom: this.limitRowBottom,limitColumnRight:this.limitColumnRight});
 };
 
+//Maps the key inputs to actions of the controled piece; there is an input delay/Length response; with delta time, a velocity in the input delay response and movement can be used.
 Game.prototype.assignControlKeys = function (delta) {
   if(!this.gameLost)
   {
     if(!this.gamePaused)
     {
+      //If the rotationLeft delay has been completed, then the action is performed
       if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && !this.keys.turnLeft)
       {
         //TurnRight
@@ -328,7 +328,6 @@ Game.prototype.assignControlKeys = function (delta) {
       {
         this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
       }
-
 
       if(this.rotateRight && this.inputResponseRotateRight>=this.inputResponseRotateRight && !this.keys.turnRight)
       {
@@ -368,7 +367,7 @@ Game.prototype.assignControlKeys = function (delta) {
         this.inputResponseDown+=this.inputResponseDownVelocity*delta;
       }
 
-      if(this.keysUp.down)
+      if(!this.keys.down)
       {
         this.movementCountVelocity = this.movementCountVelocityOriginal;
       }
@@ -433,7 +432,6 @@ Game.prototype.assignControlKeys = function (delta) {
       if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
       {
         //Pause
-        console.log("entra2 PauseFalse 1");
         this.pausePressed = false;
         this.gamePaused = false;
         this.inputResponsePause = 0;
@@ -442,12 +440,10 @@ Game.prototype.assignControlKeys = function (delta) {
       {
         //Pause
         this.pausePressed = true;
-        console.log("entra2 PauseFalse 2");
         this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
       }
       else if(this.inputResponsePause>0)
       {
-        console.log("entra2 PauseFalse 3");
         this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
       }
     }
@@ -473,7 +469,6 @@ Game.prototype.displayResult = function () {
 };
 
 Game.prototype.restartGame = function () {
-  console.log("restart");
   $(this.playerLayoutRemove).remove();
 };
 
