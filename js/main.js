@@ -14,8 +14,6 @@ Menu.prototype.checkStateGame = function () {
     this.intervalID = setInterval(function(){
       if(this.playerOne.gameWon)
       {
-        console.log("Player 1 Wins");
-        console.log($(this.playerOne.boardSelector));
         $(this.playerOne.boardSelector).append($('<h3>').addClass('player-message win').attr('id','win1').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
         $('#win1').html('PLAYER 1 WINS');
 
@@ -23,17 +21,12 @@ Menu.prototype.checkStateGame = function () {
       }
       else if(this.playerOne.gameLost)
       {
-        console.log("Player 1 Loses");
-        console.log($(this.playerOne.boardSelector));
         $(this.playerOne.boardSelector).append($('<h3>').addClass('player-message lose').attr('id','lose1').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
         $('#lose1').html('PLAYER 1 LOSES');
 
         this.checkStateGameClear();
       }
-      else
-      {
-         console.log("goOn");
-      }
+
     }.bind(this), 100);
   }
   else
@@ -41,38 +34,30 @@ Menu.prototype.checkStateGame = function () {
     this.intervalID = setInterval(function(){
       if(this.playerOne.gameWon || this.playerTwo.gameLost)
       {
-        console.log("Player 1 Wins");
         $(this.playerOne.boardSelector).append($('<h3>').addClass('player-message win').attr('id','win1').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
         $('#win1').html('PLAYER 1 WINS');
-        console.log("Player 2 Loses");
+
         $(this.playerTwo.boardSelector).append($('<h3>').addClass('player-message lose').attr('id','lose2').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
         $('#lose2').html('PLAYER 2 LOSES');
-
-        console.log($('lose2'));
 
         this.checkStateGameClear();
       }
       else if(this.playerOne.gameLost || this.playerTwo.gameWon)
       {
-        console.log("Player 1 Loses");
         $(this.playerOne.boardSelector).append($('<h3>').addClass('player-message lose').attr('id','lose1').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
         $('#lose1').html('PLAYER 1 LOSES');
+
         $(this.playerTwo.boardSelector).append($('<h3>').addClass('player-message win').attr('id','win2').css({position: 'absolute', top: '100px', left: '20px', color: 'red', backgroundColor: 'white'}));
         $('#win2').html('PLAYER 2 WINS');
-        console.log("Player 2 wins");
 
         this.checkStateGameClear();
       }
-      else
-      {
-         console.log("goOn");
-      }
+
     }.bind(this), 100);
   }
 };
 
 Menu.prototype.checkStateGameClear = function () {
-  console.log("clear");
   clearInterval(this.intervalID);
 };
 
@@ -110,7 +95,7 @@ Menu.prototype.addListenerToNumberForLevel = function()
 {
   this.numberForLevel=1;
   this.lastnumberForLevel=this.numberForlevel;
-  console.log(this.numberForLevel);
+
   $(this.numberForLevelListener).on('click', function(){
 
     var tempString = this.numberForLevelListener+' h3';
@@ -122,7 +107,6 @@ Menu.prototype.addListenerToNumberForLevel = function()
 
     $(tempString).html('LEVEL '+this.numberForLevel.toString());
 
-    console.log(this.numberForLevel);
   }.bind(this));
 };
 
@@ -130,7 +114,7 @@ Menu.prototype.addListenerToNumberForVictory = function()
 {
   this.numberForVictory=10;
   this.lastnumberForVictory=this.numberForVictory;
-  console.log(this.numberForVictory);
+
   $(this.numberForVictoryListener).on('click', function(){
 
     var tempString = this.numberForVictoryListener+' h3';
@@ -142,7 +126,6 @@ Menu.prototype.addListenerToNumberForVictory = function()
 
     $(tempString).html(this.numberForVictory.toString()+"PTS TO WIN");
 
-    console.log(this.numberForVictory);
   }.bind(this));
 };
 
@@ -151,7 +134,7 @@ Menu.prototype.addListenerToNumberOfPLayers = function()
 {
   this.numberOfPlayers=1;
   this.lastPlayedNumberOfPlayers=1;
-  console.log(this.numberOfPlayers);
+
   $(this.numberOfPlayerListener).on('click', function(){
 
     var tempString = this.numberOfPlayerListener+' h3';
@@ -167,7 +150,6 @@ Menu.prototype.addListenerToNumberOfPLayers = function()
       $(tempString).html('TWO PLAYERS');
     }
 
-    console.log(this.numberOfPlayers);
   }.bind(this));
 };
 
