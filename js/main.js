@@ -1,12 +1,13 @@
 
+//Object that manages the game
 function Menu(){
 
 }
-
+//starts the management of the game
 Menu.prototype.startApp = function () {
   this.generateMenu();
 };
-
+//checks if the actual game is finished, it could be also done in the object game, but it was decided to be done here in order to apply some of the tools learned during the first module; returns which player has won and which has lost
 Menu.prototype.checkStateGame = function () {
 
   if(this.lastPlayedNumberOfPlayers===1)
@@ -57,16 +58,20 @@ Menu.prototype.checkStateGame = function () {
   }
 };
 
+//Clears the setInterval of the anterior function
 Menu.prototype.checkStateGameClear = function () {
   clearInterval(this.intervalID);
 };
 
+//generates the different menus that manages the game
 Menu.prototype.generateMenu = function (){
 
+  //selectors of the menus and layouts
   this.menuLayoutStartSelector = '#menu-layout-start';
   this.playerLayoutSelector = '#ingame-layout';
   this.menuLayoutRestartSelector = '#menu-layout-restart';
 
+  //selectors of the buttons
   this.startListener = '#start-button';
   this.numberOfPlayerListener = '#number-player-button';
   this.numberForVictoryListener = '#number-victory-button';
@@ -74,7 +79,7 @@ Menu.prototype.generateMenu = function (){
   this.resumeListener = '#resume-button';
   this.restartListener = '#restart-button';
   this.goBackMenuStart = '#go-back-menu-start-button';
-
+  //initializates the listeners
   this.addListenerToStart();
   this.addListenerToNumberOfPLayers();
   this.addListenerToNumberForVictory();
@@ -82,15 +87,16 @@ Menu.prototype.generateMenu = function (){
   this.addListenerToResume();
   this.addListenerToRestart();
   this.addListenerToGoBackmenuStart();
-
+  //hide some of the menues in the start manue
   $(this.menuLayoutRestartSelector).hide();
   $(this.playerLayoutSelector).hide();
   $(this.resumeListener).hide();
-
+  //if there is a delay in the execution of one action, this boolean allows to control that the other buttons that can be pressed are not taken into account
   this.inactiveButton = false;
 
 };
 
+//Checks the level of difficulty choosen
 Menu.prototype.addListenerToNumberForLevel = function()
 {
   this.numberForLevel=1;
@@ -110,6 +116,7 @@ Menu.prototype.addListenerToNumberForLevel = function()
   }.bind(this));
 };
 
+//checks the number of points choosen to win the game
 Menu.prototype.addListenerToNumberForVictory = function()
 {
   this.numberForVictory=10;
@@ -129,7 +136,7 @@ Menu.prototype.addListenerToNumberForVictory = function()
   }.bind(this));
 };
 
-
+//checks the number of players choosen
 Menu.prototype.addListenerToNumberOfPLayers = function()
 {
   this.numberOfPlayers=1;
@@ -153,6 +160,7 @@ Menu.prototype.addListenerToNumberOfPLayers = function()
   }.bind(this));
 };
 
+//resumes to the ongoing game
 Menu.prototype.addListenerToResume = function()
 {
   $(this.resumeListener).on('click', function(){
@@ -178,7 +186,7 @@ Menu.prototype.addListenerToResume = function()
   }.bind(this));
 };
 
-
+//allows to go back to the main menu
 Menu.prototype.addListenerToGoBackmenuStart = function()
 {
   $(this.goBackMenuStart).on('click', function(){
@@ -204,6 +212,7 @@ Menu.prototype.addListenerToGoBackmenuStart = function()
   }.bind(this));
 };
 
+//restarts the game
 Menu.prototype.addListenerToRestart = function()
 {
   $(this.restartListener).on('click', function(){
@@ -359,6 +368,7 @@ Menu.prototype.addListenerToRestart = function()
   }.bind(this));
 };
 
+//Starts the new game
 Menu.prototype.addListenerToStart = function()
 {
   this.OnePlayer = false;

@@ -31,6 +31,7 @@ Piece.prototype.checkDeploy = function () {
 
 //move automatically piece down;
 Piece.prototype.moveDown = function () {
+  //if the piece is not already stopped
   if(!this.contact)
   {
     var tempRow;
@@ -41,9 +42,9 @@ Piece.prototype.moveDown = function () {
       {
         tempRow = element.row;
         tempRow++;
-
+        //checks if the news row has collision down
         this.collisionTestmoveDown(tempRow, element.column);
-
+        //if there isnt' collision down, the block is added to the tempArray
         if(!this.contact)
         {
           tempArray.push({row: tempRow , column: element.column , rotationPoint: element.rotationPoint, selector: element.selector, erase: element.erase, erased: element.erased, displacement: element.displacement, position: {row: this.regions[tempRow][element.column].center.row , column: this.regions[tempRow][element.column].center.column }, pieceNumber: element.pieceNumber});
@@ -53,6 +54,7 @@ Piece.prototype.moveDown = function () {
 
     if(!this.contact)
     {
+      //if there hasn't been a collision down, the tempArray is assigned to the body of the pieces (new position of the pieces)
       this.body = tempArray;
     }
   }
@@ -60,6 +62,7 @@ Piece.prototype.moveDown = function () {
 
 //move the piece to the left
 Piece.prototype.goLeft = function () {
+  //if the piece is not already stopped
   if(!this.contact)
   {
     var tempColumn;
@@ -70,9 +73,9 @@ Piece.prototype.goLeft = function () {
       {
         tempColumn = element.column;
         tempColumn--;
-
+        //checks if the news row has collision lateral
         lateralCollision = this.collisionTestLaterals(tempColumn, element.row);
-
+        //if there isnt' collision lateral, the block is added to the tempArray
         if(!lateralCollision)
         {
           tempArray.push({row: element.row , column: tempColumn, rotationPoint: element.rotationPoint, selector: element.selector, erase: element.erase, erased: element.erased, displacement: element.displacement, position: {row: this.regions[element.row][tempColumn].center.row , column: this.regions[element.row][tempColumn].center.column }, pieceNumber: element.pieceNumber});
@@ -82,6 +85,7 @@ Piece.prototype.goLeft = function () {
 
     if(!lateralCollision)
     {
+      //if there hasn't been a collision lateral, the tempArray is assigned to the body of the pieces (new position of the pieces)
       this.body = tempArray;
     }
   }
@@ -89,6 +93,7 @@ Piece.prototype.goLeft = function () {
 
 //move the piece to the right;
 Piece.prototype.goRight = function () {
+  //if the piece is not already stopped
   if(!this.contact)
   {
     var tempColumn;
@@ -99,8 +104,9 @@ Piece.prototype.goRight = function () {
       {
         tempColumn = element.column;
         tempColumn++;
-
+        //checks if the news row has collision lateral
         lateralCollision = this.collisionTestLaterals(tempColumn, element.row);
+        //if there isnt' collision lateral, the block is added to the tempArray
         if(!lateralCollision)
         {
           tempArray.push({row: element.row , column: tempColumn, rotationPoint: element.rotationPoint, selector: element.selector, erase: element.erase, erased: element.erased, displacement: element.displacement, position: {row: this.regions[element.row][tempColumn].center.row , column: this.regions[element.row][tempColumn].center.column }, pieceNumber: element.pieceNumber});
@@ -110,12 +116,13 @@ Piece.prototype.goRight = function () {
 
     if(!lateralCollision)
     {
+      //if there hasn't been a collision lateral, the tempArray is assigned to the body of the pieces (new position of the pieces)
       this.body = tempArray;
     }
   }
 };
 
-//TO-DO move the piece down faster
+//move the piece down faster; it just returns a value of 20 for the velocity of the piece
 Piece.prototype.goDownFaster = function (maxRows) {
   return 20;
 };
@@ -164,7 +171,7 @@ Piece.prototype.defineRotationPoint = function () {
 
 //Rotate left the piece, if it can be rotatet looking at maxColumns
 Piece.prototype.rotatePieceLeft = function () {
-
+  //if the piece is not already stopped and there is a rotation point
   if(!this.contact && this.rotationPoint!==-1)
   {
     var tempArray = [];
@@ -174,24 +181,24 @@ Piece.prototype.rotatePieceLeft = function () {
     var tempColumn2;
 
     var lateralCollision = false;
-
+    //for each block of the pieces it is checked the lateral collision if it hasn't been already stopped
     this.body.forEach(function(element){
       if(!lateralCollision && !this.contact)
-      {
+      { //translate the row and column of the block to the row and column of the rotationPoint block
         tempRow = element.row - this.body[this.rotationPoint].row;
-
         tempColumn = element.column - this.body[this.rotationPoint].column;
 
+        //multply by the matrix of rotation
         tempRow2 = this.rotationMatrixLeft[0][0] * tempRow + this.rotationMatrixLeft[0][1] * tempColumn;
-
         tempColumn2 = this.rotationMatrixLeft[1][0] * tempRow + this.rotationMatrixLeft[1][1] * tempColumn;
 
+        //translate again, now from the rotationPoint
         tempRow = tempRow2 + this.body[this.rotationPoint].row;
 
         tempColumn = tempColumn2 + this.body[this.rotationPoint].column;
 
         lateralCollision=this.collisionTestLaterals(tempColumn, tempRow);
-
+        //if there isnt' collision lateral, the block is added to the tempArray
         if(!lateralCollision)
         {
           tempArray.push({row:tempRow , column: tempColumn, rotationPoint: element.rotationPoint, selector: element.selector, erase: element.erase, erased: element.erased, displacement: element.displacement, position: {row: this.regions[tempRow][tempColumn].center.row , column: this.regions[tempRow][tempColumn].center.column }, pieceNumber: element.pieceNumber});
@@ -202,6 +209,7 @@ Piece.prototype.rotatePieceLeft = function () {
 
     if(!lateralCollision)
     {
+      //if there hasn't been a collision lateral, the tempArray is assigned to the body of the pieces (new position of the pieces)
       this.body = tempArray;
     }
   }
@@ -251,7 +259,7 @@ Piece.prototype.rotatePieceRight = function () {
   }
 };
 
-//Draw the piece with divs
+//Draw the piece in the dom with px in absolute position respect to the player's board
 Piece.prototype.drawPiece = function () {
   this.body.forEach(function(element){
       element.selector.css({top: element.position.row.toString()+'px', left: element.position.column.toString()+'px'});
@@ -259,6 +267,7 @@ Piece.prototype.drawPiece = function () {
 
 };
 
+//the regions where the blocks of the pieces are present are updated to a state of false;
 Piece.prototype.updateRegions = function (){
   this.body.forEach(function(element){
     this.regions[element.row][element.column].state = false;
