@@ -66,6 +66,10 @@ Menu.prototype.checkStateGameClear = function () {
 //generates the different menus that manages the game
 Menu.prototype.generateMenu = function (){
 
+  //loading
+  this.loadingLayoutSelector = '#loading-layout';
+  this.loadingSelector = '#loading';
+
   //selectors of the menus and layouts
   this.menuLayoutStartSelector = '#menu-layout-start';
   this.playerLayoutSelector = '#ingame-layout';
@@ -91,9 +95,27 @@ Menu.prototype.generateMenu = function (){
   $(this.menuLayoutRestartSelector).hide();
   $(this.playerLayoutSelector).hide();
   $(this.resumeListener).hide();
+  $(this.loadingLayoutSelector).hide();
   //if there is a delay in the execution of one action, this boolean allows to control that the other buttons that can be pressed are not taken into account
   this.inactiveButton = false;
 
+};
+
+Menu.prototype.displayLoadingLayout = function(){
+  var counter = 3;
+  var tempString = this.loadingSelector +' h3';
+  $(tempString).html('READY '+ counter.toString() +'...');
+  console.log(counter);
+  this.intervalID2 = setInterval(function(){
+    console.log(counter);
+    counter--;
+    if(counter===-1)
+    {
+      $(this.loadingLayoutSelector).hide();
+      clearInterval(this.intervalID2);
+    }
+    $(tempString).html('READY '+ counter.toString() +'...');
+  }.bind(this), 1000);
 };
 
 //Checks the level of difficulty choosen
@@ -227,10 +249,6 @@ Menu.prototype.addListenerToRestart = function()
         delete this.playerOne.pieceGenerator;
         delete this.playerOne;
         this.playerOne = new Game({
-            box :document.getElementById('box'),
-            boxPos : 10,
-            boxLastPos : 10,
-            boxVelocity : 0.08,
             fpsDisplay : document.getElementById('fpsDisplay'),
             limit : 300,
             lastFrameTimeMs : 0,
@@ -282,10 +300,6 @@ Menu.prototype.addListenerToRestart = function()
         delete this.playerTwo;
 
         this.playerOne = new Game({
-            box :document.getElementById('box'),
-            boxPos : 10,
-            boxLastPos : 10,
-            boxVelocity : 0.08,
             fpsDisplay : document.getElementById('fpsDisplay'),
             limit : 300,
             lastFrameTimeMs : 0,
@@ -317,10 +331,6 @@ Menu.prototype.addListenerToRestart = function()
         });
 
         this.playerTwo = new Game({
-            box :document.getElementById('box'),
-            boxPos : 10,
-            boxLastPos : 10,
-            boxVelocity : 0.08,
             fpsDisplay : document.getElementById('fpsDisplay'),
             limit : 300,
             lastFrameTimeMs : 0,
@@ -390,10 +400,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
 
           this.playerOne = new Game({
-              box :document.getElementById('box'),
-              boxPos : 10,
-              boxLastPos : 10,
-              boxVelocity : 0.08,
               fpsDisplay : document.getElementById('fpsDisplay'),
               limit : 300,
               lastFrameTimeMs : 0,
@@ -426,13 +432,17 @@ Menu.prototype.addListenerToStart = function()
 
           this.playerOne.addRivalPlayer();
 
+          $(this.loadingLayoutSelector).show();
+
+          this.displayLoadingLayout();
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.inactiveButton=false;
             this.checkStateGame();
-          }.bind(this), 1000);
+          }.bind(this), 4000);
         }
         else if(this.OnePlayer && !this.TwoPlayers)
         {
@@ -447,10 +457,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.resumeListener).hide();
 
           this.playerOne = new Game({
-              box :document.getElementById('box'),
-              boxPos : 10,
-              boxLastPos : 10,
-              boxVelocity : 0.08,
               fpsDisplay : document.getElementById('fpsDisplay'),
               limit : 300,
               lastFrameTimeMs : 0,
@@ -483,13 +489,17 @@ Menu.prototype.addListenerToStart = function()
 
           this.playerOne.addRivalPlayer();
 
+          $(this.loadingLayoutSelector).show();
+
+          this.displayLoadingLayout();
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.inactiveButton=false;
             this.checkStateGame();
-          }.bind(this), 1000);
+          }.bind(this), 4000);
         }
         else if(this.TwoPlayers)
         {
@@ -510,10 +520,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.resumeListener).hide();
 
           this.playerOne = new Game({
-              box :document.getElementById('box'),
-              boxPos : 10,
-              boxLastPos : 10,
-              boxVelocity : 0.08,
               fpsDisplay : document.getElementById('fpsDisplay'),
               limit : 300,
               lastFrameTimeMs : 0,
@@ -546,13 +552,17 @@ Menu.prototype.addListenerToStart = function()
 
           this.playerOne.addRivalPlayer();
 
+          $(this.loadingLayoutSelector).show();
+
+          this.displayLoadingLayout();
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
             this.playerOne.startGame();
             this.inactiveButton=false;
             this.checkStateGame();
-          }.bind(this), 1000);
+          }.bind(this), 4000);
         }
       }
       else
@@ -567,10 +577,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
 
           this.playerOne = new Game({
-              box :document.getElementById('box'),
-              boxPos : 10,
-              boxLastPos : 10,
-              boxVelocity : 0.08,
               fpsDisplay : document.getElementById('fpsDisplay'),
               limit : 300,
               lastFrameTimeMs : 0,
@@ -602,10 +608,6 @@ Menu.prototype.addListenerToStart = function()
           });
 
           this.playerTwo = new Game({
-              box :document.getElementById('box'),
-              boxPos : 10,
-              boxLastPos : 10,
-              boxVelocity : 0.08,
               fpsDisplay : document.getElementById('fpsDisplay'),
               limit : 300,
               lastFrameTimeMs : 0,
@@ -640,6 +642,10 @@ Menu.prototype.addListenerToStart = function()
 
           this.playerTwo.addRivalPlayer({rivalPlayer:this.playerOne});
 
+          $(this.loadingLayoutSelector).show();
+
+          this.displayLoadingLayout();
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
@@ -647,7 +653,7 @@ Menu.prototype.addListenerToStart = function()
             this.playerTwo.startGame();
             this.inactiveButton=false;
             this.checkStateGame();
-          }.bind(this), 1000);
+          }.bind(this), 4000);
         }
         else if(this.OnePlayer && !this.TwoPlayers)
         {
@@ -664,10 +670,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.resumeListener).hide();
 
           this.playerOne = new Game({
-              box :document.getElementById('box'),
-              boxPos : 10,
-              boxLastPos : 10,
-              boxVelocity : 0.08,
               fpsDisplay : document.getElementById('fpsDisplay'),
               limit : 300,
               lastFrameTimeMs : 0,
@@ -699,10 +701,6 @@ Menu.prototype.addListenerToStart = function()
           });
 
           this.playerTwo = new Game({
-              box :document.getElementById('box'),
-              boxPos : 10,
-              boxLastPos : 10,
-              boxVelocity : 0.08,
               fpsDisplay : document.getElementById('fpsDisplay'),
               limit : 300,
               lastFrameTimeMs : 0,
@@ -737,6 +735,10 @@ Menu.prototype.addListenerToStart = function()
 
           this.playerTwo.addRivalPlayer({rivalPlayer:this.playerOne});
 
+          $(this.loadingLayoutSelector).show();
+
+          this.displayLoadingLayout();
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
@@ -744,7 +746,7 @@ Menu.prototype.addListenerToStart = function()
             this.playerTwo.startGame();
             this.inactiveButton=false;
             this.checkStateGame();
-          }.bind(this), 1000);
+          }.bind(this), 4000);
         }
         else if(this.TwoPlayers)
         {
@@ -763,10 +765,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.resumeListener).hide();
 
           this.playerOne = new Game({
-              box :document.getElementById('box'),
-              boxPos : 10,
-              boxLastPos : 10,
-              boxVelocity : 0.08,
               fpsDisplay : document.getElementById('fpsDisplay'),
               limit : 300,
               lastFrameTimeMs : 0,
@@ -798,10 +796,6 @@ Menu.prototype.addListenerToStart = function()
           });
 
           this.playerTwo = new Game({
-              box :document.getElementById('box'),
-              boxPos : 10,
-              boxLastPos : 10,
-              boxVelocity : 0.08,
               fpsDisplay : document.getElementById('fpsDisplay'),
               limit : 300,
               lastFrameTimeMs : 0,
@@ -836,6 +830,10 @@ Menu.prototype.addListenerToStart = function()
 
           this.playerTwo.addRivalPlayer({rivalPlayer:this.playerOne});
 
+          $(this.loadingLayoutSelector).show();
+
+          this.displayLoadingLayout();
+
           setTimeout(function(){
             $(this.menuLayoutRestartSelector).show();
             $(this.playerLayoutSelector).show();
@@ -843,7 +841,7 @@ Menu.prototype.addListenerToStart = function()
             this.playerTwo.startGame();
             this.inactiveButton=false;
             this.checkStateGame();
-          }.bind(this), 1000);
+          }.bind(this), 4000);
         }
       }
     }
