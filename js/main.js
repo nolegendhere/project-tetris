@@ -100,6 +100,52 @@ Menu.prototype.generateMenu = function (){
   this.inactiveButton = false;
 
 };
+
+//Loading screen; adds pause before beginning, for resume
+Menu.prototype.displayLoadingLayoutResume = function(){
+  var counter = 3;
+  var tempString = this.loadingSelector +' h3';
+  $(tempString).html('READY '+ counter.toString() +'...');
+
+  this.intervalID2 = setInterval(function(){
+    counter--;
+    if(counter===-1)
+    {
+      $(this.loadingLayoutSelector).hide();
+
+      if(this.lastPlayedNumberOfPlayers===1)
+      {
+        $(this.menuLayoutRestartSelector).show();
+        $(this.playerLayoutSelector).show();
+        setTimeout(function(){
+          this.playerOne.gamePaused=false;
+          this.inactiveButton=false;
+          this.checkStateGame();
+        }.bind(this),1000 );
+      }
+      else
+      {
+        $(this.menuLayoutRestartSelector).show();
+        $(this.playerLayoutSelector).show();
+        this.playerOne.startGame();
+        this.playerTwo.startGame();
+        setTimeout(function(){
+          this.playerOne.gamePaused=false;
+          this.playerTwo.gamePaused=false;
+          this.inactiveButton=false;
+          this.checkStateGame();
+        }.bind(this),1000 );
+      }
+
+      clearInterval(this.intervalID2);
+    }
+    $(tempString).html('READY '+ counter.toString() +'...');
+  }.bind(this), 1000);
+};
+
+
+
+
 //Loading screen; adds pause before beginning
 Menu.prototype.displayLoadingLayout = function(){
   var counter = 3;
@@ -216,30 +262,10 @@ Menu.prototype.addListenerToResume = function()
   $(this.resumeListener).on('click', function(){
     if(!this.inactiveButton)
     {
-
-      if(this.lastPlayedNumberOfPlayers===1)
-      {
-        this.playerOne.gamePaused = false;
-      }
-      else
-      {
-        this.playerOne.gamePaused = false;
-        this.playerTwo.gamePaused = false;
-      }
-
       $(this.menuLayoutStartSelector).hide();
       $(this.loadingLayoutSelector).show();
 
-      this.displayLoadingLayout();
-
-      // setTimeout(function(){
-      //   $(this.menuLayoutRestartSelector).show();
-      //   $(this.playerLayoutSelector).show();
-      //   this.inactiveButton=false;
-      //   this.checkStateGame();
-      // }.bind(this), 4000);
-
-      // this.checkStateGame();
+      this.displayLoadingLayoutResume();
     }
   }.bind(this));
 };
@@ -322,14 +348,6 @@ Menu.prototype.addListenerToRestart = function()
         $(this.loadingLayoutSelector).show();
 
         this.displayLoadingLayout();
-
-        // setTimeout(function(){
-        //   $(this.menuLayoutRestartSelector).show();
-        //   $(this.playerLayoutSelector).show();
-        //   this.playerOne.startGame();
-        //   this.inactiveButton=false;
-        //   this.checkStateGame();
-        // }.bind(this), 4000);
       }
       else
       {
@@ -414,15 +432,6 @@ Menu.prototype.addListenerToRestart = function()
         $(this.loadingLayoutSelector).show();
 
         this.displayLoadingLayout();
-
-        // setTimeout(function(){
-        //   $(this.menuLayoutRestartSelector).show();
-        //   $(this.playerLayoutSelector).show();
-        //   this.playerOne.startGame();
-        //   this.playerTwo.startGame();
-        //   this.inactiveButton = false;
-        //   this.checkStateGame();
-        // }.bind(this), 4000);
       }
     }
 
@@ -485,14 +494,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.loadingLayoutSelector).show();
 
           this.displayLoadingLayout();
-
-          // setTimeout(function(){
-          //   $(this.menuLayoutRestartSelector).show();
-          //   $(this.playerLayoutSelector).show();
-          //   this.playerOne.startGame();
-          //   this.inactiveButton=false;
-          //   this.checkStateGame();
-          // }.bind(this), 5000);
         }
         else if(this.OnePlayer && !this.TwoPlayers)
         {
@@ -542,14 +543,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.loadingLayoutSelector).show();
 
           this.displayLoadingLayout();
-
-          // setTimeout(function(){
-          //   $(this.menuLayoutRestartSelector).show();
-          //   $(this.playerLayoutSelector).show();
-          //   this.playerOne.startGame();
-          //   this.inactiveButton=false;
-          //   this.checkStateGame();
-          // }.bind(this), 4000);
         }
         else if(this.TwoPlayers)
         {
@@ -605,14 +598,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.loadingLayoutSelector).show();
 
           this.displayLoadingLayout();
-
-          // setTimeout(function(){
-          //   $(this.menuLayoutRestartSelector).show();
-          //   $(this.playerLayoutSelector).show();
-          //   this.playerOne.startGame();
-          //   this.inactiveButton=false;
-          //   this.checkStateGame();
-          // }.bind(this), 4000);
         }
       }
       else
@@ -695,15 +680,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.loadingLayoutSelector).show();
 
           this.displayLoadingLayout();
-
-          // setTimeout(function(){
-          //   $(this.menuLayoutRestartSelector).show();
-          //   $(this.playerLayoutSelector).show();
-          //   this.playerOne.startGame();
-          //   this.playerTwo.startGame();
-          //   this.inactiveButton=false;
-          //   this.checkStateGame();
-          // }.bind(this), 4000);
         }
         else if(this.OnePlayer && !this.TwoPlayers)
         {
@@ -788,15 +764,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.loadingLayoutSelector).show();
 
           this.displayLoadingLayout();
-
-          // setTimeout(function(){
-          //   $(this.menuLayoutRestartSelector).show();
-          //   $(this.playerLayoutSelector).show();
-          //   this.playerOne.startGame();
-          //   this.playerTwo.startGame();
-          //   this.inactiveButton=false;
-          //   this.checkStateGame();
-          // }.bind(this), 4000);
         }
         else if(this.TwoPlayers)
         {
@@ -883,15 +850,6 @@ Menu.prototype.addListenerToStart = function()
           $(this.loadingLayoutSelector).show();
 
           this.displayLoadingLayout();
-
-          // setTimeout(function(){
-          //   $(this.menuLayoutRestartSelector).show();
-          //   $(this.playerLayoutSelector).show();
-          //   this.playerOne.startGame();
-          //   this.playerTwo.startGame();
-          //   this.inactiveButton=false;
-          //   this.checkStateGame();
-          // }.bind(this), 4000);
         }
       }
     }
