@@ -34,20 +34,6 @@ function Game(options) {
   this.rotateRight = false;
   this.pausePressed = false;
 
-  // this.movementCount = 0;
-  // this.movementCountLength = 10;
-  // this.inputResponseLeft = 0;
-  // this.inputResponseLeftLength = 10;
-  // this.inputResponseRight = 0;
-  // this.inputResponseRightLength = 10;
-  // this.inputResponseRotateLeft = 0;
-  // this.inputResponseRotateLeftLength = 10;
-  // this.inputResponseRotateRight = 0;
-  // this.inputResponseRotateRightLength = 10;
-  //
-  // this.inputResponsePause = 0;
-  // this.inputResponsePauseLength = 10;
-
   this.movementCount = 0;
   this.movementCountVelocity = options.numberForLevel;
   this.movementCountVelocityOriginal = options.numberForLevel;
@@ -88,7 +74,7 @@ function Game(options) {
     column: options.initialRegionColumn
   };
 
-  this.numberOfPlayers = options.numberOfPlayers
+  this.numberOfPlayers = options.numberOfPlayers;
   this.playerNumber = options.playerNumber;
   this.playerScore = 0;
   this.numberForVictory = options.numberForVictory;
@@ -137,7 +123,7 @@ Game.prototype.update = function (delta) {
         if(this.movementCount>=this.movementCountLength)
         {
           this.pieceGenerator.actualPiece().moveDown();
-          // console.log("this.pieceGenerator.actualPiece()",this.pieceGenerator.actualPiece());
+
           this.movementCount=0;
         }
       }
@@ -244,9 +230,28 @@ Game.prototype.mainLoop=function(timestamp) {
 
 Game.prototype.generateLayout = function () {
 
-  this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
+  if(this.numberOfPlayers==2)
+  {
+    if(this.playerNumber===1)
+    {
+      this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
 
-  $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+      $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+    }
+    else
+    {
+      this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
+
+      $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+    }
+  }
+  else
+  {
+    this.playerLayout='[player-number-layout='+this.playerNumber.toString()+']';
+
+    $('.ingame-layout').append($('<div>').addClass('player-layout').attr('player-number-layout',this.playerNumber.toString()));
+  }
+
 
 };
 
