@@ -137,7 +137,7 @@ In the ingame state, the player has the options to restart the game, or to go ba
 
 ********************************************************************************unsolved problems and unfinished aspects*********************************************************************************
 
-- The future piece couldn't be displayed. Working with requestFrameAnimation is giving some problems when assigning certains variables. Is has to be further studied
+- The future piece couldn't be displayed. Working with requestAnimationFrame is giving some problems when assigning certains variables. Is has to be further studied
 - A better integration of the games with the menus' layouts. The development of the game itself has taken away a lot of time, and a better looking presentation and the integration of the grids in the layouts can be improved. New ideas have to be thought about it.
 - Make configurable the mapping of the keys in ubuntu and Mac. 
 - Test the game in Mac. It has been only tested in ubuntu.

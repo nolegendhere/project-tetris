@@ -135,14 +135,16 @@ So, after the loading state, the in.game state is present. In this state, the in
 In the ingame state, the player has the options to restart the game, or to go back to the main menu. When a player goes back to the main menu, the game is paused. Then, in the main menu ( so in the main menu state ), a player can choose to return to the actual game, or to start a new game with a new configuration. Whatever the options choosed, the loading page state will appear again, and the game will resume or start in pause again.
 
 
-**********************************************************************************unsolved problems************************************************************************************************
+********************************************************************************unsolved problems and unfinished aspects*********************************************************************************
 
-- The future piece couldn't be displayed. Working with requestFrameAnimation is giving some problems when assigning certains variables. Is has to be further studied
+- The future piece couldn't be displayed. Working with requestAnimationFrame is giving some problems when assigning certains variables. Is has to be further studied
 - A better integration of the games with the menus' layouts. The development of the game itself has taken away a lot of time, and a better looking presentation and the integration of the grids in the layouts can be improved. New ideas have to be thought about it.
 - Make configurable the mapping of the keys in ubuntu and Mac. 
 - Test the game in Mac. It has been only tested in ubuntu.
 - Show the actual controls in a menu
 - Make different types of gamemodes
+- Integration of mobile mode - touch screen options
+- Testing in all the browsers 
  
 
 
