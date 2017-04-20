@@ -310,8 +310,20 @@ Game.prototype.generateLayout = function () {
 
   }
 
+};
+
+//it generates the layout for the player's score
+Game.prototype.generateInPlayMenu = function (){
+  this.InPlayMenuSelector ='[player-number-inplaymenu='+this.playerNumber.toString()+']';
+
+  $(this.playerLayout).append($('<div>').addClass('player-inplaymenu').attr('player-number-inplaymenu',this.playerNumber.toString()));
+
+  this.playerScoreSelector ='#player-number-score'+this.playerNumber.toString();
+
+  $(this.InPlayMenuSelector).append($('<div>').addClass('score').attr('id','player-number-score'+this.playerNumber.toString()).append($('<h3>')));
 
 };
+
 
 //it generates the regions of the grid in the board of the player
 Game.prototype.generateRegions = function () {
@@ -330,28 +342,33 @@ Game.prototype.generateRegions = function () {
   //generate all the regions of the grid in the player's board
   for (var rowIndex = 0; rowIndex < this.limitRowBottom; rowIndex++)
   {
+    //temporal array to be pushed into the array of regions corresponding to the grid being created
     var tempArray=[];
     //initializes the array of integers named rowsToComplete
     this.rowsToComplete.push(0);
 
     for (var columnIndex = 0; columnIndex < this.limitColumnRight; columnIndex++)
     {
-
+      //crates a region with its borders left, top, right and bottom in order to calculate its center in px in the board. This center will be used to move toe blocks of the pieces; it also adds the state of the regions (false in the beginning because there is no block in it), an its color, that is black. The region color is only used for debugging porpuses
       region = new Region({ left: this.levelLeft + columnIndex* this.cellWidth, top: this.levelTop + rowIndex*this.cellHeight, right: this.levelLeft + (columnIndex+1) * this.cellWidth,bottom: this.levelTop + (rowIndex+1) * this.cellHeight, state: true, regionColor: 'black'});
 
       tempArray[columnIndex] = region;
 
+      //Craetes the region in the DOM. With its position, being absolute respecto to the players board, it will allow the blocks of the pieces in the DOM to be visible (they are also positioned with absolute position respect to the player's board)
       $(this.boardSelector).append($('<div>').addClass('cell board').attr('player-number-region',this.playerNumber.toString()).attr('data-row', rowIndex).attr('data-column', columnIndex).css({backgroundColor: region.regionColor, position: 'absolute', top: region.center.row.toString()+'px', left: region.center.column.toString()+'px'}));
     }
+    //push the region created into the array of regions corresponding to the grid being created
     this.regions.push(tempArray);
   }
 };
 
+//Generates the pieceGenerator, object that will create the pieces in the grid, will move the "actual piece being moved", and will erase and displace rowns
 Game.prototype.generatePieceGenerator = function () {
+  //Adds the pieceGenerator into the DOM. There, the pieces will be positioned into the DOM (so, )
   $(this.boardSelector).append($('<div>').addClass('piece-generator').attr('player-number-piece-generator',this.playerNumber.toString()));
-
+  //selector for the piece Generator
   this.pieceGeneratorSelector = '[player-number-piece-generator='+this.playerNumber.toString()+']';
-
+  //generates the pieceGenerator (parameters explained in the pieceGenerator file)
   this.pieceGenerator = new PieceGenerator({playerNumber: this.playerNumber,pieceGeneratorSelector: this.pieceGeneratorSelector,rowsToComplete: this.rowsToComplete, initialRegionRow: this.initialRegion.row, initialRegionColumn: this.initialRegion.column,regions:this.regions, limitRowBottom: this.limitRowBottom,limitColumnRight:this.limitColumnRight});
 };
 
@@ -361,23 +378,26 @@ Game.prototype.assignControlKeys = function (delta) {
   {
     if(!this.gamePaused)
     {
-      //If the rotationLeft delay has been completed, then the action is performed
+      //If the rotationLeft delay has been completed, then the action is performed; it only works if the key is released
       if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && !this.keys.turnLeft)
       {
-        //TurnRight
+        //TurnLeft
         this.rotateLeft = false;
         this.inputResponseRotateLeft = 0;
         this.pieceGenerator.actualPiece().defineRotationPoint();
         this.pieceGenerator.actualPiece().rotatePieceLeft();
       }
+      //If the key to rotate left is pressed, the counter beggings taking into account delta time
       else if(this.keys.turnLeft && this.inputResponseRotateLeft===0)
       {
         //TurnLeft
         this.rotateLeft = true;
         this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
       }
+      //if the counter has begun, it goes on as a delay/distance being traveled
       else if(this.inputResponseRotateLeft>0)
       {
+        //TurnLeft
         this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
       }
 
@@ -397,9 +417,11 @@ Game.prototype.assignControlKeys = function (delta) {
       }
       else if(this.inputResponseRotateRight>0)
       {
+        //TurnRight
         this.inputResponseRotateRight+=this.inputResponseRotateRightVelocity*delta;
       }
 
+      //If the goDown delay has been completed, then the action is performed; the piece goes down faster
       if(this.directionDown && this.inputResponseDown>=this.inputResponseDownLength)
       {
         //Left
@@ -416,14 +438,18 @@ Game.prototype.assignControlKeys = function (delta) {
       }
       else if(this.inputResponseDown>0)
       {
+        //Left
         this.inputResponseDown+=this.inputResponseDownVelocity*delta;
       }
 
+      //if the key down is released, the piece returns to its original velocity
       if(!this.keys.down)
       {
+        //sopts goin down faster
         this.movementCountVelocity = this.movementCountVelocityOriginal;
       }
 
+      //If the rLeft delay has been completed, then the action is performed;
       if(this.directionLeft && this.inputResponseLeft>=this.inputResponseLeftLength)
       {
         //Left
@@ -431,6 +457,7 @@ Game.prototype.assignControlKeys = function (delta) {
         this.inputResponseLeft = 0;
         this.pieceGenerator.actualPiece().goLeft();
       }
+      //If the key to go left is pressed, the counter beggings taking into account delta time
       else if(this.keys.left && this.inputResponseLeft===0)
       {
         //Left
@@ -438,8 +465,10 @@ Game.prototype.assignControlKeys = function (delta) {
         this.inputResponseLeft+=this.inputResponseLeftVelocity*delta;
 
       }
+      //if the counter has begun, it goes on as a delay/distance being traveled
       else if(this.inputResponseLeft>0)
       {
+        //Left
         this.inputResponseLeft+=this.inputResponseLeftVelocity*delta;
       }
 
@@ -458,6 +487,7 @@ Game.prototype.assignControlKeys = function (delta) {
       }
       else if(this.inputResponseRight>0)
       {
+        //Right
         this.inputResponseRight+=this.inputResponseRightVelocity*delta;
       }
 
@@ -476,10 +506,12 @@ Game.prototype.assignControlKeys = function (delta) {
       }
       else if(this.inputResponsePause>0)
       {
+        //Pause
         this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
       }
     }
     else
+    //if the game is paused
     {
       if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
       {
@@ -496,34 +528,24 @@ Game.prototype.assignControlKeys = function (delta) {
       }
       else if(this.inputResponsePause>0)
       {
+        //Pause
         this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
       }
     }
   }
 };
 
-Game.prototype.generateInPlayMenu = function (){
-
-  this.InPlayMenuSelector ='[player-number-inplaymenu='+this.playerNumber.toString()+']';
-
-  $(this.playerLayout).append($('<div>').addClass('player-inplaymenu').attr('player-number-inplaymenu',this.playerNumber.toString()));
-
-  this.playerScoreSelector ='#player-number-score'+this.playerNumber.toString();
-
-  $(this.InPlayMenuSelector).append($('<div>').addClass('score').attr('id','player-number-score'+this.playerNumber.toString()).append($('<h3>')));
-
-};
-
+//Shows tje score of the player in the DOM
 Game.prototype.displayResult = function () {
-  //console.log("entra",$(this.playerScoreSelector));
   $(this.playerScoreSelector+' h3').html(this.playerScore.toString()+'PTS');
-  //console.log("this",this);
 };
 
+//Removes the player's layout when reseting a game or starting a new one; called from the main object
 Game.prototype.restartGame = function () {
   $(this.playerLayoutRemove).remove();
 };
 
+//Adds the reference to the rival iin the session; called from the main object
 Game.prototype.addRivalPlayer = function(options){
   if(this.numberOfPlayers === 2)
   {
