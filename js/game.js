@@ -379,7 +379,7 @@ Game.prototype.assignControlKeys = function (delta) {
     if(!this.gamePaused)
     {
       //If the rotationLeft delay has been completed, then the action is performed; it only works if the key is released
-      if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && !this.keys.turnLeft)
+      if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && (!this.keys.turnLeft || !this.keys.turnLeftMac))
       {
         //TurnLeft
         this.rotateLeft = false;
@@ -388,7 +388,7 @@ Game.prototype.assignControlKeys = function (delta) {
         this.pieceGenerator.actualPiece().rotatePieceLeft();
       }
       //If the key to rotate left is pressed, the counter beggings taking into account delta time
-      else if(this.keys.turnLeft && this.inputResponseRotateLeft===0)
+      else if((this.keys.turnLeft || this.keys.turnLeftMac) && this.inputResponseRotateLeft===0)
       {
         //TurnLeft
         this.rotateLeft = true;
@@ -401,7 +401,7 @@ Game.prototype.assignControlKeys = function (delta) {
         this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
       }
 
-      if(this.rotateRight && this.inputResponseRotateRight>=this.inputResponseRotateRight && !this.keys.turnRight)
+      if(this.rotateRight && this.inputResponseRotateRight>=this.inputResponseRotateRightLength && (!this.keys.turnRight || !this.keys.turnRightMac))
       {
         //TurnRight
         this.rotateRight = false;
@@ -409,7 +409,7 @@ Game.prototype.assignControlKeys = function (delta) {
         this.pieceGenerator.actualPiece().defineRotationPoint();
         this.pieceGenerator.actualPiece().rotatePieceRight();
       }
-      else if(this.keys.turnRight && this.inputResponseRotateRight===0)
+      else if((this.keys.turnRight || this.keys.turnRightMac) && this.inputResponseRotateRight===0)
       {
         //TurnRight
         this.rotateRight = true;
@@ -429,7 +429,7 @@ Game.prototype.assignControlKeys = function (delta) {
         this.inputResponseDown = 0;
         this.movementCountVelocity = this.pieceGenerator.actualPiece().goDownFaster();
       }
-      else if(this.keys.down && this.inputResponseDown===0)
+      else if((this.keys.down || this.keys.downMac) && this.inputResponseDown===0)
       {
         //Left
         this.directionDown = true;
@@ -443,7 +443,7 @@ Game.prototype.assignControlKeys = function (delta) {
       }
 
       //if the key down is released, the piece returns to its original velocity
-      if(!this.keys.down)
+      if((!this.keys.down || this.keys.downMac))
       {
         //sopts goin down faster
         this.movementCountVelocity = this.movementCountVelocityOriginal;
@@ -458,7 +458,7 @@ Game.prototype.assignControlKeys = function (delta) {
         this.pieceGenerator.actualPiece().goLeft();
       }
       //If the key to go left is pressed, the counter beggings taking into account delta time
-      else if(this.keys.left && this.inputResponseLeft===0)
+      else if((this.keys.left || this.keys.leftMac)  && this.inputResponseLeft===0)
       {
         //Left
         this.directionLeft = true;
@@ -479,7 +479,7 @@ Game.prototype.assignControlKeys = function (delta) {
         this.inputResponseRight = 0;
         this.pieceGenerator.actualPiece().goRight();
       }
-      else if(this.keys.right && this.inputResponseRight===0)
+      else if((this.keys.right || this.keys.rightMac) && this.inputResponseRight===0)
       {
         //Right
         this.directionRight = true;
@@ -491,14 +491,14 @@ Game.prototype.assignControlKeys = function (delta) {
         this.inputResponseRight+=this.inputResponseRightVelocity*delta;
       }
 
-      if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
+      if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && (!this.keys.pause || !this.keys.pauseMac))
       {
         //Pause
         this.pausePressed = false;
         this.gamePaused = true;
         this.inputResponsePause = 0;
       }
-      else if(this.keys.pause && this.inputResponsePause===0)
+      else if((this.keys.pause || this.keys.pauseMac) && this.inputResponsePause===0)
       {
         //Pause
         this.pausePressed = true;
@@ -513,14 +513,14 @@ Game.prototype.assignControlKeys = function (delta) {
     else
     //if the game is paused
     {
-      if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
+      if((this.pausePressed || this.keys.pauseMac) && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
       {
         //Pause
         this.pausePressed = false;
         this.gamePaused = false;
         this.inputResponsePause = 0;
       }
-      else if(this.keys.pause && this.inputResponsePause===0)
+      else if((this.keys.pause || this.keys.pauseMac) && this.inputResponsePause===0)
       {
         //Pause
         this.pausePressed = true;
