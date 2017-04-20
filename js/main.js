@@ -105,13 +105,41 @@ Menu.prototype.displayLoadingLayout = function(){
   var counter = 3;
   var tempString = this.loadingSelector +' h3';
   $(tempString).html('READY '+ counter.toString() +'...');
-  console.log(counter);
+
   this.intervalID2 = setInterval(function(){
-    console.log(counter);
     counter--;
     if(counter===-1)
     {
       $(this.loadingLayoutSelector).hide();
+
+      if(this.lastPlayedNumberOfPlayers===1)
+      {
+        $(this.menuLayoutRestartSelector).show();
+        $(this.playerLayoutSelector).show();
+        this.playerOne.gamePaused = true;
+        this.playerOne.startGame();
+        setTimeout(function(){
+          this.playerOne.gamePaused=false;
+          this.inactiveButton=false;
+          this.checkStateGame();
+        }.bind(this),1000 );
+      }
+      else
+      {
+        $(this.menuLayoutRestartSelector).show();
+        $(this.playerLayoutSelector).show();
+        this.playerOne.gamePaused = true;
+        this.playerTwo.gamePaused = true;
+        this.playerOne.startGame();
+        this.playerTwo.startGame();
+        setTimeout(function(){
+          this.playerOne.gamePaused=false;
+          this.playerTwo.gamePaused=false;
+          this.inactiveButton=false;
+          this.checkStateGame();
+        }.bind(this),1000 );
+      }
+
       clearInterval(this.intervalID2);
     }
     $(tempString).html('READY '+ counter.toString() +'...');
@@ -188,10 +216,6 @@ Menu.prototype.addListenerToResume = function()
   $(this.resumeListener).on('click', function(){
     if(!this.inactiveButton)
     {
-      $(this.menuLayoutStartSelector).hide();
-      //$(this.resumeListener).hide();
-      $(this.menuLayoutRestartSelector).show();
-      $(this.playerLayoutSelector).show();
 
       if(this.lastPlayedNumberOfPlayers===1)
       {
@@ -203,7 +227,19 @@ Menu.prototype.addListenerToResume = function()
         this.playerTwo.gamePaused = false;
       }
 
-      this.checkStateGame();
+      $(this.menuLayoutStartSelector).hide();
+      $(this.loadingLayoutSelector).show();
+
+      this.displayLoadingLayout();
+
+      // setTimeout(function(){
+      //   $(this.menuLayoutRestartSelector).show();
+      //   $(this.playerLayoutSelector).show();
+      //   this.inactiveButton=false;
+      //   this.checkStateGame();
+      // }.bind(this), 4000);
+
+      // this.checkStateGame();
     }
   }.bind(this));
 };
@@ -281,11 +317,19 @@ Menu.prototype.addListenerToRestart = function()
 
         this.playerOne.addRivalPlayer();
 
-        setTimeout(function(){
-          this.playerOne.startGame();
-          this.inactiveButton=false;
-          this.checkStateGame();
-        }.bind(this), 1000);
+        $(this.menuLayoutRestartSelector).hide();
+        $(this.playerLayoutSelector).hide();
+        $(this.loadingLayoutSelector).show();
+
+        this.displayLoadingLayout();
+
+        // setTimeout(function(){
+        //   $(this.menuLayoutRestartSelector).show();
+        //   $(this.playerLayoutSelector).show();
+        //   this.playerOne.startGame();
+        //   this.inactiveButton=false;
+        //   this.checkStateGame();
+        // }.bind(this), 4000);
       }
       else
       {
@@ -365,15 +409,22 @@ Menu.prototype.addListenerToRestart = function()
 
         this.playerTwo.addRivalPlayer({rivalPlayer:this.playerOne});
 
-        setTimeout(function(){
-          this.playerOne.startGame();
-          this.playerTwo.startGame();
-          this.inactiveButton = false;
-          this.checkStateGame();
-        }.bind(this), 1000);
+        $(this.menuLayoutRestartSelector).hide();
+        $(this.playerLayoutSelector).hide();
+        $(this.loadingLayoutSelector).show();
+
+        this.displayLoadingLayout();
+
+        // setTimeout(function(){
+        //   $(this.menuLayoutRestartSelector).show();
+        //   $(this.playerLayoutSelector).show();
+        //   this.playerOne.startGame();
+        //   this.playerTwo.startGame();
+        //   this.inactiveButton = false;
+        //   this.checkStateGame();
+        // }.bind(this), 4000);
       }
     }
-
 
   }.bind(this));
 };
@@ -396,8 +447,6 @@ Menu.prototype.addListenerToStart = function()
           this.lastPlayedNumberOfPlayers=1;
           this.lastnumberForVictory = this.numberForVictory;
           this.lastnumberForLevel = this.numberForLevel;
-
-          $(this.menuLayoutStartSelector).hide();
 
           this.playerOne = new Game({
               fpsDisplay : document.getElementById('fpsDisplay'),
@@ -432,17 +481,18 @@ Menu.prototype.addListenerToStart = function()
 
           this.playerOne.addRivalPlayer();
 
+          $(this.menuLayoutStartSelector).hide();
           $(this.loadingLayoutSelector).show();
 
           this.displayLoadingLayout();
 
-          setTimeout(function(){
-            $(this.menuLayoutRestartSelector).show();
-            $(this.playerLayoutSelector).show();
-            this.playerOne.startGame();
-            this.inactiveButton=false;
-            this.checkStateGame();
-          }.bind(this), 4000);
+          // setTimeout(function(){
+          //   $(this.menuLayoutRestartSelector).show();
+          //   $(this.playerLayoutSelector).show();
+          //   this.playerOne.startGame();
+          //   this.inactiveButton=false;
+          //   this.checkStateGame();
+          // }.bind(this), 5000);
         }
         else if(this.OnePlayer && !this.TwoPlayers)
         {
@@ -493,13 +543,13 @@ Menu.prototype.addListenerToStart = function()
 
           this.displayLoadingLayout();
 
-          setTimeout(function(){
-            $(this.menuLayoutRestartSelector).show();
-            $(this.playerLayoutSelector).show();
-            this.playerOne.startGame();
-            this.inactiveButton=false;
-            this.checkStateGame();
-          }.bind(this), 4000);
+          // setTimeout(function(){
+          //   $(this.menuLayoutRestartSelector).show();
+          //   $(this.playerLayoutSelector).show();
+          //   this.playerOne.startGame();
+          //   this.inactiveButton=false;
+          //   this.checkStateGame();
+          // }.bind(this), 4000);
         }
         else if(this.TwoPlayers)
         {
@@ -556,13 +606,13 @@ Menu.prototype.addListenerToStart = function()
 
           this.displayLoadingLayout();
 
-          setTimeout(function(){
-            $(this.menuLayoutRestartSelector).show();
-            $(this.playerLayoutSelector).show();
-            this.playerOne.startGame();
-            this.inactiveButton=false;
-            this.checkStateGame();
-          }.bind(this), 4000);
+          // setTimeout(function(){
+          //   $(this.menuLayoutRestartSelector).show();
+          //   $(this.playerLayoutSelector).show();
+          //   this.playerOne.startGame();
+          //   this.inactiveButton=false;
+          //   this.checkStateGame();
+          // }.bind(this), 4000);
         }
       }
       else
@@ -646,14 +696,14 @@ Menu.prototype.addListenerToStart = function()
 
           this.displayLoadingLayout();
 
-          setTimeout(function(){
-            $(this.menuLayoutRestartSelector).show();
-            $(this.playerLayoutSelector).show();
-            this.playerOne.startGame();
-            this.playerTwo.startGame();
-            this.inactiveButton=false;
-            this.checkStateGame();
-          }.bind(this), 4000);
+          // setTimeout(function(){
+          //   $(this.menuLayoutRestartSelector).show();
+          //   $(this.playerLayoutSelector).show();
+          //   this.playerOne.startGame();
+          //   this.playerTwo.startGame();
+          //   this.inactiveButton=false;
+          //   this.checkStateGame();
+          // }.bind(this), 4000);
         }
         else if(this.OnePlayer && !this.TwoPlayers)
         {
@@ -739,14 +789,14 @@ Menu.prototype.addListenerToStart = function()
 
           this.displayLoadingLayout();
 
-          setTimeout(function(){
-            $(this.menuLayoutRestartSelector).show();
-            $(this.playerLayoutSelector).show();
-            this.playerOne.startGame();
-            this.playerTwo.startGame();
-            this.inactiveButton=false;
-            this.checkStateGame();
-          }.bind(this), 4000);
+          // setTimeout(function(){
+          //   $(this.menuLayoutRestartSelector).show();
+          //   $(this.playerLayoutSelector).show();
+          //   this.playerOne.startGame();
+          //   this.playerTwo.startGame();
+          //   this.inactiveButton=false;
+          //   this.checkStateGame();
+          // }.bind(this), 4000);
         }
         else if(this.TwoPlayers)
         {
@@ -834,14 +884,14 @@ Menu.prototype.addListenerToStart = function()
 
           this.displayLoadingLayout();
 
-          setTimeout(function(){
-            $(this.menuLayoutRestartSelector).show();
-            $(this.playerLayoutSelector).show();
-            this.playerOne.startGame();
-            this.playerTwo.startGame();
-            this.inactiveButton=false;
-            this.checkStateGame();
-          }.bind(this), 4000);
+          // setTimeout(function(){
+          //   $(this.menuLayoutRestartSelector).show();
+          //   $(this.playerLayoutSelector).show();
+          //   this.playerOne.startGame();
+          //   this.playerTwo.startGame();
+          //   this.inactiveButton=false;
+          //   this.checkStateGame();
+          // }.bind(this), 4000);
         }
       }
     }
