@@ -5,7 +5,6 @@
   }
 
   .menu-layout-restart{
-    margin-top: 200px;
     background-color: #00FFFF;
   }
   .custom-btn{
@@ -19,15 +18,18 @@
 }
 
   .ingame-layout{
+    // margin-top: 200px;
+    // background-color: #00FFFF;
+    // box-sizing: border-box;
+    // background-color: blue;
+    // background-size: contain;
+    // margin:0 auto;
+    // height: 400px;
+    // width: 800px;
+    // float:left;
+    height: 400px;
     margin-top: 200px;
     background-color: #00FFFF;
-    box-sizing: border-box;
-    background-color: blue;
-    background-size: contain;
-    margin:0 auto;
-    height: 400px;
-    width: 800px;
-    float:left;
 
     .player-layout{
       box-sizing: border-box;
