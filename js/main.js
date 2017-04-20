@@ -84,9 +84,9 @@ Menu.prototype.generateMenu = function (){
   $('.start-game').append($('<button>').addClass('btn').attr('id','number-player-button').append($('<h3>')));
   $('#number-player-button h3').html('ONE PLAYER');
   $('.start-game').append($('<button>').addClass('btn').attr('id','number-victory-button').append($('<h3>')));
-  $('#number-victory-button h3').html('10PTS');
+  $('#number-victory-button h3').html('10PTS TO WIN');
   $('.start-game').append($('<button>').addClass('btn').attr('id','number-level-button').append($('<h3>')));
-  $('#number-level-button h3').html('1');
+  $('#number-level-button h3').html('LEVEL 1');
   $('.start-game').append($('<button>').addClass('btn').attr('id','resume-button').append($('<h3>')));
   $('#resume-button h3').html('RESUME GAME');
 
@@ -143,7 +143,7 @@ Menu.prototype.addListenerToNumberForLevel = function()
       this.numberForLevel = 1;
     }
 
-    $(tempString).html(this.numberForLevel.toString());
+    $(tempString).html('LEVEL '+this.numberForLevel.toString());
 
     console.log(this.numberForLevel);
   }.bind(this));
@@ -163,7 +163,7 @@ Menu.prototype.addListenerToNumberForVictory = function()
       this.numberForVictory = 10;
     }
 
-    $(tempString).html(this.numberForVictory.toString()+"PTS");
+    $(tempString).html(this.numberForVictory.toString()+"PTS TO WIN");
 
     console.log(this.numberForVictory);
   }.bind(this));
