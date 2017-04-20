@@ -89,20 +89,21 @@ PieceGenerator.prototype.drawPiece = function (){
 PieceGenerator.prototype.updateRegions = function (){
 
   this.actualPieceMoved.updateRegions();
-  this.eraseRows();
+  return this.eraseRows();
 
 };
 
-//Algorithm to erase and displace all the rows in the grid depending if any row has been completed. It deletes and displaces the blocks of the pieces created. It retunrs the rows completed
+//Algorithm to erase and displace all the rows in the grid depending if any row has been completed. It deletes and displaces the blocks of the pieces created. It returns the completed rows for the score of the player
 PieceGenerator.prototype.eraseRows = function (){
   //Var for the completed rows
   var completedRows = 0;
-  //Initialates
+  //Initialize the array of rows that will count how many columns have been occupied in each row
   for(var i=this.rowsToComplete.length-1; i>=0;i--)
   {
     this.rowsToComplete[i]=0;
   }
 
+  //Counts how many columns have been occupied in each row
   for(var j=0; j<this.generatedPieces.length;j++)
   {
     for(var k=0; k<this.generatedPieces[j].body.length;k++)
@@ -114,29 +115,30 @@ PieceGenerator.prototype.eraseRows = function (){
     }
   }
 
+  //Counts the completed rows, and marks the blocks that has to be erased and displaced
   for(var i=this.rowsToComplete.length-1; i>=0;i--)
   {
     if(this.rowsToComplete[i]===this.limitColumnRight)
     {
+      //Row completed
       completedRows++;
-      // console.log("HIIIIIIIIIII");
-      // console.log("this.generatedPieces.length",this.generatedPieces.length);
+
       for(var j=0; j<this.generatedPieces.length;j++)
       {
         for(var k=0; k<this.generatedPieces[j].body.length;k++)
         {
-          // console.log("this.generatedPieces[j].body[k].erased",this.generatedPieces[j].body[k].erased);
+          //If a block is already erased is not taken into account
           if(!this.generatedPieces[j].body[k].erased)
           {
+            //if a block is in the row to be erased, it is marked to be erased
             if(this.generatedPieces[j].body[k].row === i)
             {
               this.generatedPieces[j].body[k].erase = true;
-              // console.log("erase");
             }
+            //if a block is in a row below in index (so over the row in the screen) its value to ble desplaced is increased; if a block has to be displaced more than one row because more than one row have been erased, its value of displacement will take it into account
             else if(this.generatedPieces[j].body[k].row<i)
             {
               this.generatedPieces[j].body[k].displacement++;
-              // console.log("displacement", this.generatedPieces[j].body[k].displacement);
             }
           }
         }
@@ -144,35 +146,33 @@ PieceGenerator.prototype.eraseRows = function (){
     }
   }
 
+  //erase and displace the rows in each block of each piece present in the grid
   for(var j=0; j<this.generatedPieces.length;j++)
   {
-    // console.log("piece " + j +" this.generatedPieces[j].body.length"+this.generatedPieces[j].body.length);
     for(var k=0; k<this.generatedPieces[j].body.length;k++)
     {
+      //If a block is already erased is not taken into account
       if(!this.generatedPieces[j].body[k].erased)
       {
-        // console.log("About to insepct this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-        // console.log("About to insepct this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
         if(this.generatedPieces[j].body[k].erase === true)
         {
-          // console.log("erase j",j);
+          //mark the region/cell in the grid as true because the block in it will be displaced
           this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
+          ///mark a block as erased
           this.generatedPieces[j].body[k].erased = true;
-          // console.log("this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-          // console.log("this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+          //remove the block in the DOM
           $(this.generatedPieces[j].body[k].selector).remove();
         }
         else if(this.generatedPieces[j].body[k].displacement>0)
         {
-          // console.log("displace j",j);
+          //mark the region/cell in the grid as true because the block in it will be displaced
           this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].state = true;
-          // console.log("before this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-          // console.log("before this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+          //adds to the value of the row of the block the amount of rows to be displaced
           this.generatedPieces[j].body[k].row+=this.generatedPieces[j].body[k].displacement;
-          // console.log("after this.generatedPieces[j].body[k].row",this.generatedPieces[j].body[k].row);
-          // console.log("after this.generatedPieces[j].body[k].column",this.generatedPieces[j].body[k].column);
+          //changes the position of the block according to its new row
           this.generatedPieces[j].body[k].position.row = this.regions[this.generatedPieces[j].body[k].row][this.generatedPieces[j].body[k].column].center.row;
           this.generatedPieces[j].body[k].displacement = 0;
+          //Displaces the block in the DOM in px respect to the player's board
           var selector = this.generatedPieces[j].body[k].selector;
           selector.css({top: this.generatedPieces[j].body[k].position.row.toString()+'px', left: this.generatedPieces[j].body[k].position.column.toString()+'px'});
         }
@@ -180,6 +180,7 @@ PieceGenerator.prototype.eraseRows = function (){
     }
   }
 
+  //Puts the state of the regions/cells of the grid to false if a block is occupying them, also, it creates a new Array of pieces only taking into account the ones that have at least one block not erased
   var tempArray = [];
   for(var j=0; j<this.generatedPieces.length;j++)
   {
@@ -199,9 +200,9 @@ PieceGenerator.prototype.eraseRows = function (){
       tempArray.push(this.generatedPieces[j]);
     }
   }
-
+  //Now, the array of generated pieces only will have pieces with at least one block not erased, This way, each time we look at this array when we call this function, it only iterates through the pieces that are present (not wasting time looking into the pieces completely erased)
   this.generatedPieces = tempArray;
 
-  //console.log("this.regions from updateRegions after",this.regions);
+  //returns the completed rows for the score of the player
   return completedRows;
 };
