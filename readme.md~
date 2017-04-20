@@ -1,6 +1,6 @@
 TETRIS GAME
 
-*************************************************************Tehcnologies used*****************************************************************
+*************************************************************Technologies used*****************************************************************
 
 jquery, Javascript, html, css, bootstrap
 
@@ -36,6 +36,8 @@ When a piece is stopped, the regions/cells of the grid that correspond to the bl
 
 As mentioned before, the movement of each piece is represented in the DOM by divs of each of this piece's blocks that are translated in pixels. In order to know to which position in pixels each block has to go, each region of the grid has a center. This center is a value in pixels respect to the general division that is the grid/player's board. When a block moves from one region to another, its position in pixels changes from one center to another. Then, the translation in the DOM is made, and all the piece moves.
 
+Note: each piece is bounded with the id of its player, so the player can acces to it.
+
 
 **The region object**:
 
@@ -44,6 +46,8 @@ As mentioned above, the grid is made of regions/cells. Each region has its posit
 Also, its reagion has an property called 'center'. This center, as said before, its the position in pixels of the region in the screen respecto to the grid. This center is used represent the movement of each block of a piece.
 
 Finally, each region has one last property called 'state'. This state is true if there is any block of any piece stationary in it. If there is a block of an stopped piece, the 'state' value is false. That way, the future pieces will know where they can move freely in the grid and where they will male contact.
+
+Note: each region is bounded with the id of its player, so the player can acces to it.
 
 **The pieceGenerator object**:
 
@@ -57,6 +61,8 @@ The generation of the new piece is random. There is a number of types of pieces 
 
 When a piece is stopped, appart from the generation of a new piece, the states of the regions are updated. In this update, the pieceGenerator looks for the rows that may have been completed after the last piece has been placed. If a row has been completed, the blocks of the pieces that are in that row are marked with the state 'erase', and the blocks that are below the index of that row have their attribute 'displacement' incremented by one, so they can be displaced one row up in the index of the grid in order to occupy the place of the just erased rows. The translation of this in the DOM is that the blocks erased are remove from it, and the blocks displaced are moved in pixels to the regions below. Furthermore, in this update, the rows that has been completed are taken into account in the player's score. And the pieces that have all their blocks erased from the grid are removed from the array of generated pieces.
 
+Note: the pieceGenerator is bounded with the id of its player, so the player can acces to it.
+
 **the listData object**
 
 An object where all the kinds of bodies for the pieces and all the available colors for them are stored.
@@ -68,4 +74,17 @@ With all the keys used mapped into an object as properties the used is able to p
 
 **the game object**
 
-This is the object that represents a player on the game.
+This is the object that controls the logic of the game, draws the different components and allow to the player to interact with them.
+
+This object has a execution order that is the next:
+
+- Initialization of the game: the game is first initializated with the function 'StartGame()'. In this function, it's created the layout corresponding to the player's area of play, separated in two parts, one for the score of the player, and the other for the player's board, corresponding to the region grid, that is also created. Each of this parts is bounded by an id with its player in order to acces to them. The pieceGenerator is also created and the first piece is deployed. After this, the first call to the main loop of the game object is called. 
+
+
+- Main Loop: This main loop is called with the function requestAnimationFrame. This function returns a timeStamp each time the main loop is called with it. With this timeStamp, it is possible to build the frame rate with which the game will be executed. Also, this timeStamp will be avaible to use a time called 'delta' with which the movement of the pieces won't depend on the frame rate but on the time. 
+
+in this main loop the functions update and draw will be called.
+
+- Update: here, the logic of the game is updated:
+	- it is checked if the actual piece being moved has been stopped by the bottom of the grid or by an stationary piece.
+	- if the piece is stopped, another piece is created. Also
