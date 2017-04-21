@@ -144,8 +144,6 @@ Menu.prototype.displayLoadingLayoutResume = function(){
 };
 
 
-
-
 //Loading screen; adds pause before beginning
 Menu.prototype.displayLoadingLayout = function(){
   var counter = 3;
@@ -296,6 +294,40 @@ Menu.prototype.addListenerToGoBackmenuStart = function()
   }.bind(this));
 };
 
+Menu.prototype.initializePlayer = function (playerNumber) {
+  return new Game({
+      fpsDisplay : document.getElementById('fpsDisplay'),
+      limit : 300,
+      lastFrameTimeMs : 0,
+      maxFPS : 100,
+      delta : 0,
+      timestep : 1000 / 100,
+      fps : 60,
+      framesThisSecond : 0,
+      lastFpsUpdate : 0,
+      running : false,
+      started : false,
+      frameID : 0,
+      rows: 50,
+      columns: 50,
+      limitRowBottom: 30,
+      limitColumnLeft: 0,
+      limitColumnRight: 10,
+      keys: arrows1,
+      width: 650,
+      height: 650,
+      offsetRow: 0,
+      offsetColumn: 0,
+      initialRegionRow: 1,
+      initialRegionColumn: 5,
+      playerNumber: playerNumber,
+      numberForVictory: this.lastnumberForVictory,
+      numberForLevel: this.lastnumberForLevel,
+      numberOfPlayers: this.lastPlayedNumberOfPlayers
+  });
+
+};
+
 //restarts the game
 Menu.prototype.addListenerToRestart = function()
 {
@@ -310,36 +342,8 @@ Menu.prototype.addListenerToRestart = function()
         this.playerOne.gamePaused = true;
         delete this.playerOne.pieceGenerator;
         delete this.playerOne;
-        this.playerOne = new Game({
-            fpsDisplay : document.getElementById('fpsDisplay'),
-            limit : 300,
-            lastFrameTimeMs : 0,
-            maxFPS : 100,
-            delta : 0,
-            timestep : 1000 / 100,
-            fps : 60,
-            framesThisSecond : 0,
-            lastFpsUpdate : 0,
-            running : false,
-            started : false,
-            frameID : 0,
-            rows: 50,
-            columns: 50,
-            limitRowBottom: 30,
-            limitColumnLeft: 0,
-            limitColumnRight: 10,
-            keys: arrows1,
-            width: 650,
-            height: 650,
-            offsetRow: 0,
-            offsetColumn: 0,
-            initialRegionRow: 1,
-            initialRegionColumn: 5,
-            playerNumber: 0,
-            numberForVictory: this.lastnumberForVictory,
-            numberForLevel: this.lastnumberForLevel,
-            numberOfPlayers: this.lastPlayedNumberOfPlayers
-        });
+
+        this.playerOne = this.initializePlayer(1);
 
         this.playerOne.addRivalPlayer();
 
@@ -361,67 +365,9 @@ Menu.prototype.addListenerToRestart = function()
         delete this.playerTwo.pieceGenerator;
         delete this.playerTwo;
 
-        this.playerOne = new Game({
-            fpsDisplay : document.getElementById('fpsDisplay'),
-            limit : 300,
-            lastFrameTimeMs : 0,
-            maxFPS : 100,
-            delta : 0,
-            timestep : 1000 / 100,
-            fps : 60,
-            framesThisSecond : 0,
-            lastFpsUpdate : 0,
-            running : false,
-            started : false,
-            frameID : 0,
-            rows: 50,
-            columns: 50,
-            limitRowBottom: 30,
-            limitColumnLeft: 0,
-            limitColumnRight: 10,
-            keys: arrows1,
-            width: 650,
-            height: 650,
-            offsetRow: 0,
-            offsetColumn: 0,
-            initialRegionRow: 1,
-            initialRegionColumn: 5,
-            playerNumber: 0,
-            numberForVictory: this.lastnumberForVictory,
-            numberForLevel: this.lastnumberForLevel,
-            numberOfPlayers: this.lastPlayedNumberOfPlayers
-        });
+        this.playerOne = this.initializePlayer(1);
 
-        this.playerTwo = new Game({
-            fpsDisplay : document.getElementById('fpsDisplay'),
-            limit : 300,
-            lastFrameTimeMs : 0,
-            maxFPS : 100,
-            delta : 0,
-            timestep : 1000 / 100,
-            fps : 60,
-            framesThisSecond : 0,
-            lastFpsUpdate : 0,
-            running : false,
-            started : false,
-            frameID : 0,
-            rows: 50,
-            columns: 50,
-            limitRowBottom: 30,
-            limitColumnLeft: 0,
-            limitColumnRight: 10,
-            keys: arrows2,
-            width: 650,
-            height: 650,
-            offsetRow: 0,
-            offsetColumn: 0,
-            initialRegionRow: 1,
-            initialRegionColumn: 5,
-            playerNumber: 1,
-            numberForVictory: this.lastnumberForVictory,
-            numberForLevel: this.lastnumberForLevel,
-            numberOfPlayers: this.lastPlayedNumberOfPlayers
-        });
+        this.playerTwo =this.initializePlayer(2);
 
         this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
@@ -457,36 +403,7 @@ Menu.prototype.addListenerToStart = function()
           this.lastnumberForVictory = this.numberForVictory;
           this.lastnumberForLevel = this.numberForLevel;
 
-          this.playerOne = new Game({
-              fpsDisplay : document.getElementById('fpsDisplay'),
-              limit : 300,
-              lastFrameTimeMs : 0,
-              maxFPS : 100,
-              delta : 0,
-              timestep : 1000 / 100,
-              fps : 60,
-              framesThisSecond : 0,
-              lastFpsUpdate : 0,
-              running : false,
-              started : false,
-              frameID : 0,
-              rows: 50,
-              columns: 50,
-              limitRowBottom: 30,
-              limitColumnLeft: 0,
-              limitColumnRight: 10,
-              keys: arrows1,
-              width: 650,
-              height: 650,
-              offsetRow: 0,
-              offsetColumn: 0,
-              initialRegionRow: 1,
-              initialRegionColumn: 5,
-              playerNumber: 0,
-              numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel,
-              numberOfPlayers: this.numberOfPlayers
-          });
+          this.playerOne = this.initializePlayer(1);
 
           this.playerOne.addRivalPlayer();
 
@@ -507,36 +424,7 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = new Game({
-              fpsDisplay : document.getElementById('fpsDisplay'),
-              limit : 300,
-              lastFrameTimeMs : 0,
-              maxFPS : 100,
-              delta : 0,
-              timestep : 1000 / 100,
-              fps : 60,
-              framesThisSecond : 0,
-              lastFpsUpdate : 0,
-              running : false,
-              started : false,
-              frameID : 0,
-              rows: 50,
-              columns: 50,
-              limitRowBottom: 30,
-              limitColumnLeft: 0,
-              limitColumnRight: 10,
-              keys: arrows1,
-              width: 650,
-              height: 650,
-              offsetRow: 0,
-              offsetColumn: 0,
-              initialRegionRow: 1,
-              initialRegionColumn: 5,
-              playerNumber: 0,
-              numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel,
-              numberOfPlayers: this.numberOfPlayers
-          });
+          this.playerOne = this.initializePlayer(1);
 
           this.playerOne.addRivalPlayer();
 
@@ -562,36 +450,7 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = new Game({
-              fpsDisplay : document.getElementById('fpsDisplay'),
-              limit : 300,
-              lastFrameTimeMs : 0,
-              maxFPS : 100,
-              delta : 0,
-              timestep : 1000 / 100,
-              fps : 60,
-              framesThisSecond : 0,
-              lastFpsUpdate : 0,
-              running : false,
-              started : false,
-              frameID : 0,
-              rows: 50,
-              columns: 50,
-              limitRowBottom: 30,
-              limitColumnLeft: 0,
-              limitColumnRight: 10,
-              keys: arrows1,
-              width: 650,
-              height: 650,
-              offsetRow: 0,
-              offsetColumn: 0,
-              initialRegionRow: 1,
-              initialRegionColumn: 5,
-              playerNumber: 0,
-              numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel,
-              numberOfPlayers: this.numberOfPlayers
-          });
+          this.playerOne = this.initializePlayer(1);
 
           this.playerOne.addRivalPlayer();
 
@@ -611,67 +470,9 @@ Menu.prototype.addListenerToStart = function()
 
           $(this.menuLayoutStartSelector).hide();
 
-          this.playerOne = new Game({
-              fpsDisplay : document.getElementById('fpsDisplay'),
-              limit : 300,
-              lastFrameTimeMs : 0,
-              maxFPS : 100,
-              delta : 0,
-              timestep : 1000 / 100,
-              fps : 60,
-              framesThisSecond : 0,
-              lastFpsUpdate : 0,
-              running : false,
-              started : false,
-              frameID : 0,
-              rows: 50,
-              columns: 50,
-              limitRowBottom: 30,
-              limitColumnLeft: 0,
-              limitColumnRight: 10,
-              keys: arrows1,
-              width: 650,
-              height: 650,
-              offsetRow: 0,
-              offsetColumn: 0,
-              initialRegionRow: 1,
-              initialRegionColumn: 5,
-              playerNumber: 0,
-              numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel,
-              numberOfPlayers: this.numberOfPlayers
-          });
+          this.playerOne = this.initializePlayer(1);
 
-          this.playerTwo = new Game({
-              fpsDisplay : document.getElementById('fpsDisplay'),
-              limit : 300,
-              lastFrameTimeMs : 0,
-              maxFPS : 100,
-              delta : 0,
-              timestep : 1000 / 100,
-              fps : 60,
-              framesThisSecond : 0,
-              lastFpsUpdate : 0,
-              running : false,
-              started : false,
-              frameID : 0,
-              rows: 50,
-              columns: 50,
-              limitRowBottom: 30,
-              limitColumnLeft: 0,
-              limitColumnRight: 10,
-              keys: arrows2,
-              width: 650,
-              height: 650,
-              offsetRow: 0,
-              offsetColumn: 0,
-              initialRegionRow: 1,
-              initialRegionColumn: 5,
-              playerNumber: 1,
-              numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel,
-              numberOfPlayers: this.numberOfPlayers
-          });
+          this.playerTwo =this.initializePlayer(2);
 
           this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
@@ -695,67 +496,9 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = new Game({
-              fpsDisplay : document.getElementById('fpsDisplay'),
-              limit : 300,
-              lastFrameTimeMs : 0,
-              maxFPS : 100,
-              delta : 0,
-              timestep : 1000 / 100,
-              fps : 60,
-              framesThisSecond : 0,
-              lastFpsUpdate : 0,
-              running : false,
-              started : false,
-              frameID : 0,
-              rows: 50,
-              columns: 50,
-              limitRowBottom: 30,
-              limitColumnLeft: 0,
-              limitColumnRight: 10,
-              keys: arrows1,
-              width: 650,
-              height: 650,
-              offsetRow: 0,
-              offsetColumn: 0,
-              initialRegionRow: 1,
-              initialRegionColumn: 5,
-              playerNumber: 0,
-              numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel,
-              numberOfPlayers: this.numberOfPlayers
-          });
+          this.playerOne = this.initializePlayer(1);
 
-          this.playerTwo = new Game({
-              fpsDisplay : document.getElementById('fpsDisplay'),
-              limit : 300,
-              lastFrameTimeMs : 0,
-              maxFPS : 100,
-              delta : 0,
-              timestep : 1000 / 100,
-              fps : 60,
-              framesThisSecond : 0,
-              lastFpsUpdate : 0,
-              running : false,
-              started : false,
-              frameID : 0,
-              rows: 50,
-              columns: 50,
-              limitRowBottom: 30,
-              limitColumnLeft: 0,
-              limitColumnRight: 10,
-              keys: arrows2,
-              width: 650,
-              height: 650,
-              offsetRow: 0,
-              offsetColumn: 0,
-              initialRegionRow: 1,
-              initialRegionColumn: 5,
-              playerNumber: 1,
-              numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel,
-              numberOfPlayers: this.numberOfPlayers
-          });
+          this.playerTwo =this.initializePlayer(2);
 
           this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
@@ -781,67 +524,9 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = new Game({
-              fpsDisplay : document.getElementById('fpsDisplay'),
-              limit : 300,
-              lastFrameTimeMs : 0,
-              maxFPS : 100,
-              delta : 0,
-              timestep : 1000 / 100,
-              fps : 60,
-              framesThisSecond : 0,
-              lastFpsUpdate : 0,
-              running : false,
-              started : false,
-              frameID : 0,
-              rows: 50,
-              columns: 50,
-              limitRowBottom: 30,
-              limitColumnLeft: 0,
-              limitColumnRight: 10,
-              keys: arrows1,
-              width: 650,
-              height: 650,
-              offsetRow: 0,
-              offsetColumn: 0,
-              initialRegionRow: 1,
-              initialRegionColumn: 5,
-              playerNumber: 0,
-              numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel,
-              numberOfPlayers: this.numberOfPlayers
-          });
+          this.playerOne = this.initializePlayer(1);
 
-          this.playerTwo = new Game({
-              fpsDisplay : document.getElementById('fpsDisplay'),
-              limit : 300,
-              lastFrameTimeMs : 0,
-              maxFPS : 100,
-              delta : 0,
-              timestep : 1000 / 100,
-              fps : 60,
-              framesThisSecond : 0,
-              lastFpsUpdate : 0,
-              running : false,
-              started : false,
-              frameID : 0,
-              rows: 50,
-              columns: 50,
-              limitRowBottom: 30,
-              limitColumnLeft: 0,
-              limitColumnRight: 10,
-              keys: arrows2,
-              width: 650,
-              height: 650,
-              offsetRow: 0,
-              offsetColumn: 0,
-              initialRegionRow: 1,
-              initialRegionColumn: 5,
-              playerNumber: 1,
-              numberForVictory: this.numberForVictory,
-              numberForLevel: this.numberForLevel,
-              numberOfPlayers: this.numberOfPlayers
-          });
+          this.playerTwo =this.initializePlayer(2);
 
           this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
