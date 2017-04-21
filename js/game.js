@@ -99,6 +99,8 @@ function Game(options) {
   this.playerScore = 0;
   //the score to obtain in order to win the game
   this.numberForVictory = options.numberForVictory;
+  //type of computerType
+  this.computerType = options.computerType;
   //states of the game
   this.gamePaused = false;
   this.gameLost = false;
@@ -382,162 +384,325 @@ Game.prototype.generatePieceGenerator = function () {
 Game.prototype.assignControlKeys = function (delta) {
   if(!this.gameLost)
   {
-    if(!this.gamePaused)
+    if(this.computerType==='PC')
     {
-      //If the rotationLeft delay has been completed, then the action is performed; it only works if the key is released
-      if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && !this.keys.turnLeft)
+      if(!this.gamePaused)
       {
-        //TurnLeft
-        this.rotateLeft = false;
-        this.inputResponseRotateLeft = 0;
-        this.pieceGenerator.actualPiece().defineRotationPoint();
-        this.pieceGenerator.actualPiece().rotatePieceLeft();
-      }
-      //If the key to rotate left is pressed, the counter beggings taking into account delta time
-      else if(this.keys.turnLeft && this.inputResponseRotateLeft===0)
-      {
-        //TurnLeft
-        this.rotateLeft = true;
-        this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
-      }
-      //if the counter has begun, it goes on as a delay/distance being traveled
-      else if(this.inputResponseRotateLeft>0)
-      {
-        //TurnLeft
-        this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
-      }
+        //If the rotationLeft delay has been completed, then the action is performed; it only works if the key is released
+        if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && !this.keys.turnLeft)
+        {
+          //TurnLeft
+          this.rotateLeft = false;
+          this.inputResponseRotateLeft = 0;
+          this.pieceGenerator.actualPiece().defineRotationPoint();
+          this.pieceGenerator.actualPiece().rotatePieceLeft();
+        }
+        //If the key to rotate left is pressed, the counter beggings taking into account delta time
+        else if(this.keys.turnLeft && this.inputResponseRotateLeft===0)
+        {
+          //TurnLeft
+          this.rotateLeft = true;
+          this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
+        }
+        //if the counter has begun, it goes on as a delay/distance being traveled
+        else if(this.inputResponseRotateLeft>0)
+        {
+          //TurnLeft
+          this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
+        }
 
-      if(this.rotateRight && this.inputResponseRotateRight>=this.inputResponseRotateRightLength && !this.keys.turnRight)
-      {
-        //TurnRight
-        this.rotateRight = false;
-        this.inputResponseRotateRight = 0;
-        this.pieceGenerator.actualPiece().defineRotationPoint();
-        this.pieceGenerator.actualPiece().rotatePieceRight();
-      }
-      else if(this.keys.turnRight && this.inputResponseRotateRight===0)
-      {
-        //TurnRight
-        this.rotateRight = true;
-        this.inputResponseRotateRight+=this.inputResponseRotateRightVelocity*delta;
-      }
-      else if(this.inputResponseRotateRight>0)
-      {
-        //TurnRight
-        this.inputResponseRotateRight+=this.inputResponseRotateRightVelocity*delta;
-      }
+        if(this.rotateRight && this.inputResponseRotateRight>=this.inputResponseRotateRightLength && !this.keys.turnRight)
+        {
+          //TurnRight
+          this.rotateRight = false;
+          this.inputResponseRotateRight = 0;
+          this.pieceGenerator.actualPiece().defineRotationPoint();
+          this.pieceGenerator.actualPiece().rotatePieceRight();
+        }
+        else if(this.keys.turnRight && this.inputResponseRotateRight===0)
+        {
+          //TurnRight
+          this.rotateRight = true;
+          this.inputResponseRotateRight+=this.inputResponseRotateRightVelocity*delta;
+        }
+        else if(this.inputResponseRotateRight>0)
+        {
+          //TurnRight
+          this.inputResponseRotateRight+=this.inputResponseRotateRightVelocity*delta;
+        }
 
-      //If the goDown delay has been completed, then the action is performed; the piece goes down faster
-      if(this.directionDown && this.inputResponseDown>=this.inputResponseDownLength)
-      {
-        //Left
-        this.directionDown = false;
-        this.inputResponseDown = 0;
-        this.movementCountVelocity = this.pieceGenerator.actualPiece().goDownFaster();
-      }
-      else if(this.keys.down && this.inputResponseDown===0)
-      {
-        //Left
-        this.directionDown = true;
-        this.inputResponseDown+=this.inputResponseDownVelocity*delta;
+        //If the goDown delay has been completed, then the action is performed; the piece goes down faster
+        if(this.directionDown && this.inputResponseDown>=this.inputResponseDownLength)
+        {
+          //Left
+          this.directionDown = false;
+          this.inputResponseDown = 0;
+          this.movementCountVelocity = this.pieceGenerator.actualPiece().goDownFaster();
+        }
+        else if(this.keys.down && this.inputResponseDown===0)
+        {
+          //Left
+          this.directionDown = true;
+          this.inputResponseDown+=this.inputResponseDownVelocity*delta;
 
-      }
-      else if(this.inputResponseDown>0)
-      {
-        //Left
-        this.inputResponseDown+=this.inputResponseDownVelocity*delta;
-      }
+        }
+        else if(this.inputResponseDown>0)
+        {
+          //Left
+          this.inputResponseDown+=this.inputResponseDownVelocity*delta;
+        }
 
-      //if the key down is released, the piece returns to its original velocity
-      if(!this.keys.down)
-      {
-        //sopts goin down faster
-        this.movementCountVelocity = this.movementCountVelocityOriginal;
-      }
+        //if the key down is released, the piece returns to its original velocity
+        if(!this.keys.down)
+        {
+          //sopts goin down faster
+          this.movementCountVelocity = this.movementCountVelocityOriginal;
+        }
 
-      //If the rLeft delay has been completed, then the action is performed;
-      if(this.directionLeft && this.inputResponseLeft>=this.inputResponseLeftLength)
-      {
-        //Left
-        this.directionLeft = false;
-        this.inputResponseLeft = 0;
-        this.pieceGenerator.actualPiece().goLeft();
-      }
-      //If the key to go left is pressed, the counter beggings taking into account delta time
-      else if(this.keys.left  && this.inputResponseLeft===0)
-      {
-        //Left
-        this.directionLeft = true;
-        this.inputResponseLeft+=this.inputResponseLeftVelocity*delta;
+        //If the rLeft delay has been completed, then the action is performed;
+        if(this.directionLeft && this.inputResponseLeft>=this.inputResponseLeftLength)
+        {
+          //Left
+          this.directionLeft = false;
+          this.inputResponseLeft = 0;
+          this.pieceGenerator.actualPiece().goLeft();
+        }
+        //If the key to go left is pressed, the counter beggings taking into account delta time
+        else if(this.keys.left  && this.inputResponseLeft===0)
+        {
+          //Left
+          this.directionLeft = true;
+          this.inputResponseLeft+=this.inputResponseLeftVelocity*delta;
 
-      }
-      //if the counter has begun, it goes on as a delay/distance being traveled
-      else if(this.inputResponseLeft>0)
-      {
-        //Left
-        this.inputResponseLeft+=this.inputResponseLeftVelocity*delta;
-      }
+        }
+        //if the counter has begun, it goes on as a delay/distance being traveled
+        else if(this.inputResponseLeft>0)
+        {
+          //Left
+          this.inputResponseLeft+=this.inputResponseLeftVelocity*delta;
+        }
 
-      if(this.directionRight  && this.inputResponseRight>=this.inputResponseRightLength)
-      {
-        //Right
-        this.directionRight = false;
-        this.inputResponseRight = 0;
-        this.pieceGenerator.actualPiece().goRight();
-      }
-      else if(this.keys.right && this.inputResponseRight===0)
-      {
-        //Right
-        this.directionRight = true;
-        this.inputResponseRight+=this.inputResponseRightVelocity*delta;
-      }
-      else if(this.inputResponseRight>0)
-      {
-        //Right
-        this.inputResponseRight+=this.inputResponseRightVelocity*delta;
-      }
+        if(this.directionRight  && this.inputResponseRight>=this.inputResponseRightLength)
+        {
+          //Right
+          this.directionRight = false;
+          this.inputResponseRight = 0;
+          this.pieceGenerator.actualPiece().goRight();
+        }
+        else if(this.keys.right && this.inputResponseRight===0)
+        {
+          //Right
+          this.directionRight = true;
+          this.inputResponseRight+=this.inputResponseRightVelocity*delta;
+        }
+        else if(this.inputResponseRight>0)
+        {
+          //Right
+          this.inputResponseRight+=this.inputResponseRightVelocity*delta;
+        }
 
-      if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && this.keys.pause)
-      {
-        //Pause
-        this.pausePressed = false;
-        this.gamePaused = true;
-        this.inputResponsePause = 0;
+        if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && this.keys.pause)
+        {
+          //Pause
+          this.pausePressed = false;
+          this.gamePaused = true;
+          this.inputResponsePause = 0;
+        }
+        else if(this.keys.pause && this.inputResponsePause===0)
+        {
+          //Pause
+          this.pausePressed = true;
+          this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
+        }
+        else if(this.inputResponsePause>0)
+        {
+          //Pause
+          this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
+        }
       }
-      else if(this.keys.pause && this.inputResponsePause===0)
+      else
+      //if the game is paused
       {
-        //Pause
-        this.pausePressed = true;
-        this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
-      }
-      else if(this.inputResponsePause>0)
-      {
-        //Pause
-        this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
+        if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
+        {
+          //Pause
+          this.pausePressed = false;
+          this.gamePaused = false;
+          this.inputResponsePause = 0;
+        }
+        else if(this.keys.pause  && this.inputResponsePause===0)
+        {
+          //Pause
+          this.pausePressed = true;
+          this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
+        }
+        else if(this.inputResponsePause>0)
+        {
+          //Pause
+          this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
+        }
       }
     }
     else
-    //if the game is paused
     {
-      if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pause)
+      if(!this.gamePaused)
       {
-        //Pause
-        this.pausePressed = false;
-        this.gamePaused = false;
-        this.inputResponsePause = 0;
+        //If the rotationLeft delay has been completed, then the action is performed; it only works if the key is released
+        if(this.rotateLeft && this.inputResponseRotateLeft>=this.inputResponseRotateLeftLength && !this.keys.turnLeftMac)
+        {
+          //TurnLeft
+          this.rotateLeft = false;
+          this.inputResponseRotateLeft = 0;
+          this.pieceGenerator.actualPiece().defineRotationPoint();
+          this.pieceGenerator.actualPiece().rotatePieceLeft();
+        }
+        //If the key to rotate left is pressed, the counter beggings taking into account delta time
+        else if(this.keys.turnLeftMac && this.inputResponseRotateLeft===0)
+        {
+          //TurnLeft
+          this.rotateLeft = true;
+          this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
+        }
+        //if the counter has begun, it goes on as a delay/distance being traveled
+        else if(this.inputResponseRotateLeft>0)
+        {
+          //TurnLeft
+          this.inputResponseRotateLeft+=this.inputResponseRotateLeftVelocity*delta;
+        }
+
+        if(this.rotateRight && this.inputResponseRotateRight>=this.inputResponseRotateRightLength && !this.keys.turnRightMac)
+        {
+          //TurnRight
+          this.rotateRight = false;
+          this.inputResponseRotateRight = 0;
+          this.pieceGenerator.actualPiece().defineRotationPoint();
+          this.pieceGenerator.actualPiece().rotatePieceRight();
+        }
+        else if(this.keys.turnRightMac && this.inputResponseRotateRight===0)
+        {
+          //TurnRight
+          this.rotateRight = true;
+          this.inputResponseRotateRight+=this.inputResponseRotateRightVelocity*delta;
+        }
+        else if(this.inputResponseRotateRight>0)
+        {
+          //TurnRight
+          this.inputResponseRotateRight+=this.inputResponseRotateRightVelocity*delta;
+        }
+
+        //If the goDown delay has been completed, then the action is performed; the piece goes down faster
+        if(this.directionDown && this.inputResponseDown>=this.inputResponseDownLength)
+        {
+          //Left
+          this.directionDown = false;
+          this.inputResponseDown = 0;
+          this.movementCountVelocity = this.pieceGenerator.actualPiece().goDownFaster();
+        }
+        else if(this.keys.downMac && this.inputResponseDown===0)
+        {
+          //Left
+          this.directionDown = true;
+          this.inputResponseDown+=this.inputResponseDownVelocity*delta;
+
+        }
+        else if(this.inputResponseDown>0)
+        {
+          //Left
+          this.inputResponseDown+=this.inputResponseDownVelocity*delta;
+        }
+
+        //if the key down is released, the piece returns to its original velocity
+        if(!this.keys.downMac)
+        {
+          //sopts goin down faster
+          this.movementCountVelocity = this.movementCountVelocityOriginal;
+        }
+
+        //If the rLeft delay has been completed, then the action is performed;
+        if(this.directionLeft && this.inputResponseLeft>=this.inputResponseLeftLength)
+        {
+          //Left
+          this.directionLeft = false;
+          this.inputResponseLeft = 0;
+          this.pieceGenerator.actualPiece().goLeft();
+        }
+        //If the key to go left is pressed, the counter beggings taking into account delta time
+        else if(this.keys.leftMac  && this.inputResponseLeft===0)
+        {
+          //Left
+          this.directionLeft = true;
+          this.inputResponseLeft+=this.inputResponseLeftVelocity*delta;
+
+        }
+        //if the counter has begun, it goes on as a delay/distance being traveled
+        else if(this.inputResponseLeft>0)
+        {
+          //Left
+          this.inputResponseLeft+=this.inputResponseLeftVelocity*delta;
+        }
+
+        if(this.directionRightMac  && this.inputResponseRight>=this.inputResponseRightLength)
+        {
+          //Right
+          this.directionRight = false;
+          this.inputResponseRight = 0;
+          this.pieceGenerator.actualPiece().goRight();
+        }
+        else if(this.keys.rightMac && this.inputResponseRight===0)
+        {
+          //Right
+          this.directionRight = true;
+          this.inputResponseRight+=this.inputResponseRightVelocity*delta;
+        }
+        else if(this.inputResponseRight>0)
+        {
+          //Right
+          this.inputResponseRight+=this.inputResponseRightVelocity*delta;
+        }
+
+        if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && this.keys.pauseMac)
+        {
+          //Pause
+          this.pausePressed = false;
+          this.gamePaused = true;
+          this.inputResponsePause = 0;
+        }
+        else if(this.keys.pauseMac && this.inputResponsePause===0)
+        {
+          //Pause
+          this.pausePressed = true;
+          this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
+        }
+        else if(this.inputResponsePause>0)
+        {
+          //Pause
+          this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
+        }
       }
-      else if(this.keys.pause  && this.inputResponsePause===0)
+      else
+      //if the game is paused
       {
-        //Pause
-        this.pausePressed = true;
-        this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
-      }
-      else if(this.inputResponsePause>0)
-      {
-        //Pause
-        this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
+        if(this.pausePressed && this.inputResponsePause>=this.inputResponsePauseLength && !this.keys.pauseMac)
+        {
+          //Pause
+          this.pausePressed = false;
+          this.gamePaused = false;
+          this.inputResponsePause = 0;
+        }
+        else if(this.keys.pauseMac  && this.inputResponsePause===0)
+        {
+          //Pause
+          this.pausePressed = true;
+          this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
+        }
+        else if(this.inputResponsePause>0)
+        {
+          //Pause
+          this.inputResponsePause+=this.inputResponsePauseVelocity*delta;
+        }
       }
     }
+
   }
 };
 
