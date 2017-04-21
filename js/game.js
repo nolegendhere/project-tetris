@@ -557,7 +557,7 @@ Game.prototype.assignControlKeys = function (delta) {
           this.pieceGenerator.actualPiece().rotatePieceLeft();
         }
         //If the key to rotate left is pressed, the counter beggings taking into account delta time
-        else if(this.keys.turnLeft && this.inputResponseRotateLeft===0)
+        else if(this.keys.turnLeftMac && this.inputResponseRotateLeft===0)
         {
           //TurnLeft
           this.rotateLeft = true;
@@ -578,7 +578,7 @@ Game.prototype.assignControlKeys = function (delta) {
           this.pieceGenerator.actualPiece().defineRotationPoint();
           this.pieceGenerator.actualPiece().rotatePieceRight();
         }
-        else if(this.keys.turnRight && this.inputResponseRotateRight===0)
+        else if(this.keys.turnRightMac && this.inputResponseRotateRight===0)
         {
           //TurnRight
           this.rotateRight = true;
