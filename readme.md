@@ -16,15 +16,17 @@ The player one can move the actual piece with the next keys:
 	-the arrow left to go to the left
 	-the arrow right to go to the right
 	-the arrow down to go faster to the bottom of the grid
-	-the number one in the num pad to rotate left in ubuntu and the key 'i' in Mac
-	-the number two in the num pad to rotate right in ubuntu and the key 'o' in Mac
+	-the number one in the num pad to rotate left 
+	-the number two in the num pad to rotate right
 
 The player two can move the actual piece with the next keys:
 	-the 'a' to go to the left
 	-the 'd' to go to the right
 	-the 's' to go faster to the bottom of the grid
-	-the 'g' to rotate left in ubuntu and the key 'e'in Mac
-	-the number 'h' to rotate right in ubuntu and the key 'r' in mac
+	-the 'g' to rotate left 
+	-the number 'h' to rotate right
+
+Not MAC supported
 
 *************************************************************************************Approach******************************************************************************************************
 
