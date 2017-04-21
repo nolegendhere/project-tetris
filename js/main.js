@@ -367,7 +367,7 @@ Menu.prototype.addListenerToRestart = function()
         delete this.playerOne.pieceGenerator;
         delete this.playerOne;
 
-        this.playerOne = this.initializePlayer(1,arrows1);
+        this.playerOne = this.initializePlayer(1,arrows2);
 
         this.playerOne.addRivalPlayer();
 
@@ -389,8 +389,8 @@ Menu.prototype.addListenerToRestart = function()
         delete this.playerTwo.pieceGenerator;
         delete this.playerTwo;
 
-        this.playerOne = this.initializePlayer(1,arrows1);
-        this.playerTwo = this.initializePlayer(2,arrows2);
+        this.playerOne = this.initializePlayer(1,arrows2);
+        this.playerTwo = this.initializePlayer(2,arrows1);
 
         this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
@@ -427,7 +427,7 @@ Menu.prototype.addListenerToStart = function()
           this.lastnumberForLevel = this.numberForLevel;
           this.lastPlayedComputerType = this.computerType;
 
-          this.playerOne = this.initializePlayer(1,arrows1);
+          this.playerOne = this.initializePlayer(1,arrows2);
 
           this.playerOne.addRivalPlayer();
 
@@ -449,7 +449,7 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = this.initializePlayer(1,arrows1);
+          this.playerOne = this.initializePlayer(1,arrows2);
 
           this.playerOne.addRivalPlayer();
 
@@ -476,7 +476,7 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = this.initializePlayer(1,arrows1);
+          this.playerOne = this.initializePlayer(1,arrows2);
 
           this.playerOne.addRivalPlayer();
 
@@ -497,8 +497,8 @@ Menu.prototype.addListenerToStart = function()
 
           $(this.menuLayoutStartSelector).hide();
 
-          this.playerOne = this.initializePlayer(1,arrows1);
-          this.playerTwo = this.initializePlayer(2,arrows2);
+          this.playerOne = this.initializePlayer(1,arrows2);
+          this.playerTwo = this.initializePlayer(2,arrows1);
 
           this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
@@ -523,8 +523,8 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = this.initializePlayer(1,arrows1);
-          this.playerTwo = this.initializePlayer(2,arrows2);
+          this.playerOne = this.initializePlayer(1,arrows2);
+          this.playerTwo = this.initializePlayer(2,arrows1);
 
           this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
@@ -551,8 +551,8 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = this.initializePlayer(1,arrows1);
-          this.playerTwo = this.initializePlayer(2,arrows2);
+          this.playerOne = this.initializePlayer(1,arrows2);
+          this.playerTwo = this.initializePlayer(2,arrows1);
 
           this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 

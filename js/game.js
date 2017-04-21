@@ -648,7 +648,7 @@ Game.prototype.assignControlKeys = function (delta) {
           this.inputResponseRight = 0;
           this.pieceGenerator.actualPiece().goRight();
         }
-        else if(this.keys.righ && this.inputResponseRight===0)
+        else if(this.keys.right && this.inputResponseRight===0)
         {
           //Right
           this.directionRight = true;
