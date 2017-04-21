@@ -1,8 +1,8 @@
 //map of keyCodes for the playerOne
-var arrowCodes1  = {97: "turnLeft", 34: "turnLeftMac",  98: "turnRight", 31: "turnRightMac", 37: "left",123: "leftMac", 38: "up", 126: "upMac", 39: "right", 124: "rightMac", 40: "down", 125: "downMac", 80: "pause", 35: "pauseMac"};
+var arrowCodes1  = {73: "turnLeft", 34: "turnLeftMac",  79: "turnRight", 31: "turnRightMac", 72: "left",123: "leftMac", 85: "up", 126: "upMac", 75: "right", 124: "rightMac", 74: "down", 125: "downMac", 80: "pause", 35: "pauseMac"};
 
 //map of keyCodes for the playerTwo
-var arrowCodes2  = {71: "turnLeft", 14:"turnLeftMac", 72: "turnRight", 15:"turnRightMac", 65: "left", 0: "leftMac", 87: "up", 13: "upMac", 68: "right", 2: "rightMac", 83: "down", 1: "downMac", 80: "pause", 35: "pauseMac"};
+var arrowCodes2  = {70: "turnLeft", 14:"turnLeftMac", 71: "turnRight", 15:"turnRightMac", 65: "left", 0: "leftMac", 87: "up", 13: "upMac", 68: "right", 2: "rightMac", 83: "down", 1: "downMac", 80: "pause", 35: "pauseMac"};
 
 //Function that returns an object with the mapped keyCodes returning true if they are pressed or false if they are released
 function trackKeysDown(codes) {

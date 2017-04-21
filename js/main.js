@@ -572,7 +572,13 @@ $(document).ready(function(){
 
   var menu = new Menu();
 
-  menu.startApp();
+  // menu.startApp();
+
+    $('body').on('keydown',function(e){
+      console.log(e.keyCode);
+    }.bind(this));
+
+
 
 
 });
