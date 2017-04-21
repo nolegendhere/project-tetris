@@ -13,20 +13,20 @@ Completed as menu rows as the points for victory chosen in the main menu, and/or
 **Controls**
 
 The player one can move the actual piece with the next keys:
-	-the arrow left to go to the left
-	-the arrow right to go to the right
-	-the arrow down to go faster to the bottom of the grid
-	-the number one in the num pad to rotate left 
-	-the number two in the num pad to rotate right
-
-The player two can move the actual piece with the next keys:
 	-the 'a' to go to the left
 	-the 'd' to go to the right
 	-the 's' to go faster to the bottom of the grid
-	-the 'g' to rotate left 
-	-the number 'h' to rotate right
+	-the 'f' to rotate left 
+	-the 'g' to rotate right
 
-Not MAC supported
+The player two can move the actual piece with the next keys:
+	-the 'h' to go to the left
+	-the 'k' to go to the right
+	-the 'j' to go faster to the bottom of the grid
+	-the 'i' to rotate left 
+	-the 'o' to rotate right
+
+Not all MAC supported
 
 *************************************************************************************Approach******************************************************************************************************
 

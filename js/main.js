@@ -80,7 +80,7 @@ Menu.prototype.generateMenu = function (){
   this.numberOfPlayerListener = '#number-player-button';
   this.numberForVictoryListener = '#number-victory-button';
   this.numberForLevelListener = '#number-level-button';
-  this.computerTypeListener = '#computer-type-button';
+  // this.computerTypeListener = '#computer-type-button';
   this.resumeListener = '#resume-button';
   this.restartListener = '#restart-button';
   this.goBackMenuStart = '#go-back-menu-start-button';
@@ -89,7 +89,7 @@ Menu.prototype.generateMenu = function (){
   this.addListenerToNumberOfPLayers();
   this.addListenerToNumberForVictory();
   this.addListenerToNumberForLevel();
-  this.addListenerComputerType();
+  // this.addListenerComputerType();
   this.addListenerToResume();
   this.addListenerToRestart();
   this.addListenerToGoBackmenuStart();
@@ -104,25 +104,25 @@ Menu.prototype.generateMenu = function (){
 };
 
 //Chosing the computer type
-Menu.prototype.addListenerComputerType = function()
-{
-  var tempString = this.computerTypeListener +' h3';
-  this.computerType = 'PC';
-  this.lastPlayedComputerType = this.computerType;
-  $(this.computerTypeListener).on('click', function(){
-    if(this.computerType === 'PC')
-    {
-      this.computerType = 'MAC';
-      $(tempString).html('MAC');
-    }
-    else
-    {
-       this.computerType = 'PC';
-       $(tempString).html('PC');
-    }
-
-  }.bind(this));
-};
+// Menu.prototype.addListenerComputerType = function()
+// {
+//   var tempString = this.computerTypeListener +' h3';
+//   this.computerType = 'PC';
+//   this.lastPlayedComputerType = this.computerType;
+//   $(this.computerTypeListener).on('click', function(){
+//     if(this.computerType === 'PC')
+//     {
+//       this.computerType = 'MAC';
+//       $(tempString).html('MAC');
+//     }
+//     else
+//     {
+//        this.computerType = 'PC';
+//        $(tempString).html('PC');
+//     }
+//
+//   }.bind(this));
+// };
 
 //Loading screen; adds pause before beginning, for resume
 Menu.prototype.displayLoadingLayoutResume = function(){
@@ -347,7 +347,7 @@ Menu.prototype.initializePlayer = function (playerNumber, keyBinding) {
       numberForVictory: this.lastnumberForVictory,
       numberForLevel: this.lastnumberForLevel,
       numberOfPlayers: this.lastPlayedNumberOfPlayers,
-      computerType: this.lastPlayedComputerType
+      // computerType: this.lastPlayedComputerType
   });
 
 };
@@ -367,7 +367,7 @@ Menu.prototype.addListenerToRestart = function()
         delete this.playerOne.pieceGenerator;
         delete this.playerOne;
 
-        this.playerOne = this.initializePlayer(1,arrows2);
+        this.playerOne = this.initializePlayer(1,arrows1);
 
         this.playerOne.addRivalPlayer();
 
@@ -389,8 +389,8 @@ Menu.prototype.addListenerToRestart = function()
         delete this.playerTwo.pieceGenerator;
         delete this.playerTwo;
 
-        this.playerOne = this.initializePlayer(1,arrows2);
-        this.playerTwo = this.initializePlayer(2,arrows1);
+        this.playerOne = this.initializePlayer(1,arrows1);
+        this.playerTwo = this.initializePlayer(2,arrows2);
 
         this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
@@ -425,9 +425,9 @@ Menu.prototype.addListenerToStart = function()
           this.lastPlayedNumberOfPlayers=1;
           this.lastnumberForVictory = this.numberForVictory;
           this.lastnumberForLevel = this.numberForLevel;
-          this.lastPlayedComputerType = this.computerType;
+          // this.lastPlayedComputerType = this.computerType;
 
-          this.playerOne = this.initializePlayer(1,arrows2);
+          this.playerOne = this.initializePlayer(1,arrows1);
 
           this.playerOne.addRivalPlayer();
 
@@ -441,7 +441,7 @@ Menu.prototype.addListenerToStart = function()
           this.lastPlayedNumberOfPlayers=1;
           this.lastnumberForVictory = this.numberForVictory;
           this.lastnumberForLevel = this.numberForLevel;
-          this.lastPlayedComputerType = this.computerType;
+          // this.lastPlayedComputerType = this.computerType;
           this.playerOne.restartGame();
           this.playerOne.gamePaused = true;
           delete this.playerOne.pieceGenerator;
@@ -449,7 +449,7 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = this.initializePlayer(1,arrows2);
+          this.playerOne = this.initializePlayer(1,arrows1);
 
           this.playerOne.addRivalPlayer();
 
@@ -462,7 +462,7 @@ Menu.prototype.addListenerToStart = function()
           this.lastPlayedNumberOfPlayers=1;
           this.lastnumberForVictory = this.numberForVictory;
           this.lastnumberForLevel = this.numberForLevel;
-          this.lastPlayedComputerType = this.computerType;
+          // this.lastPlayedComputerType = this.computerType;
           this.TwoPlayers = false;
           this.OnePlayer = true;
           this.playerOne.restartGame();
@@ -476,7 +476,7 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = this.initializePlayer(1,arrows2);
+          this.playerOne = this.initializePlayer(1,arrows1);
 
           this.playerOne.addRivalPlayer();
 
@@ -493,12 +493,12 @@ Menu.prototype.addListenerToStart = function()
           this.TwoPlayers = true;
           this.lastnumberForVictory = this.numberForVictory;
           this.lastnumberForLevel = this.numberForLevel;
-          this.lastPlayedComputerType = this.computerType;
+          // this.lastPlayedComputerType = this.computerType;
 
           $(this.menuLayoutStartSelector).hide();
 
-          this.playerOne = this.initializePlayer(1,arrows2);
-          this.playerTwo = this.initializePlayer(2,arrows1);
+          this.playerOne = this.initializePlayer(1,arrows1);
+          this.playerTwo = this.initializePlayer(2,arrows2);
 
           this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
@@ -513,7 +513,7 @@ Menu.prototype.addListenerToStart = function()
           this.lastPlayedNumberOfPlayers=2;
           this.lastnumberForVictory = this.numberForVictory;
           this.lastnumberForLevel = this.numberForLevel;
-          this.lastPlayedComputerType = this.computerType;
+          // this.lastPlayedComputerType = this.computerType;
           this.OnePlayer = false;
           this.TwoPlayers = true;
           this.playerOne.restartGame();
@@ -523,8 +523,8 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = this.initializePlayer(1,arrows2);
-          this.playerTwo = this.initializePlayer(2,arrows1);
+          this.playerOne = this.initializePlayer(1,arrows1);
+          this.playerTwo = this.initializePlayer(2,arrows2);
 
           this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
@@ -539,7 +539,7 @@ Menu.prototype.addListenerToStart = function()
           this.lastPlayedNumberOfPlayers=2;
           this.lastnumberForVictory = this.numberForVictory;
           this.lastnumberForLevel = this.numberForLevel;
-          this.lastPlayedComputerType = this.computerType;
+          // this.lastPlayedComputerType = this.computerType;
           this.playerOne.restartGame();
           this.playerTwo.restartGame();
           this.playerOne.gamePaused = true;
@@ -551,8 +551,8 @@ Menu.prototype.addListenerToStart = function()
           $(this.menuLayoutStartSelector).hide();
           $(this.resumeListener).hide();
 
-          this.playerOne = this.initializePlayer(1,arrows2);
-          this.playerTwo = this.initializePlayer(2,arrows1);
+          this.playerOne = this.initializePlayer(1,arrows1);
+          this.playerTwo = this.initializePlayer(2,arrows2);
 
           this.playerOne.addRivalPlayer({rivalPlayer:this.playerTwo});
 
